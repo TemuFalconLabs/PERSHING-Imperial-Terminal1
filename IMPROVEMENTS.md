@@ -56,3 +56,8 @@
 - Accept six digits alone in the terminal command field as authorization input; retain AUTH <code> compatibility and existing progression gates.
 - Show unmistakable success or rejection feedback and identify newly unlocked content on success.
 - Acceptance: At the authorization stage, entering 471938 alone unlocks REC-005 exactly as AUTH 471938 does. Incorrect codes receive clear feedback; premature entry does not bypass progression.
+
+## IMP-007 — Rename Scanner diagnostic
+- Status: Approved / open
+- Rename player-facing “Scanner diagnostic” to “M-count scanner diagnostic”; ensure directory and search references remain consistent.
+- Implementation pending. IMP-006 is reserved for the proposed browser popup replacement, not yet approved.
