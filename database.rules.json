@@ -1,0 +1,28 @@
+{
+ "rules": {
+   "pershingV1": {
+     "$code": {
+       ".read":"auth != null && data.child('owner').val() === auth.uid",
+       ".write":"auth != null && ((!data.exists() && newData.child('owner').val() === auth.uid && $code.matches(/^[A-Z2-9]{8}$/)) || data.child('owner').val() === auth.uid)",
+       ".validate":"newData.hasChildren(['owner','state','view']) && (!data.exists() || newData.child('owner').val() === data.child('owner').val())",
+       "seat":{
+         ".read":"auth != null && data.val() === auth.uid",
+         ".write":"auth != null && data.parent().hasChild('owner') && !data.exists() && newData.val() === auth.uid"
+       },
+       "view":{".read":"auth != null && data.parent().child('seat').val() === auth.uid"},
+       "hostOnline":{".read":"auth != null && data.parent().child('seat').val() === auth.uid"},
+       "playerOnline":{".write":"auth != null && data.parent().child('seat').val() === auth.uid && newData.isBoolean()"},
+       "request":{
+         ".write":"auth != null && data.parent().child('seat').val() === auth.uid && !data.exists() && newData.exists()",
+         ".validate":"newData.hasChildren(['id','action','arg','revision'])",
+         "id":{".validate":"newData.isString() && newData.val().length <= 50"},
+         "revision":{".validate":"newData.isNumber()"},
+         "action":{".validate":"newData.isString() && newData.val().matches(/^(PLAY|FINISH|AUTH|CLOSE|DECK|INSERT|RETRIEVE|EQUIPMENT|BLUE|SCAN|SAVE SCAN)$/)"},
+         "arg":{".validate":"newData.isString() && newData.val().length <= 90"},
+         "$other":{".validate":false}
+       },
+       "reply":{".read":"auth != null && data.parent().child('seat').val() === auth.uid"}
+     }
+   }
+ }
+}
