@@ -78,3 +78,14 @@
 - User cannot trigger final recording; suspects inability to close current room doors. Root cause not yet confirmed.
 - Verify REC-007 prerequisites, door closure controls, obstruction handling and feedback against approved adventure design. Make any required action clear and achievable; do not silently block playback. Confirm whether the door prerequisite itself is approved before retaining it.
 - Acceptance: Complete mobile player progression through final recording and crisis cue; verify clear feedback for unmet prerequisites and no unintended deadlock.
+
+## IMP-010 — Simplify navigation and consolidate M-count controls
+- Priority: High
+- Status: Open / user-requested
+- Preserve generally good underlying mechanics. Focus on writing, progression clarity and interface organization rather than unnecessary mechanical redesign.
+- Organize selectable options into meaningful folders/subfolders; reduce screen clutter and redundant controls. Consolidate M-count scanner activation and analysis into one logical workflow/location, retaining necessary DM physical-action controls separately.
+- Proposed navigation for DM review: Research Recordings, Facility Systems, Research Archives, M-count Analysis. Use progressive disclosure and mobile-friendly navigation.
+- Acceptance: No redundant player-facing scanner entry points; clear navigation and manageable option counts on mobile; all required functions remain accessible.
+
+### IMP-003 expanded progression clarity requirement
+- At every required transition, terminal provides an actionable, in-universe clue identifying the next objective and relevant location/action without spoiling genuine puzzles. Clearly distinguish physical DM-confirmed actions from terminal interactions. Explain unmet prerequisites and confirm successful actions. Review all seven recordings and intervening gates against approved design; preserve mechanics unless a specific defect or design deviation warrants change.
