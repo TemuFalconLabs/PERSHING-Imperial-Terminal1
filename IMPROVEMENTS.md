@@ -49,3 +49,10 @@
 - Accept a six-digit code entered alone in the command field at the authorization gate, without requiring AUTH. Retain existing AUTH syntax and authorization button.
 - Provide clear visible success or rejection feedback. Do not bypass progression gates or reveal the correct code on failure.
 - Acceptance: Entering 471938 alone at the correct stage unlocks REC-005; incorrect codes receive clear feedback. Verify on mobile.
+
+## IMP-005 — Accept bare six-digit authorization code
+- Priority: High
+- Status: Approved / open
+- Accept six digits alone in the terminal command field as authorization input; retain AUTH <code> compatibility and existing progression gates.
+- Show unmistakable success or rejection feedback and identify newly unlocked content on success.
+- Acceptance: At the authorization stage, entering 471938 alone unlocks REC-005 exactly as AUTH 471938 does. Incorrect codes receive clear feedback; premature entry does not bypass progression.
