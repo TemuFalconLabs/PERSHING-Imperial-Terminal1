@@ -1,0 +1,9 @@
+{
+  "name":"pershing-duty-station","version":"2.1.0","private":true,
+  "scripts":{
+    "test":"node --test tests/engine.test.mjs",
+    "guides":"node build-guide.mjs && node build-offline.mjs",
+    "test:rehearsal":"firebase emulators:exec --config firebase-emulators.json --only auth,database,hosting --project demo-pershing \"node tests/rules.mjs && node tests/rehearsal.mjs && node tests/rehearsal.mjs --optional && node tests/rehearsal.mjs --kids\""
+  },
+  "devDependencies":{"firebase-tools":"13.35.1","playwright":"1.62.1"}
+}

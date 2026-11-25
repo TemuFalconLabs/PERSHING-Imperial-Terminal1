@@ -154,10 +154,10 @@ async function command(value){
  if(v.startsWith('SEARCH ')){query=raw.slice(7);selectPage('Search');return}
  if(v.startsWith('OPEN ')){const path=v.slice(5);
    const options=['Media Archive','Research Recordings','Doors','Records','Status',...(s.repaired?['Analysis']:[])];
-   const name=options.find(k=>k.toUpperCase()===path);if(name)return selectPage(name);
+   const name=options.find(k=>k.toUpperCase()===path);if(name==='Research Recordings'&&!s.seen[1]&&page!=='Media Archive')throw Error('Select the parent media directory first.');if(name)return selectPage(name);
    const doc=Object.keys(files(s)).find(k=>k.toUpperCase()===path);if(doc)return selectPage('Read',doc);
  }
- const m=v.match(/^(?:PLAY|REPLAY) (?:REC-)?0*([1-7])$/);if(m)return act('PLAY',m[1]);
+ const m=v.match(/^(?:PLAY|REPLAY) (?:REC-)?0*([1-7])$/);if(m){if(+m[1]===1&&!s.seen[1]&&page!=='Research Recordings')throw Error('Select the local recording directory first.');return act('PLAY',m[1])}
  if(v==='ARCHIVE')return act('DECK','Archive');if(v.startsWith('INSERT '))return act('INSERT',v.slice(7));
  if(v.startsWith('SCAN ')&&s.repaired){let key=Object.keys(scans(s)).find(k=>k.toUpperCase()===v.slice(5).replace(/^TODD$/,'T0DD'));if(key)return scan(key)}
  if(['WHOAMI','PLEASE','ADMIN'].includes(v))return textOut({WHOAMI:'Unregistered duty operator.',PLEASE:'Magic word accepted. Authorization still denied.',ADMIN:'Nice try.'}[v],true);

@@ -23,7 +23,7 @@ function change(session,role,action,arg,now){
    s=normalize(s);s.revision=old.revision+1;s.notice='Station checkpoint synchronized.';
    s.log=[...old.log.slice(-59),{at:now,who:role,action,detail:'Operator checkpoint'}];
  }else s=apply(old,role,action,arg,now);
- const checkpoints={...session.checkpoints};
+ const checkpoints=action==='RESET'?{}:{...session.checkpoints};
  if(old.step===10&&s.step===11)checkpoints.beforeCirculation=old;
  if(old.step===16&&action==='PLAY'&&Number(arg)===7)checkpoints.beforeTransmission=old;
  return {...session,checkpoints,previous:old,state:s,view:publicView(s)};
