@@ -89,3 +89,17 @@
 
 ### IMP-003 expanded progression clarity requirement
 - At every required transition, terminal provides an actionable, in-universe clue identifying the next objective and relevant location/action without spoiling genuine puzzles. Clearly distinguish physical DM-confirmed actions from terminal interactions. Explain unmet prerequisites and confirm successful actions. Review all seven recordings and intervening gates against approved design; preserve mechanics unless a specific defect or design deviation warrants change.
+
+### IMP-010 — Folder hierarchy approved
+- User approves Research Recordings, Facility Systems (network, doors, ventilation), Research Archives (personnel, project, engineering), M-count Analysis (diagnostic, analyze sample, saved results). Progressive disclosure; consolidate scanner entry points.
+
+## IMP-011 — Persistent current objective and explicit unlock feedback
+- Priority: High
+- Status: Proposed implementation approach / user-requested clarity
+- Home screen shows current objective, completed action, newly available content, and outstanding prerequisite in in-universe language. Update automatically on DM-confirmed physical actions and player actions. Do not reveal future objectives or genuine puzzle solutions.
+- Cover REC-001 through REC-007 and all intervening physical actions, authorization, relays, lab entry, archive power, tape retrieval/insertion. Verify exact transitions against approved design, especially final recording security conditions. Review final wording with DM.
+
+## IMP-012 — Remove inserted tapes from archive selection
+- Priority: High
+- Status: Approved / open
+- Once a tape is inserted into the primary terminal, remove its selectable retrieval option from the archive room. Preserve unlocked contents in primary Research Archives. Track available, retrieved and inserted states consistently, including save/recovery/undo/reset. Do not allow duplicate retrieval of an inserted tape.
