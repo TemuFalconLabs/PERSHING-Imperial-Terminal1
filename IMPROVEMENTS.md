@@ -71,3 +71,10 @@
 
 ### IMP-003 expanded audit scope — design fidelity
 - User reports Facility section is unclear and writing diverges from prior discussions. Audit every screen, record, recording, status, scanner result and control against the authoritative master adventure design and prior approved decisions. Identify unsupported inventions and deviations; remove or seek DM approval. Do not substitute another creative rewrite for source verification. Treat exact format and content fidelity as release acceptance requirements.
+
+## IMP-009 — Final recording playback and door closure
+- Priority: High / progression blocker
+- Status: Open / user-reported defect
+- User cannot trigger final recording; suspects inability to close current room doors. Root cause not yet confirmed.
+- Verify REC-007 prerequisites, door closure controls, obstruction handling and feedback against approved adventure design. Make any required action clear and achievable; do not silently block playback. Confirm whether the door prerequisite itself is approved before retaining it.
+- Acceptance: Complete mobile player progression through final recording and crisis cue; verify clear feedback for unmet prerequisites and no unintended deadlock.
