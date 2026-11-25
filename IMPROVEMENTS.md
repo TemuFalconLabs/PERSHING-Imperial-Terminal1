@@ -42,3 +42,10 @@
 - Replace the ambiguous Locker Release record with: SECURITY SYSTEM — POWER RESTORED / Location: Research Director's Office / Personal locker: UNLOCKED / Registered contents: Omega authorization cylinder. / Retrieve cylinder and insert into reception terminal to access additional research recordings.
 - Remove unnecessary brass plate references, including in REC-003 and hints, unless multiple lockers require identification.
 - Acceptance: Players understand that restoring server power releases the locker, where to find the cylinder, and what to do with it. Viewing the record is informational, not a separate unlocking action. Preserve DM confirmation of physical retrieval/insertion.
+
+## IMP-005 — Accept bare six-digit authorization code
+- Priority: High
+- Status: Approved / open
+- Accept a six-digit code entered alone in the command field at the authorization gate, without requiring AUTH. Retain existing AUTH syntax and authorization button.
+- Provide clear visible success or rejection feedback. Do not bypass progression gates or reveal the correct code on failure.
+- Acceptance: Entering 471938 alone at the correct stage unlocks REC-005; incorrect codes receive clear feedback. Verify on mobile.
