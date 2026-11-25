@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Imperial Terminal | Training</title><style>
+*{box-sizing:border-box}body{margin:0;background:#080e0b;color:#83e6a0;font:16px/1.6 ui-monospace,Consolas,monospace}main{max-width:960px;margin:24px auto;padding:20px;border:1px solid #365d42;background:#0b1710;box-shadow:0 0 30px #142d20}header{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #365d42;padding-bottom:12px}h1{font-size:1.25rem;margin:0;letter-spacing:2px}small{color:#9ab9a2}#output{height:55vh;min-height:200px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;padding:14px 0}.warn{color:#ffc36b}.critical{color:#ff8585}.echo{color:#e0ffe6}form{display:flex;gap:8px;align-items:center;border-top:1px solid #365d42;padding-top:12px}input,button{font:inherit;color:inherit;background:#101e15;border:1px solid #52765b;padding:10px}input{flex:1;min-width:0}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #83e6a0}footer{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}@media(max-width:600px){main{margin:0;min-height:100dvh;padding:12px}h1{font-size:1rem}body{font-size:14px}}
+</style></head><body><main><header><div><h1>IMPERIAL SCIENCE DIVISION</h1><small>TERMINAL OS v0.1 // TRAINING SIMULATION</small></div><span>● ONLINE</span></header><div id="output" role="log" aria-live="polite"></div><form id="form"><label for="cmd">C:&gt;</label><input id="cmd" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Enter command"><button>ENTER</button></form><footer><button type="button" id="help">HELP</button><button type="button" id="status">STATUS</button><button type="button" id="reset">RESET</button><small>Temu Falcon Labs • Prototype • No live systems connected</small></footer></main><script>
+"use strict";
+const out=document.getElementById("output"),input=document.getElementById("cmd");
+let authorized=false,power=false,unlocked=false;
+function print(message,kind=""){const line=document.createElement("div");line.className=kind;line.textContent=message;out.appendChild(line);out.scrollTop=out.scrollHeight}
+function reset(){authorized=power=unlocked=false;out.replaceChildren();print("BOOT SEQUENCE COMPLETE.\nTraining environment initialized.\nEnter HELP for available commands.");input.value="";}
+function execute(raw){const c=raw.trim().toUpperCase().replace(/\s+/g," ");if(!c)return;print("> "+c,"echo");switch(c){
+case "HELP":print("HELP / DIR / STATUS / POWER / LOGS\nAUTH [CODE] / RESTORE ENV / UNLOCK LAB\nWHOAMI / PLEASE / CLEAR / RESET");break;
+case "DIR":print("/SECURITY\n/ENGINEERING\n/TRAINING");break;
+case "STATUS":print("AUTHORIZATION: "+(authorized?"VERIFIED":"REQUIRED")+"\nENVIRONMENTAL RELAY: "+(power?"ONLINE":"OFFLINE")+"\nTRAINING LAB: "+(unlocked?"UNLOCKED":"LOCKED"));break;
+case "POWER":print("PRIMARY POWER: ONLINE\nENVIRONMENTAL RELAY: "+(power?"ONLINE":"OFFLINE"));break;
+case "LOGS":print("TRAINING LOG 001\nFor this simulation only, authorization code: 123456.");break;
+case "AUTH 123456":authorized=true;print("AUTHORIZATION ACCEPTED.");break;
+case "RESTORE ENV":power=true;print("ENVIRONMENTAL RELAY ONLINE.");break;
+case "UNLOCK LAB":if(!authorized||!power){print("ACCESS DENIED. "+(!authorized?"Authorization required.":"Environmental relay offline."),"warn")}else{unlocked=true;print("TRAINING LAB ACCESS GRANTED. Your safety is our priority.")}break;
+case "WHOAMI":print("UNREGISTERED LIFE-FORM.");break;
+case "PLEASE":print("Magic word accepted. Authorization requirements remain unchanged.");break;
+case "ADMIN":print("Nice try.","warn");break;
+case "ALARM TEST":print("SIMULATED CRITICAL ALERT. No actual hazard.","critical");break;
+case "CLEAR":out.replaceChildren();break;
+case "RESET":reset();break;
+default:print(c.startsWith("AUTH")?"INVALID AUTHORIZATION CODE.":"COMMAND NOT RECOGNIZED. Enter HELP.","warn");
+}}
+document.getElementById("form").addEventListener("submit",e=>{e.preventDefault();execute(input.value);input.value="";input.focus()});
+document.getElementById("help").onclick=()=>execute("HELP");document.getElementById("status").onclick=()=>execute("STATUS");document.getElementById("reset").onclick=()=>{if(confirm("Reset training progress?"))reset()};reset();
+</script></body></html>
