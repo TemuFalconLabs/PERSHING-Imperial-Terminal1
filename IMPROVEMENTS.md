@@ -61,3 +61,13 @@
 - Status: Approved / open
 - Rename player-facing “Scanner diagnostic” to “M-count scanner diagnostic”; ensure directory and search references remain consistent.
 - Implementation pending. IMP-006 is reserved for the proposed browser popup replacement, not yet approved.
+
+## IMP-008 — Restore approved M-count analysis presentation
+- Priority: High
+- Status: Open / user-reported defect
+- Current output is unlabeled, inconsistent and does not match prior design discussions.
+- Recover the exact approved scanner format and character-specific results from authoritative campaign sources and prior design discussions before rewriting. Do not invent replacement values or classifications. Present clearly labeled subject, species, M-count classification and specimen registry match fields, subject to exact approved format. Preserve campaign separation and special cases.
+- Acceptance: DM verifies the presentation and results against the original design before release.
+
+### IMP-003 expanded audit scope — design fidelity
+- User reports Facility section is unclear and writing diverges from prior discussions. Audit every screen, record, recording, status, scanner result and control against the authoritative master adventure design and prior approved decisions. Identify unsupported inventions and deviations; remove or seek DM approval. Do not substitute another creative rewrite for source verification. Treat exact format and content fidelity as release acceptance requirements.
