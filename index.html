@@ -1,29 +1,66 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Imperial Terminal | Training</title><style>
-*{box-sizing:border-box}body{margin:0;background:#080e0b;color:#83e6a0;font:16px/1.6 ui-monospace,Consolas,monospace}main{max-width:960px;margin:24px auto;padding:20px;border:1px solid #365d42;background:#0b1710;box-shadow:0 0 30px #142d20}header{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #365d42;padding-bottom:12px}h1{font-size:1.25rem;margin:0;letter-spacing:2px}small{color:#9ab9a2}#output{height:55vh;min-height:200px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;padding:14px 0}.warn{color:#ffc36b}.critical{color:#ff8585}.echo{color:#e0ffe6}form{display:flex;gap:8px;align-items:center;border-top:1px solid #365d42;padding-top:12px}input,button{font:inherit;color:inherit;background:#101e15;border:1px solid #52765b;padding:10px}input{flex:1;min-width:0}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #83e6a0}footer{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}@media(max-width:600px){main{margin:0;min-height:100dvh;padding:12px}h1{font-size:1rem}body{font-size:14px}}
-</style></head><body><main><header><div><h1>IMPERIAL SCIENCE DIVISION</h1><small>TERMINAL OS v0.1 // TRAINING SIMULATION</small></div><span>● ONLINE</span></header><div id="output" role="log" aria-live="polite"></div><form id="form"><label for="cmd">C:&gt;</label><input id="cmd" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Enter command"><button>ENTER</button></form><footer><button type="button" id="help">HELP</button><button type="button" id="status">STATUS</button><button type="button" id="reset">RESET</button><small>Temu Falcon Labs • Prototype • No live systems connected</small></footer></main><script>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Imperial Science Division</title><style>
+*{box-sizing:border-box}body{margin:0;background:#050b08;color:#85e6a0;font:15px/1.55 ui-monospace,Consolas,monospace}main{max-width:1050px;margin:18px auto;padding:18px;border:1px solid #345b40;background:#0a1510}header,footer,form,.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}header{justify-content:space-between;border-bottom:1px solid #345b40;padding-bottom:12px}h1{font-size:1.25rem;margin:0;letter-spacing:2px}small{color:#9bb5a3}#out{height:52vh;min-height:220px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;padding:12px 0}.warn{color:#ffc36b}.red{color:#ff8585}.echo{color:#e1ffe5}input,button{font:inherit;color:inherit;background:#102017;border:1px solid #52765b;padding:9px}input{flex:1;min-width:0}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #85e6a0}form{border-top:1px solid #345b40;padding-top:10px}footer{margin-top:10px}#screen{border:1px solid #52765b;padding:16px;margin:10px 0;white-space:pre-wrap;background:#111b17}#screen[hidden]{display:none}body.alert main{border-color:#f66;box-shadow:0 0 24px #5a1717}details{margin-top:12px} @media(max-width:600px){main{margin:0;padding:10px;min-height:100dvh}body{font-size:14px}h1{font-size:1rem}}
+</style></head><body><main><header><div><h1>IMPERIAL SCIENCE DIVISION</h1><small>FACILITY TERMINAL // v0.2 DEVELOPMENT REHEARSAL</small></div><span id="indicator">● ONLINE</span></header><div id="out" role="log" aria-live="polite"></div><div id="screen" hidden></div><form id="form"><label for="cmd">C:&gt;</label><input id="cmd" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Enter command"><button>ENTER</button></form><footer id="quick"></footer><details><summary>Rehearsal controls (DM)</summary><div class="bar" id="dm"></div><small>Public prototype: fictional test data, not secure. Physical discoveries require DM confirmation in live play.</small></details></main><script>
 "use strict";
-const out=document.getElementById("output"),input=document.getElementById("cmd");
-let authorized=false,power=false,unlocked=false;
-function print(message,kind=""){const line=document.createElement("div");line.className=kind;line.textContent=message;out.appendChild(line);out.scrollTop=out.scrollHeight}
-function reset(){authorized=power=unlocked=false;out.replaceChildren();print("BOOT SEQUENCE COMPLETE.\nTraining environment initialized.\nEnter HELP for available commands.");input.value="";}
-function execute(raw){const c=raw.trim().toUpperCase().replace(/\s+/g," ");if(!c)return;print("> "+c,"echo");switch(c){
-case "HELP":print("HELP / DIR / STATUS / POWER / LOGS\nAUTH [CODE] / RESTORE ENV / UNLOCK LAB\nWHOAMI / PLEASE / CLEAR / RESET");break;
-case "DIR":print("/SECURITY\n/ENGINEERING\n/TRAINING");break;
-case "STATUS":print("AUTHORIZATION: "+(authorized?"VERIFIED":"REQUIRED")+"\nENVIRONMENTAL RELAY: "+(power?"ONLINE":"OFFLINE")+"\nTRAINING LAB: "+(unlocked?"UNLOCKED":"LOCKED"));break;
-case "POWER":print("PRIMARY POWER: ONLINE\nENVIRONMENTAL RELAY: "+(power?"ONLINE":"OFFLINE"));break;
-case "LOGS":print("TRAINING LOG 001\nFor this simulation only, authorization code: 123456.");break;
-case "AUTH 123456":authorized=true;print("AUTHORIZATION ACCEPTED.");break;
-case "RESTORE ENV":power=true;print("ENVIRONMENTAL RELAY ONLINE.");break;
-case "UNLOCK LAB":if(!authorized||!power){print("ACCESS DENIED. "+(!authorized?"Authorization required.":"Environmental relay offline."),"warn")}else{unlocked=true;print("TRAINING LAB ACCESS GRANTED. Your safety is our priority.")}break;
-case "WHOAMI":print("UNREGISTERED LIFE-FORM.");break;
-case "PLEASE":print("Magic word accepted. Authorization requirements remain unchanged.");break;
-case "ADMIN":print("Nice try.","warn");break;
-case "ALARM TEST":print("SIMULATED CRITICAL ALERT. No actual hazard.","critical");break;
-case "CLEAR":out.replaceChildren();break;
-case "RESET":reset();break;
-default:print(c.startsWith("AUTH")?"INVALID AUTHORIZATION CODE.":"COMMAND NOT RECOGNIZED. Enter HELP.","warn");
+const $=id=>document.getElementById(id),out=$("out"),input=$("cmd"),screen=$("screen");
+const KEY="imperial-rehearsal-v02";
+const fresh=()=>({cylinder:false,auth:false,relays:[],lab:false,repair:false,archive:false,final:false,alert:false,saved:[]});
+let s=fresh(),pending=null,history=[],cursor=0;
+try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&Array.isArray(x.relays)&&Array.isArray(x.saved))s={...fresh(),...x}}catch{}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(s))}catch{}document.body.classList.toggle("alert",s.alert);$("indicator").textContent=s.alert?"● CONTAINMENT FAILURE":"● ONLINE"}
+function p(t,k=""){const e=document.createElement("div");e.className=k;e.textContent=t;out.append(e);out.scrollTop=out.scrollHeight}
+function panel(t){screen.hidden=false;screen.textContent=t}
+function boot(){p("BOOT SEQUENCE COMPLETE.\nLocal archive recovered.\nResearch access restricted. Enter HELP.\nInvestigate physical locations before confirming discoveries.");save()}
+const logs={
+"001":"CAPTAIN 001 | Routine operations\nPersonnel reminded to maintain authorization cylinders. All research access requires valid credentials.",
+"003":"RESEARCH 003 | DAY 012\nIntake complete. Archive fragment: 42.",
+"007":"ENGINEERING 007 | DAY 026\nThree relay stations require local activation. Archive fragment: 09.",
+"012":"RESEARCH 012 | DAY 034\nUnexpected variance in biological readings. Archive fragment: 71.",
+"014":"RESEARCH 014 | SIMULATED VIDEO\nResearcher: Most specimens failed testing. A small number survived; transfer authorized for further examination.",
+"016":"SECURITY 016\nRestricted specimen records stored in main laboratory. Environmental safety interlock must be satisfied.",
+"024":"CAPTAIN 024\nUnexplained disturbances reported in specimen storage. Engineering investigation pending."
+};
+const subjects={ALPHA:["ELEVATED","MG-1842","CONFIRMED","Subject matches existing research specimen."],BETA:["ELEVATED","MG-6931","CONFIRMED","Subject matches existing research specimen."],GAMMA:["NORMAL","UNREGISTERED","NO MATCH",""],DELTA:["N/A","INORGANIC","N/A","This instrument is not a multimeter."],EPSILON:["AVERAGE","UNREGISTERED","NO MATCH",""],ZETA:["ELEVATED","UNREGISTERED","NO MATCH","Subject meets preliminary research criteria."],ETA:["VERY HIGH","UNREGISTERED","NO MATCH","Priority research candidate."],THETA:["VERY HIGH","UNREGISTERED","NO MATCH","Fictional BAC: 0.67%. Recalibrating ethanol sensor."],IOTA:["UNKNOWN","UNKNOWN","UNKNOWN","WARNING: UNSTABLE."]};
+const allPower=()=>["R-01","R-02","E-03"].every(x=>s.relays.includes(x));
+function status(){p("AUTHORIZATION: "+(s.auth?"VERIFIED":"REQUIRED")+"\nPOWER: "+s.relays.length+"/3 RELAYS ONLINE\nAIR CIRCULATION: "+(s.relays.includes("E-03")?"ONLINE":"OFFLINE")+"\nLAB: "+(s.lab?"OPEN":"LOCKED")+"\nARCHIVE: "+(s.archive?"DECRYPTED":"ENCRYPTED"))}
+function deny(t){p("ACCESS DENIED. "+t,"warn")}
+function outbreak(){s.alert=true;save();p("AIR CIRCULATION ONLINE\nAIRBORNE CONTAMINANT DETECTED\nUNEXPECTED BIOLOGICAL ACTIVITY\nSPECIMEN STATUS CHANGING\nBIOCONTAINMENT FAILURE","red")}
+function execute(raw){let c=raw.trim().toUpperCase().replace(/\s+/g," ");if(!c)return;history.push(raw);cursor=history.length;p("> "+c,"echo");if(pending&&["Y","N","YES","NO"].includes(c)){const yes=c==="Y"||c==="YES";if(pending.type==="scan"){if(yes){s.saved.push(pending.subject);p("SPECIMEN SAVED LOCALLY. Thank you for your contribution to Imperial research.")}else p("Temporary analysis retained in local memory.")}else if(yes)p("FIELD REPORT: two test specimens identified; recovery pending. Latest coordinates withheld in rehearsal.");else p("Report retrieval declined.");pending=null;save();return}if(pending){p("Previous confirmation cancelled.","warn");pending=null}
+switch(c){
+case "HELP":p("DIR | STATUS | LOGS | READ [ID] | REPLAY [ID]\nSEARCH CYLINDER | AUTH [CODE] | POWER | RESTORE [RELAY]\nDOORS | UNLOCK LAB | RECORDS | SURVIVORS | RECOVERY\nREPAIR ANALYZER | SCAN [SUBJECT] | SAVED\nARCHIVE | DECRYPT [CODE] | REPLAY FINAL\nWHOAMI | PLEASE | CLEAR | RESET");break;
+case "DIR":p("/SECURITY\n/ENGINEERING\n/RESEARCH\n/LAB "+(s.lab?"[OPEN]":"[LOCKED]")+"\n/ARCHIVE "+(s.archive?"[OPEN]":"[ENCRYPTED]"));break;
+case "STATUS":status();break;
+case "LOGS":p("001 CAPTAIN | 003 INTAKE | 007 ENGINEERING | 012 RESEARCH\n014 RESEARCH VIDEO | 016 SECURITY | 024 CAPTAIN [LAB]\nFINAL [ENCRYPTED ARCHIVE]");break;
+case "SEARCH CYLINDER":s.cylinder=true;p("Physical discovery confirmed (rehearsal). Damaged cylinder: 7?4??9. Cross-reference research recordings.");break;
+case "POWER":p(["R-01","R-02","E-03"].map(x=>x+" "+(s.relays.includes(x)?"ONLINE":"OFFLINE")).join("\n")+"\nLocal relay activation required.");break;
+case "DOORS":p("MAIN LAB: "+(s.lab?"OPEN":"LOCKED")+"\nAuthorization and all three relays required.\nANALYSIS ROOM: "+(s.lab?"ACCESSIBLE":"RESTRICTED"));break;
+case "UNLOCK LAB":if(!s.auth)deny("Authorization required.");else if(!allPower())deny("Restore all relays. Operational air circulation required by safety protocol.");else{s.lab=true;p("LABORATORY ACCESS GRANTED. Your safety is our priority.\nRECORDS and ARCHIVE available. Optional analyzer behind lab.")}break;
+case "RECORDS":case "SURVIVORS":if(!s.lab)deny("Main laboratory locked.");else p("REHEARSAL BATCH: 1000\nKNOWN SURVIVORS: 6\nTWO IDENTIFIED; FOUR UNACCOUNTED FOR\nUse RECOVERY for field report.");break;
+case "RECOVERY":if(!s.lab)deny("Main laboratory locked.");else{p("RECOVERY ASSIGNMENT: ACTIVE\nUpdated intelligence available for ALPHA and BETA.\nRetrieve field report? [Y/N]");pending={type:"report"}}break;
+case "REPAIR ANALYZER":if(!s.lab)deny("Main laboratory locked.");else{s.repair=true;p("Repair confirmed (rehearsal). Analyzer online. SCAN ALPHA through IOTA.")}break;
+case "SAVED":if(!s.repair)deny("Analyzer offline.");else p(s.saved.length?s.saved.join("\n"):"No specimens saved.");break;
+case "ARCHIVE":if(!s.lab)deny("Main laboratory locked.");else p(s.archive?"ARCHIVE DECRYPTED. REPLAY FINAL.":"Archive key: concatenate three two-digit fragments in chronological day order. Consult logs 003, 007, 012.");break;
+case "REPLAY FINAL":case "READ FINAL":if(!s.archive)deny("Archive encrypted.");else{s.final=true;panel("RECOVERED TRANSMISSION — TEXT PLACEHOLDER\n[Alarms] Catastrophic containment failure. Evacuate immediately.\nThe specimens... they're moving. They were dead.\n[Static] Security! Seal that corridor! STOP THEM!\nThe agent is airborne. Engineering shut down ventilation.\nWhatever you do, do not restart the air circula—\n[TRANSMISSION LOST]");p("Playback complete. Environmental diagnostics pending DM trigger.","warn")}break;
+case "WHOAMI":p("Unregistered life-form.");break;
+case "PLEASE":p("Magic word accepted. Authorization requirements remain unchanged.");break;
+case "ADMIN":p("Nice try.","warn");break;
+case "OVERRIDE":p("Your confidence exceeds your authorization level.","warn");break;
+case "ORDER66":p("Archived directive. Contact your supervisor.");break;
+case "REBOOT":p("Engineering advises against turning the reactor off and on.");break;
+case "CLEAR":out.replaceChildren();screen.hidden=true;break;
+case "RESET":if(confirm("Reset all rehearsal progress?")){s=fresh();pending=null;out.replaceChildren();screen.hidden=true;boot()}break;
+default:{
+let m=c.match(/^(READ|REPLAY) (\d{3})$/);if(m){let id=m[2];if(!logs[id])p("FILE NOT FOUND.","warn");else if(id==="024"&&!s.lab)deny("Main laboratory locked.");else if(id==="014"){panel(logs[id]+"\n\n[MARKERBOARD — PLACEHOLDER FRAME]\nAUTHORIZATION: 724619");p("Research video placeholder displayed.")}else p(logs[id]);break}
+m=c.match(/^AUTH (.+)$/);if(m){if(!s.cylinder)deny("Locate authorization cylinder first.");else if(m[1]==="724619"){s.auth=true;p("AUTHORIZATION VERIFIED.")}else p("INVALID AUTHORIZATION CODE.","warn");break}
+m=c.match(/^RESTORE (R-01|R-02|E-03)$/);if(m){if(!s.relays.includes(m[1]))s.relays.push(m[1]);p(m[1]+" ONLINE. Physical activation confirmed (rehearsal).");break}
+m=c.match(/^DECRYPT (.+)$/);if(m){if(!s.lab)deny("Main laboratory locked.");else if(m[1]==="420971"){s.archive=true;p("ARCHIVE DECRYPTED. REPLAY FINAL.")}else p("INVALID ARCHIVE KEY. Check chronology.","warn");break}
+m=c.match(/^SCAN (.+)$/);if(m){if(!s.repair)deny("Analyzer offline.");else if(!subjects[m[1]])p("Unknown rehearsal subject. Use ALPHA through IOTA.","warn");else{let [count,id,match,note]=subjects[m[1]];p("SUBJECT: "+m[1]+"\nM-COUNT: "+count+"\nSPECIMEN ID: "+id+"\nDATABASE MATCH: "+match);if(note)p(note,count==="UNKNOWN"?"red":"warn");if(["ELEVATED","VERY HIGH","UNKNOWN"].includes(count)){pending={type:"scan",subject:m[1]};p("SAVE SPECIMEN TO RESEARCH DATABASE? [Y/N]")}}break}
+p("COMMAND NOT RECOGNIZED. Enter HELP.","warn");
 }}
-document.getElementById("form").addEventListener("submit",e=>{e.preventDefault();execute(input.value);input.value="";input.focus()});
-document.getElementById("help").onclick=()=>execute("HELP");document.getElementById("status").onclick=()=>execute("STATUS");document.getElementById("reset").onclick=()=>{if(confirm("Reset training progress?"))reset()};reset();
+save()}
+function button(parent,label,fn){const b=document.createElement("button");b.type="button";b.textContent=label;b.onclick=fn;$(parent).append(b)}
+$("form").onsubmit=e=>{e.preventDefault();execute(input.value);input.value="";input.focus()};
+input.onkeydown=e=>{if(e.key==="ArrowUp"){e.preventDefault();cursor=Math.max(0,cursor-1);input.value=history[cursor]||""}if(e.key==="ArrowDown"){e.preventDefault();cursor=Math.min(history.length,cursor+1);input.value=history[cursor]||""}};
+["HELP","STATUS","LOGS","POWER"].forEach(c=>button("quick",c,()=>execute(c)));
+button("dm","Confirm cylinder",()=>execute("SEARCH CYLINDER"));["R-01","R-02","E-03"].forEach(c=>button("dm","Confirm "+c,()=>execute("RESTORE "+c)));button("dm","Confirm repair",()=>execute("REPAIR ANALYZER"));button("dm","Trigger outbreak",()=>{if(s.final)outbreak();else p("Play final transmission first.","warn")});button("dm","Reset",()=>execute("RESET"));boot();
 </script></body></html>
