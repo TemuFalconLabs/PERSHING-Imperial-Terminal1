@@ -23,14 +23,18 @@ function change(session,role,action,arg,now){
    s=normalize(s);s.revision=old.revision+1;s.notice='Station checkpoint synchronized.';
    s.log=[...old.log.slice(-59),{at:now,who:role,action,detail:'Operator checkpoint'}];
  }else s=apply(old,role,action,arg,now);
- return {...session,previous:old,state:s,view:publicView(s)};
+ const checkpoints={...session.checkpoints};
+ if(old.step===10&&s.step===11)checkpoints.beforeCirculation=old;
+ if(old.step===16&&action==='PLAY'&&Number(arg)===7)checkpoints.beforeTransmission=old;
+ return {...session,checkpoints,previous:old,state:s,view:publicView(s)};
 }
 export function localSession(campaign,source,update){
  let id=source?'LOCAL-'+source:'LOCAL-'+campaign;
  let restored=JSON.parse(localStorage.getItem(cacheKey(source||id))||'null');
  if(restored&&!validSave(restored))throw Error('Invalid saved checkpoint.');
  let data={state:normalize(restored||fresh(campaign))};
- const refresh=()=>{save(id,data.state);update(data.state,{code:id,local:true,connected:true,peer:false})};
+ const refresh=()=>{save(id,data.state);if(data.checkpoints)localStorage.setItem(cacheKey(id)+'.checkpoints',JSON.stringify(data.checkpoints));update(data.state,{code:id,local:true,connected:true,peer:false})};
+ data.checkpoints=JSON.parse(localStorage.getItem(cacheKey(source||id)+'.checkpoints')||'{}');
  refresh();
  return {send:async(action,arg='',actor='DM')=>{data=change(data,actor,action,arg,Date.now());refresh()}};
 }
@@ -56,6 +60,7 @@ export async function networkSession({dm,code,campaign,create,emulate,update,err
  });
  f.onValue(at(dm?'playerOnline':'hostOnline'),snap=>{peer=snap.val()===true;show()},e=>error(e.message));
  f.onValue(at(dm?'state':'view'),snap=>{state=snap.val();if(state&&dm)save(code,normalize(state));show()},e=>error(e.message));
+ if(dm)f.onValue(at('checkpoints'),snap=>{localStorage.setItem(cacheKey(code)+'.checkpoints',JSON.stringify(snap.val()||{}));show()},e=>error(e.message));
  async function transact(fn){
    // Prime the SDK cache; a first transaction callback can otherwise receive null.
    await f.get(at(''));let failure='';
