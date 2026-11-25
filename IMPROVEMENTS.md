@@ -103,3 +103,45 @@
 - Priority: High
 - Status: Approved / open
 - Once a tape is inserted into the primary terminal, remove its selectable retrieval option from the archive room. Preserve unlocked contents in primary Research Archives. Track available, retrieved and inserted states consistently, including save/recovery/undo/reset. Do not allow duplicate retrieval of an inserted tape.
+
+## Comprehensive source audit — 25 November 2026
+Status: findings recorded; implementation pending. Reviewed against the [Master Adventure Design](https://docs.google.com/document/d/1KbwM-9KeqQCPJ4bx4os9UZB3govfSJyqMgB9w7SJRbs/edit), particularly §§3–8 and 12–16, and content.mjs, engine.mjs, station.mjs, session.mjs, guides, tests and the main-branch standalone preview. No fresh browser or production test was performed. Preserve the core two-cylinder, two-relay, physical tape and deliberately selected recording progression; no architectural redesign. Proposed wording and new findings below are not automatically approved for implementation.
+
+### Clarifications to existing improvements
+- IMP-001: preserve initial discovery of REC-001 via Media Archive > Research Recordings; no autoplay. After playback clearly identify the cylinder and primary reader. The master initially leaves location discovery to physical clues; reconcile with the later proposed explicit objective wording before finalizing.
+- IMP-002: use approved engineering-log replacement; align title, patch ticket, hints, notices and media/prop guides with the disconnected server cable, not reels/splices.
+- IMP-003: audit every recording, file, transition and optional discovery for natural writing, purpose and canonical fidelity. Preserve approved jokes and intentional mysteries; avoid invented plot facts. Review ordinary records (staff directory, security abstract, laboratory inventory, traffic receipt, approach docket, archive directions, optical comparison, recovery dispatch, research authority). Verify campaign callbacks and new optical-identification detail against authoritative sources. Preserve Merg's opportunity to narrate, four unresolved survivors, separate MEN/KIDS timelines, no premature Force powers or hazard disclosure.
+- IMP-004: server restoration releases Director's office locker; remove brass-front references from source, hints, media directions and physical prop checklist. Use approved locker release notification.
+- IMP-005: retain current implemented 471938 and AUTH alias unless DM changes prop digits. Accept bare six digits only at correct gate; no partial correctness hints.
+- IMP-006: native browser popup replacement remains proposed, not approved.
+- IMP-007/008: master §6 confirms qualitative result matrix. Glitch and Crosseye ELEVATED, confirmed matches; Glitch species unconfirmed in source. Erik Trandoshan NORMAL, no match proposed; T0DD inorganic N/A; Ryan human AVERAGE, no match proposed; Chris Duros ELEVATED explicitly no match; Merg human and Ben Rodian VERY HIGH, registry determination unresolved; Ben fictional BAC 0.67%; Sam all UNKNOWN, red instability warning. Existing MG-1842/MG-6931 are fictional placeholders, not final approved IDs. Preserve kids unknown results. Use labeled fields, green/amber/red classification as appropriate, explicit save/decline, no external transmission. Confirm exact specimen IDs and unresolved matches rather than inventing.
+- IMP-009: current-room closure IS an approved prerequisite (master §§3, 8, 15, 16). Keep deliberate PLAY after privacy check. Identify specific local OPEN/OBSTRUCTED doors, confirm closure without locking escape, provide PRIVACY CHECK COMPLETE and confidential playback available feedback, keep unrelated doors irrelevant; verify room mapping and manual fallback. Recheck at playback start. Preserve REC-007 script, no premature biohazard.
+- IMP-010: approved folder hierarchy and consolidated scanner controls; preserve the opening Media Archive discovery path, progressive disclosure, Back/Home controls and existing command aliases.
+- IMP-011: derive persistent objective from authoritative progression state, not mutable last notice. Display completed action, current objective, prerequisite and newly unlocked content; update after player/DM actions. Replays, optional activities, failures and DM settings cannot erase the objective. No future puzzle answers, locked content or outbreak clues. Opening objective remains general; code fragments remain separate. Final objective points to classified records and current-room privacy without revealing warning contents. Final exact wording requires DM review.
+- IMP-012: track tape availability, retrieval/in possession, insertion and durable archived contents. Reject duplicate retrieval and insertion in engine and UI. Save/recovery/undo/reset must preserve lifecycle, including older checkpoints; see IMP-015.
+
+### Proposed new improvements (all open, pending review)
+| ID | Priority | Finding / acceptance |
+|---|---|---|
+| IMP-013 | High | Restore substantive failed-batch researcher recording from master §7. Suggested placement REC-003 with visible last-four blackboard clue; exact placement and wording require DM approval. Keep digits out of normal terminal text. |
+| IMP-014 | High | Rewrite REC-004/005/006 transitions: clear prefix/suffix relationship; routine ventilation interlock and two locations; explain physical archive, tape designation at proper stage, return to primary reader. Move irrelevant personal details to optional environmental discoveries if approved. Preserve REC-007 warning. |
+| IMP-015 | High | Persist authenticated optional tape contents in Research Archives; no transient-notice-only records. Check all tapes and checkpoint migration. |
+| IMP-016 | High | Explicit recording availability/completion and actionable unlock feedback at every gate; replay must not advance progression or replace current objective. |
+| IMP-017 | High | Saved M-count results directory and explicit decline-save option; structured classification and registry fields; retain optional Ryan repair and Glitch calibration path. |
+| IMP-018 | Medium | Simplify DM dashboard: human-readable physical actions, location, expected unlock and contextual hints. Keep existing recovery and override controls. |
+| IMP-019 | Medium | DM-only fast/mute/hold and other settings must not overwrite meaningful player notices/objectives. |
+| IMP-020 | Medium | Restore wake/boot sequence and consistent bounded processing/typewriter output; ensure long text legibility, no interruption during playback/crisis. |
+| IMP-021 | Medium | Visible HELP and progressively actionable invalid-command guidance without spoilers. |
+| IMP-022 | High | Regenerate and synchronize live modules, offline.html and main preview/index.html; preserve preview publication and reconcile divergent branches without overwriting unrelated work. |
+| IMP-023 | High | First-time player comprehension rehearsal, not just scripted known-route mechanical success. Check every gate, rejection, mobile/desktop flow, optional paths and spoilers. |
+| IMP-024 | Medium | Review digital terminal switching versus physical room movement; preserve DM supervision unless a change is explicitly approved. |
+| IMP-025 | High | Synchronize DM guide, prop checklist, MEDIA.md and build-guide.mjs with approved writing and mechanics; no stale reel/splice/brass locker instructions. |
+
+### Implementation and release order
+1. Review and approve revised narrative/recordings and objective wording in sequence, grounded in master design.
+2. Implement player navigation, objective/feedback, authorization and writing fixes.
+3. Repair tape lifecycle, M-count workflow and confidential playback; preserve recovery and campaign separation.
+4. Regenerate offline, scripts and mobile preview for DM review; do not mark approved items complete until verified.
+5. Run engine regressions, independent player walkthrough, mobile/desktop and two-browser synchronization, checkpoint/undo/reset/recovery; verify actual production Firebase/Pages separately before release. Test ordinary player navigation for spoilers; public client source is not intended to be cheat-proof. Actual audio/video, hardware, room acoustics and prop rehearsal remain outstanding.
+
+Audit limitations: source inspection, not fresh runtime verification; exact room geometry, specimen IDs, unresolved matches and some dialogue are undecided. Existing test scripts prove a known sequence can be executed, not that a new player can discover it. The preview still contains old writing and lacks persistent objectives at time of audit. No application code or deployed preview changed by saving this register.
