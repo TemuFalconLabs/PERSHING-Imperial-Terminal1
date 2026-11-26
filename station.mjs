@@ -9,7 +9,7 @@ function button(node,label,fn){const b=el('button',label,node);b.type='button';b
 // Original, synthesized Imperial-style UI effects. No files, network or speech synthesis.
 const cuePatterns={
  tap:[[0,.075,820,390,'triangle',.065]],
- key:[[0,.048,1050,620,'square',.035]],
+ key:[[0,.026,510,460,'triangle',.013],[.003,.016,270,245,'sine',.005]],
  wake:[[0,.11,180,310,'triangle',.045],[.11,.12,460,690,'sine',.045],[.24,.14,820,920,'triangle',.025]],
  denied:[[0,.15,175,105,'sawtooth',.035],[.19,.19,145,85,'square',.022]],
  approval:[[0,.09,440,560,'triangle',.045],[.11,.10,650,810,'triangle',.04]],

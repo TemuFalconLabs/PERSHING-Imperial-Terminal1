@@ -82,3 +82,5 @@ REC-001–007 use the exact approved paragraphs, with British English preferred 
 ## Phone sound-output repair
 
 Sound test and audio status are now visible before opening a session and in both local views. Turn up media volume and tap Test sound; if the operator mute is active, select Enable station sound in the operator dashboard. More audible taps/keys, a subtle awake-terminal hum, processing sound and existing event effects use Web Audio; each discrete cue has a generated PCM WAV/HTMLAudio fallback. The fallback does not provide a continuous hum. The hum stops during screensaver, playback, crisis, mute or hidden page. Audio status reports engine/fallback state, not proof of audibility. Phone playback still requires user audition. Browser narration is unchanged.
+
+Phone audition: the DM confirmed the sound test was audible, but typing produced an unpleasant squeak. Replaced only the typing cue with a short, quiet, low-pitched rounded click. Other terminal effects and ambience unchanged. Automatic command echo from navigation buttons is a proposed UX change, not yet implemented or approved.

@@ -58,3 +58,7 @@ Added free device speech for REC-001–007 and separate containment alert; Briti
 ## Phone audio output repair checkpoint — 25 November 2026
 
 User reported device narration audible but terminal effects absent. Code review found very low keystroke gain and duration, no hum, silent touch activation failure and no diagnostics. Implemented direct click activation, louder bounded cue gain, audible keystroke timing, generated PCM WAV/HTMLAudio fallback, subtle awake-only Web Audio hum, processing cue, visible sound test and status, and operator/local mute feedback. Neither phone-specific root cause nor audibility independently established. Validated 17 WAV headers, lengths, nonzero bounded PCM peaks and offline syntax; adapted progression suite 74/74 passed. No browser/phone audio audition or live Firebase tests. Narration, creative text, state and gates unchanged. Refresh isolated preview only.
+
+## Phone audition — soft keystrokes
+
+DM confirmed sound test audible on phone; requested softer typing sound after a squeaky key cue. Replaced square-wave sweep with short low-level triangle/sine click; PCM verification confirmed reduced peak and energy and identical output for every other cue. Adapted progression suite 74/74; offline syntax parsed. Actual softer cue awaits phone audition. Button-driven automatic command typing discussed as a proposal only; no gate/UI flow change. Refresh isolated preview, not production.
