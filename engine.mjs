@@ -1,5 +1,5 @@
 import {code,tapes,recordings,adultScans,kidScans} from './content.mjs';
-export const biohazardAlert="BIOHAZARD ALERT\nAIRBORNE CONTAMINANT DETECTED\n\nEnvironmental relays: ONLINE\nAir circulation: ACTIVE\nBiological containment: FAILED\n\nEMERGENCY PROTOCOL INITIATED";
+export const biohazardAlert="BIOHAZARD ALERT\nAIRBORNE CONTAMINANT DETECTED\n\nEnvironmental relays: ONLINE\nAir circulation: ACTIVE\nBiological containment: FAILED\n\nEMERGENCY CONTAINMENT PROTOCOL INITIATED\n\nAll personnel are reminded that containment takes precedence over personal safety.\n\nNo evacuation has been authorized.\n\nThe Empire recognizes your service and, should it become necessary, your sacrifice.\n\nLONG LIVE THE EMPIRE.";
 export const relayOneStatus="ENVIRONMENTAL RELAY 1: ONLINE\nENVIRONMENTAL RELAY 2: OFFLINE\n\nSafety interlock verification: 1 of 2\nLaboratory access: RESTRICTED";
 export const relayTwoStatus="ENVIRONMENTAL RELAYS: 2 OF 2 ONLINE\n\nResuming normal air circulation...\nOccupational safety check: COMPLETE\n\nLABORATORY ACCESS GRANTED\nYOUR SAFETY IS OUR PRIORITY.";
 export const route=['PLAY 1','MOUNT CYLINDER','PLAY 2','CONNECT SERVER','PLAY 3','MOUNT ISB','PLAY 4','AUTH','PLAY 5','RELAY 1','RELAY 2','ENTER LAB','PLAY 6','POWER ARCHIVE','RETRIEVE CLONE BATCH SIGMA','INSERT CLONE BATCH SIGMA','PLAY 7','BEGIN CRISIS'];

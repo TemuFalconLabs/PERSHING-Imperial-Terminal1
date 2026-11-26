@@ -183,3 +183,7 @@ This section supersedes historical proposals only where the approved walkthrough
 | IMP-023 | First-time player and actual two-browser rehearsal outstanding. |
 | IMP-024 | Physical station supervision vs player digital switching remains review item; no architecture change authorized. |
 | IMP-025 | Media guide and generator synchronized; actual map, props, media and final DM kit pending. |
+
+## Approved alert wording amendment — 25 November 2026
+
+IMP-009/025: supersede the old final-alert wording with the approved containment directive in CREATIVE_BASELINE.md. Preserve all recording dialogue, three-second silence, DM cue and escape choices. Engine/offline and media/DM guide synchronized; automated voice and actual browser rehearsal remain pending.

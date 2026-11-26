@@ -41,3 +41,28 @@ Prepare three cylinders (duty, partially damaged ISB, Research Director), a dama
 6. Create a fresh version 2 session for actual play; older checkpoint versions are incompatible. A reset is scoped to the selected session; never rehearse in the live group's active watch.
 
 See [recording scripts](MEDIA.md) for the prop digits and [narrative notes](NARRATIVE.md) for what the characters know.
+
+## Approved final containment directive (25 November 2026)
+
+Post-recording automated announcement (future media): deliver the containment directive in the same pleasant, reassuring automated voice as “Your safety is our priority.” It follows REC-007 and the three seconds of silence; this is not a change to the commander's recording. The announcement is Imperial messaging, not a mechanical restriction on escape.
+
+```text
+BIOHAZARD ALERT
+AIRBORNE CONTAMINANT DETECTED
+
+Environmental relays: ONLINE
+Air circulation: ACTIVE
+Biological containment: FAILED
+
+EMERGENCY CONTAINMENT PROTOCOL INITIATED
+
+All personnel are reminded that containment takes precedence over personal safety.
+
+No evacuation has been authorized.
+
+The Empire recognizes your service and, should it become necessary, your sacrifice.
+
+LONG LIVE THE EMPIRE.
+```
+
+The purple DM reminder remains visible. Do not actually lock doors, prohibit escape, or trigger combat automatically. The commander’s evacuation order and the subsequent automated denial of authorization are intentionally contradictory Imperial messaging.

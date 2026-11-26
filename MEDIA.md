@@ -104,4 +104,27 @@ Commander visibly distressed, attempting to maintain composure. Distant blaster 
 
 > If anyone receives this transmission, do not enter the laboratory. Do not attempt to recover the specimens. And whatever you do, DO NOT RESTART THE AIR CIRCULA—
 
+## Post-REC-007 containment alert (automated, not commander dialogue)
+
+Post-recording automated announcement (future media): deliver the containment directive in the same pleasant, reassuring automated voice as “Your safety is our priority.” It follows REC-007 and the three seconds of silence; this is not a change to the commander's recording. The announcement is Imperial messaging, not a mechanical restriction on escape.
+
+```text
+BIOHAZARD ALERT
+AIRBORNE CONTAMINANT DETECTED
+
+Environmental relays: ONLINE
+Air circulation: ACTIVE
+Biological containment: FAILED
+
+EMERGENCY CONTAINMENT PROTOCOL INITIATED
+
+All personnel are reminded that containment takes precedence over personal safety.
+
+No evacuation has been authorized.
+
+The Empire recognizes your service and, should it become necessary, your sacrifice.
+
+LONG LIVE THE EMPIRE.
+```
+
 Actual audio/video media still pending; built-in captions and the visual blackboard are available. Run npm run guides after edits.

@@ -532,7 +532,15 @@ Environmental relays: ONLINE
 Air circulation: ACTIVE
 Biological containment: FAILED
 
-EMERGENCY PROTOCOL INITIATED
+EMERGENCY CONTAINMENT PROTOCOL INITIATED
+
+All personnel are reminded that containment takes precedence over personal safety.
+
+No evacuation has been authorized.
+
+The Empire recognizes your service and, should it become necessary, your sacrifice.
+
+LONG LIVE THE EMPIRE.
 ```
 
 ```text
@@ -550,3 +558,7 @@ EMERGENCY PROTOCOL INITIATED
 ## Open decisions (not approvals)
 
 Final specimen IDs, species and unresolved registry outcomes; scan-save decline currently preserves access to matched dossier (DM review); KIDS scanner classifications; exact safe trap checks and consequences, physical map geometry, prop labels/damage pattern, portraits and media. No invented resolution. Browser/Firebase and production release remain unverified. Any later recovery must begin with this baseline, original commit and both source documents.
+
+## Approved amendment — 25 November 2026
+
+DM approved the expanded final containment alert above, superseding only the earlier post-REC-007 alert. Prior immutable baseline: `e9de506a8dc039e66c47daabb6eb2934e44dce23`. REC-007 spoken dialogue, cutoff, silence, purple DM reminder, and crisis/escape mechanics are unchanged. Post-recording automated announcement (future media): deliver the containment directive in the same pleasant, reassuring automated voice as “Your safety is our priority.” It follows REC-007 and the three seconds of silence; this is not a change to the commander's recording. The announcement is Imperial messaging, not a mechanical restriction on escape.
