@@ -97,3 +97,8 @@ Screenplay amended and verified before implementation. Owner-only SHOW/HIDE BLOO
 ### Version 15 — local narration voice selection
 Adds browser-exposed voice selection and audition, British English first; automatic profiles remain default and facility announcements retain their existing profile. Local persistence; no campaign state or Firebase changes. Voice controls guard playback, announcements, mute and final visual. 25 targeted source-level assertions passed in adapted harness; station script parses. Physical-device voice availability and audible playback require browser rehearsal; no new recorded media or production release.
  Additional mocked speech/DOM integration: 15 assertions passed; original automatic voice candidate ordering preserved. Combined offline script syntax parsed.
+
+
+### Version 16 — late-game usability and scan presentation
+Screenplay updated first. Completed replays and secondary workstations grouped; step-16 final recording DM readiness controls preserve physical prerequisites; Analysis opens directly and player page persists across operator switching. Live/saved scan reports label fields individually; preserve content, engine, matching, and campaign separation. 338 adapted source assertions in 12 groups passed; station syntax parsed. Real browser rendering/rehearsal and production release remain pending.
+ Further focused page-preservation and local-view switching tests: 8 checks passed; no repeated screensaver when returning from Operator view. Combined offline script syntax parsed.

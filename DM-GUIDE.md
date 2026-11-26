@@ -112,3 +112,7 @@ After the final biohazard alert, ideally wait about 20 seconds and click **Show 
 
 ### Local narration voice (Version 15)
 Open Narration voice settings near the sound controls. Choose an exposed voice (British English voices are listed first), then Test voice. Automatic preserves the original research speaker profiles; the selected voice is local to the device, retained through refresh, and does not change the automated facility announcement. On a separate player laptop, set its own voice before play. Controls are disabled during playback/announcements, mute or the final artwork. Installed voices are supplied by the browser; if the saved voice disappears, Automatic is used. Actual recorded media still takes precedence.
+
+
+### Version 16 — cleaner player monitor and final recording
+After REC-005, completed recordings remain in the collapsed Completed recordings · replay group, and secondary workstations are grouped. M-count Analysis opens directly from step 8, showing diagnostic or online subject list depending on station/repair. Operator view preserves the current player page. Scan results and saved results display individually labelled subject, species, count and registry fields. At step 16, use Final recording · readiness to confirm physical arrival, cylinder insertion and door closure; REC-007 READY indicates all existing conditions are satisfied. The DM must confirm physical actions, not simply click through the puzzle. Playback remains in the Director’s terminal.
