@@ -78,3 +78,7 @@ Original electronic effects are generated on-device using Web Audio: keys/taps, 
 ## Free browser narration (phone rehearsal)
 
 REC-001–007 use the exact approved paragraphs, with British English preferred and individual pitch/rate profiles. The available device voice library determines accent and identity. Each paragraph advances on speech completion; unavailable, blocked, timed-out or muted speech falls back to text. Pause/resume and replay are available; Text only bypasses device speech. Fast mode deliberately skips narration. The 3-second normal-mode silence, containment klaxon and automated alert narration follow REC-007; the alert voice also reads the earlier safety phrase. Actual recorded audio/video paths remain available for a future replacement. Audio quality, native pause/resume and autoplay require phone audition; no voice files are bundled.
+
+## Phone sound-output repair
+
+Sound test and audio status are now visible before opening a session and in both local views. Turn up media volume and tap Test sound; if the operator mute is active, select Enable station sound in the operator dashboard. More audible taps/keys, a subtle awake-terminal hum, processing sound and existing event effects use Web Audio; each discrete cue has a generated PCM WAV/HTMLAudio fallback. The fallback does not provide a continuous hum. The hum stops during screensaver, playback, crisis, mute or hidden page. Audio status reports engine/fallback state, not proof of audibility. Phone playback still requires user audition. Browser narration is unchanged.

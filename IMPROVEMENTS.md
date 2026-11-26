@@ -199,3 +199,7 @@ Original synthesized terminal feedback added at DM request; distinct non-looping
 ## Browser narration trial
 
 Free Web Speech device voices for all seven recordings, text fallback, individual delivery profiles and separate alert narration; no modifications to exact scripts or gate engine. Preview only; phone audition pending.
+
+## Phone sound repair
+
+Raised terminal cue audibility, added awake-only hum and explicit sound check, moved activation to mobile click, added generated WAV fallback and visible diagnostics. Actual phone sound output remains user test; no narrative or progression changes.

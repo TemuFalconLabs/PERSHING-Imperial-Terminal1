@@ -8,8 +8,8 @@ const el=(tag,txt='',parent)=>{const n=document.createElement(tag);n.textContent
 function button(node,label,fn){const b=el('button',label,node);b.type='button';b.onclick=()=>{if(!player()||!busy)Promise.resolve().then(fn).catch(report)};return b}
 // Original, synthesized Imperial-style UI effects. No files, network or speech synthesis.
 const cuePatterns={
- tap:[[0,.045,420,250,'triangle',.035]],
- key:[[0,.025,780,520,'square',.009]],
+ tap:[[0,.075,820,390,'triangle',.065]],
+ key:[[0,.048,1050,620,'square',.035]],
  wake:[[0,.11,180,310,'triangle',.045],[.11,.12,460,690,'sine',.045],[.24,.14,820,920,'triangle',.025]],
  denied:[[0,.15,175,105,'sawtooth',.035],[.19,.19,145,85,'square',.022]],
  approval:[[0,.09,440,560,'triangle',.045],[.11,.10,650,810,'triangle',.04]],
@@ -23,7 +23,8 @@ const cuePatterns={
  complete:[[0,.08,720,540,'sine',.03],[.10,.11,460,330,'triangle',.03]],
  door:[[0,.13,130,65,'triangle',.05],[.14,.07,420,270,'triangle',.025]],
  alarm:[[0,.42,180,330,'sawtooth',.055],[.53,.42,180,330,'sawtooth',.055],[1.06,.42,180,330,'sawtooth',.055]],
- crisis:[[0,.19,220,125,'triangle',.045],[.23,.19,220,125,'triangle',.045]]
+ crisis:[[0,.19,360,210,'triangle',.045],[.23,.19,360,210,'triangle',.045]],
+ test:[[0,.12,620,820,'triangle',.07],[.16,.13,850,1100,'triangle',.07],[.34,.18,1120,840,'sine',.07]]
 };
 function cueForState(before,after){
  if(!before||!after)return null;
@@ -45,7 +46,8 @@ function cueForState(before,after){
  if(after.step>before.step)return 'unlock';
  return null;
 }
-let audioBus,queuedCue='',finalSilence=false,lastShortCue=0;
+let audioBus,humBus,humOsc=[],finalSilence=false,lastShortCue=0,fallbackAudio=null,audioDetail='Tap Test sound to check output.',audioAttempt=0;
+const cueWavs=new Map();
 // Browser-provided speech, not a recorded media asset. Voice availability varies by device.
 const voiceProfiles={
  1:{gender:'male',rate:.94,pitch:.90,preferred:/nigel|daniel|george|ryan/i},
@@ -88,40 +90,95 @@ function announce(text,delay=0){
  setTimeout(()=>{if(ticket!==announcementTicket||net?.code!==session||s?.step!==step||!narrationAllowed()||s.playing)return;speakParagraph(text,8,()=>{},()=>{})},delay);
 }
 
-function soundAllowed(){return !muted&&!s?.mute&&!finalSilence&&(player()||standalone||net?.local)}
+function soundAllowed(){return !muted&&!s?.mute&&!finalSilence&&!document.hidden&&(player()||standalone||net?.local)}
+function cueLevel(level){return Math.min(.24,level*3.3)}
+function audioStatus(message){if(message)audioDetail=message;const n=$('audioStatus');if(n)n.textContent=s?.mute?'Audio: muted by operator — use Mute station / Enable station sound.':muted?'Audio: muted on this device.':audioDetail}
+function stopFallback(){if(fallbackAudio){fallbackAudio.pause();fallbackAudio=null}}
 function syncAudio(){
- if(audioBus)audioBus.gain.setValueAtTime(soundAllowed()?1:0,audioCtx.currentTime);
+ const allowed=soundAllowed();
+ if(audioBus)audioBus.gain.setValueAtTime(allowed?1:0,audioCtx.currentTime);
+ if(humBus)humBus.gain.setValueAtTime(allowed&&s&&player()&&!s.playing&&s.step<17&&$('saver').hidden?1:0,audioCtx.currentTime);
+ if(!allowed)stopFallback();
  const b=$('soundToggle');if(b){b.textContent=s?.mute?'Sound muted by operator':muted?'Enable sound':'Mute sound';b.disabled=!!s?.mute;b.setAttribute('aria-pressed',String(!!(muted||s?.mute)))}
+ const test=$('soundTest');if(test)test.disabled=!!(s?.mute||muted||finalSilence||s?.playing);
  const av=$('screen').querySelector('video,audio');if(av)av.muted=!!(muted||s?.mute);
+ audioStatus();
+}
+function setupAudio(){
+ if(audioCtx)return;
+ const AudioCtor=window.AudioContext||window.webkitAudioContext;if(!AudioCtor)return;
+ audioCtx=new AudioCtor();audioBus=audioCtx.createGain();audioBus.connect(audioCtx.destination);
+ humBus=audioCtx.createGain();humBus.gain.value=0;humBus.connect(audioBus);
+ // Quiet continuous electronics bed, with harmonics that small phone speakers can reproduce.
+ for(const [freq,level] of [[146,.009],[292,.014],[438,.006]]){
+   const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=freq;g.gain.value=level;o.connect(g);g.connect(humBus);o.start();humOsc.push(o);
+ }
+ audioCtx.onstatechange=()=>{syncAudio();if(audioCtx.state==='running')audioStatus('Audio engine running · tap Test sound to audition.');else audioStatus('Audio engine '+audioCtx.state+' · tap Test sound to resume.')};
+ syncAudio();
+}
+function wavForCue(name){
+ if(cueWavs.has(name))return cueWavs.get(name);
+ const notes=cuePatterns[name],rate=22050,size=Math.ceil(rate*(Math.max(...notes.map(n=>n[0]+n[1]))+.025));
+ const bytes=new Uint8Array(44+2*size),v=new DataView(bytes.buffer),mix=new Float32Array(size);
+ const tag=(offset,str)=>{for(let i=0;i<str.length;i++)bytes[offset+i]=str.charCodeAt(i)};
+ tag(0,'RIFF');v.setUint32(4,36+size*2,true);tag(8,'WAVE');tag(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,rate,true);v.setUint32(28,rate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);tag(36,'data');v.setUint32(40,size*2,true);
+ for(const [delay,duration,start,end,type,level] of notes){
+   const offset=Math.round(delay*rate),length=Math.floor(duration*rate);let phase=0;
+   for(let i=0;i<length;i++){
+     const t=i/rate;phase+=2*Math.PI*start*Math.pow(end/start,t/duration)/rate;
+     const x=Math.sin(phase),wave=type==='square'?Math.sign(x):type==='triangle'?2/Math.PI*Math.asin(x):type==='sawtooth'?2*(phase/(2*Math.PI)-Math.floor(.5+phase/(2*Math.PI))):x;
+     const envelope=Math.min(1,t/.008)*Math.max(0,1-t/duration)**1.3;
+     mix[offset+i]+=wave*cueLevel(level)*envelope;
+   }
+ }
+ for(let i=0;i<size;i++)v.setInt16(44+2*i,Math.round(Math.max(-1,Math.min(1,mix[i]))*32767),true);
+ let raw='';for(let i=0;i<bytes.length;i+=4096)raw+=String.fromCharCode(...bytes.subarray(i,i+4096));
+ const uri='data:audio/wav;base64,'+btoa(raw);cueWavs.set(name,uri);return uri;
+}
+function fallbackCue(name){
+ if(!soundAllowed()||!cuePatterns[name])return;
+ try{stopFallback();const a=new Audio(wavForCue(name));fallbackAudio=a;a.volume=1;
+   const result=a.play();if(result?.then)result.then(()=>{if(fallbackAudio===a)audioStatus('Audio file fallback playing · confirm you can hear it.')}).catch(e=>{if(fallbackAudio===a)audioStatus('Audio blocked: '+(e.name||'playback error')+' · tap Test sound.')});
+ }catch(e){audioStatus('Audio unavailable: '+(e.name||'playback error'))}
 }
 function playCue(name){
- if(!name||!soundAllowed()||audioCtx?.state!=='running'||!audioBus||!cuePatterns[name])return;
- if(name==='key'||name==='tap'){const now=Date.now();if(now-lastShortCue<32)return;lastShortCue=now}
+ if(!name||!soundAllowed()||!cuePatterns[name])return;
+ if(name==='key'||name==='tap'){const now=Date.now();if(now-lastShortCue<36)return;lastShortCue=now}
+ if(audioCtx?.state!=='running'||!audioBus){fallbackCue(name);return}
+ try{
  const t=audioCtx.currentTime+.004;
  for(const [delay,duration,start,end,type,level] of cuePatterns[name]){
    const o=audioCtx.createOscillator(),g=audioCtx.createGain(),at=t+delay;
    o.type=type;o.frequency.setValueAtTime(start,at);o.frequency.exponentialRampToValueAtTime(end,at+duration);
-   g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(level,at+.008);g.gain.exponentialRampToValueAtTime(.0001,at+duration);
+   g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(cueLevel(level),at+.008);g.gain.exponentialRampToValueAtTime(.0001,at+duration);
    o.connect(g);g.connect(audioBus);o.onended=()=>{o.disconnect();g.disconnect()};o.start(at);o.stop(at+duration+.005);
  }
+ if(name==='test')audioStatus('Test tones sent to audio engine · confirm you can hear them.');
+ }catch(e){fallbackCue(name)}
 }
 function gestureCue(name){
  if(!soundAllowed())return;
+ const attempt=++audioAttempt;
  try{
-   if(!audioCtx){const AudioCtor=window.AudioContext||window.webkitAudioContext;if(!AudioCtor)return;audioCtx=new AudioCtor();audioBus=audioCtx.createGain();audioBus.connect(audioCtx.destination);syncAudio()}
-   if(audioCtx.state==='running'){queuedCue='';playCue(name);return}
-   if(name)queuedCue=name;
-   audioCtx.resume().then(()=>{const pending=queuedCue;queuedCue='';playCue(pending)}).catch(()=>{});
- }catch{} // Sound is optional; unsupported audio must not interrupt the station.
+   setupAudio();
+   if(audioCtx?.state==='running'){syncAudio();playCue(name);return}
+   // Start the file fallback synchronously in the actual user activation, not after resume().
+   if(name)fallbackCue(name);
+   if(audioCtx)audioCtx.resume().then(()=>{if(attempt===audioAttempt&&audioCtx.state==='running'){syncAudio();audioStatus('Audio engine running · tap Test sound to audition.')}}).catch(e=>{if(attempt===audioAttempt)audioStatus('Audio engine '+(e.name||'blocked')+' · file fallback available.')});
+   else if(!name)audioStatus('Web Audio unavailable · tap Test sound for file fallback.');
+ }catch(e){if(name)fallbackCue(name);else audioStatus('Audio startup failed · tap Test sound.')}
 }
 function report(e){$('error').textContent=e?.message||String(e);playCue('denied')}
 function activity(){lastActivity=Date.now()}
-function wake(e){if(!$('saver').hidden){e?.preventDefault();e?.stopImmediatePropagation();$('saver').hidden=true;activity();$('command').focus();gestureCue('wake');return true}}
-for(const event of ['keydown','pointerdown'])document.addEventListener(event,e=>{activity();if(wake(e))return;if(busy&&player()){e.preventDefault();e.stopImmediatePropagation();return}const button=e.target.closest?.('button');if(event==='pointerdown')gestureCue(button&&!button.disabled?'tap':null);else if((button&&(e.key==='Enter'||e.key===' '))||e.key==='Enter')gestureCue('tap');else gestureCue(null)},true);
-// Touch browsers may only grant audio activation at pointer-up/click.
-for(const event of ['pointerup','click','touchend'])document.addEventListener(event,()=>{if(audioCtx?.state!=='running'&&queuedCue)gestureCue(null)},true);
+function wake(e){if(!$('saver').hidden){e?.preventDefault();e?.stopImmediatePropagation();$('saver').hidden=true;activity();$('command').focus();syncAudio();gestureCue('wake');return true}}
+// A touch click is the reliable mobile activation; do not consume it on pointerdown.
+document.addEventListener('pointerdown',()=>activity(),true);
+document.addEventListener('keydown',e=>{activity();if(wake(e))return;if(busy&&player()){e.preventDefault();e.stopImmediatePropagation();return}if(e.key==='Enter'&&e.target.id==='command')gestureCue('tap');else gestureCue(null)},true);
+document.addEventListener('click',e=>{activity();if(wake(e))return;const button=e.target.closest?.('button');if(busy&&player()&&button?.id!=='soundToggle'&&button?.id!=='soundTest'){e.preventDefault();e.stopImmediatePropagation();return}if(button&&!button.disabled&&button.id!=='soundTest'&&button.id!=='soundToggle')gestureCue('tap');else gestureCue(null)},true);
 document.addEventListener('input',e=>{if(['command','codeInput'].includes(e.target.id))gestureCue('key')},true);
 $('soundToggle').onclick=()=>{muted=!muted;if(muted)cancelAnnouncement();syncAudio();if(!muted)gestureCue('approval')};
+$('soundTest').onclick=()=>gestureCue('test');
+document.addEventListener('visibilitychange',()=>{syncAudio();if(document.hidden)cancelAnnouncement()});
 $('saver').onclick=wake;
 document.addEventListener('pointermove',()=>{if($('saver').hidden)activity()},{passive:true});
 // Six-spoke Imperial cog, redrawn from the Galactic Empire crest reference.
@@ -131,13 +188,13 @@ $('insignia').innerHTML='<svg viewBox="0 0 100 100" aria-hidden="true" fill="cur
 function bounce(t){if(!$('saver').hidden){const pos=(size,rate)=>{let m=Math.max(1,size-76),d=(t*rate)%(2*m);return reduced?m/2:Math.min(d,2*m-d)};$('insignia').style.transform='translate('+pos(innerWidth,.049)+'px,'+pos(innerHeight,.037)+'px)'}requestAnimationFrame(bounce)}requestAnimationFrame(bounce);
 const SAVER_IDLE_MS=60000;
 function shouldShowSaver(state,isPlayer,isBusy,idleMs){return !!state&&isPlayer&&!isBusy&&!state.playing&&state.step<17&&idleMs>=SAVER_IDLE_MS}
-setInterval(()=>{if(shouldShowSaver(s,player(),busy,Date.now()-lastActivity))$('saver').hidden=false},250);
+setInterval(()=>{if($('saver').hidden&&shouldShowSaver(s,player(),busy,Date.now()-lastActivity)){$('saver').hidden=false;syncAudio()}},250);
 async function act(a,arg=''){if(!host)throw Error('Connecting…');$('error').textContent='';await host.send(a,String(arg),player()?'PLAYER':'DM')}
 function nav(p,sel=''){if(mediaKey)cancelAnnouncement();page=p;selected=sel;mediaKey='';draw()}
 function textOut(str,animate=false){
  const ticket=++renderTicket,out=$('screen');busy=false;out.textContent=str;
  if(!animate||s.fast||reduced||!str)return;
- busy=true;out.textContent='PROCESSING …';const start=performance.now()+750,ms=Math.min(3200,str.length*14);
+ busy=true;playCue('link');out.textContent='PROCESSING …';const start=performance.now()+750,ms=Math.min(3200,str.length*14);
  function tick(now){if(ticket!==renderTicket)return;if(now>=start){out.textContent=str.slice(0,Math.ceil(str.length*Math.min(1,(now-start)/ms)));if(now>=start+ms){busy=false;return}}requestAnimationFrame(tick)}requestAnimationFrame(tick)
 }
 function selectPage(p,sel=''){nav(p,sel);if(!s.playing)textOut($('screen').textContent,true)}
@@ -146,7 +203,7 @@ function receive(state,info){
  const moved=s?.deck!==state.deck;s=state;net=info;if(moved){page='Home';selected='';mediaKey=''}$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
  if(before&&(before.playing!==s.playing||before.step!==s.step||s.mute||s.fast))cancelAnnouncement();if(!s.playing)finalSilence=false;syncAudio();if(changed){$('notice').textContent=s.notice;if(!first)playCue(cueForState(before,s));activity()}
  if(first||changed){if(alarm||s.playing||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
- if(first&&player()&&!s.playing&&s.step<17)$('saver').hidden=false;
+ if(first&&player()&&!s.playing&&s.step<17)$('saver').hidden=false;syncAudio();
  if(!first&&alarm&&s.step===17)announce(biohazardAlert,1650);else if(!first&&before.step===10&&s.step===11)announce('Your safety is our priority.',400);
 }
 async function connect(create=false,local=false,source=''){
@@ -205,7 +262,7 @@ function rid(i){return 'REC-'+String(i).padStart(3,'0')}
 function closeDoors(){if(confirm('Close the doors serving '+s.room+'?'))return act('CLOSE')}
 async function retrieve(x){$('screen').classList.add('retrieving');try{textOut('Carriage moving…');await new Promise(r=>setTimeout(r,s.fast||reduced?0:900));await act('RETRIEVE',x)}finally{$('screen').classList.remove('retrieving')}}
 async function scan(name){await act('SCAN',name);nav('Sample',name)}
-function toggleView(){cancelAnnouncement();finalSilence=false;localPlayer=!localPlayer;nav('Home');if(localPlayer&&s.step<17&&!s.playing)$('saver').hidden=false;else $('saver').hidden=true}
+function toggleView(){cancelAnnouncement();finalSilence=false;localPlayer=!localPlayer;nav('Home');if(localPlayer&&s.step<17&&!s.playing)$('saver').hidden=false;else $('saver').hidden=true;syncAudio()}
 let pausePlayback=()=>{};
 function playback(){
  const id=s.playing,key=net.code+':'+id;if(mediaKey===key)return;cancelAnnouncement();mediaKey=key;busy=false;++renderTicket;
