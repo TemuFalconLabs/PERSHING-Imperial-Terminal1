@@ -21,7 +21,7 @@ let dm,player;try{
  dm=await client();player=await client(390);await dm.goto(url+'?dm&emulator');if(kids)await dm.locator('#camp').selectOption('KIDS');await click(dm,'Create live session');await waitStep(dm,0);
  const session=new URL(dm.url()).searchParams.get('session');assert(session);
  await player.goto(url+'?emulator&session='+session);await visible(player,'#saver');await player.locator('#saver').click();
- await click(dm,'Fast mode');await click(dm,'Mute station');await cmd(player,'PLAY 1');await player.getByText('Select the local recording directory first.').waitFor();await click(player,'Media Archive');await click(player,'Research Recordings');
+ await click(dm,'Fast mode');await click(dm,'Mute station');await cmd(player,'PLAY 1');await player.getByText('Select the local recording directory first.').waitFor();await click(player,'Help');await player.locator('#screen').getByText(/DIR · OPEN/).waitFor();await click(player,'Home');await click(player,'Media Archive');await click(player,'Research Recordings');
  const play=async(id,step)=>{await cmd(player,'PLAY '+id);await waitStep(dm,step)};
  const phys=async(label,step)=>{await click(dm,label);await waitStep(dm,step)};
  await cmd(player,'AUTH 471938');await player.getByText('Authorization denied. Review registered media.',{exact:true}).waitFor();
@@ -37,7 +37,7 @@ let dm,player;try{
  await play(5,9);await phys('RELAY 1',10);await player.locator('#notice').getByText(/Safety interlock verification: 1 of 2/).waitFor();await phys('RELAY 2',11);await player.locator('#notice').getByText(/Resuming normal air circulation/).waitFor();await phys('ENTER LAB',12);
  await player.reload();await visible(player,'#saver');await player.locator('#saver').click();
  if(optional){await click(dm,'Calibrate repaired bench');await click(player,'Analysis');await click(player,'Scan Sam');await player.getByText(/SAVE SPECIMEN TO RESEARCH DATABASE/).waitFor();await click(player,'Yes — save locally');await player.locator('#notice').getByText('Sample filed in this session.').waitFor()}
- await play(6,13);await phys('POWER ARCHIVE',14);
+ await dm.getByLabel('Physical station / room').selectOption('Director');await player.getByText(/EXECUTIVE AUTHENTICATION REQUIRED/).waitFor();await click(player,'Return to laboratory workstation');await player.getByRole('button',{name:'Play REC-006 · Experimental procedures',exact:true}).waitFor();await play(6,13);await click(player,'Use archive station');await player.locator('#screen').getByText('Display dark.').waitFor();await click(player,'Return to laboratory workstation');await click(player,'Use archive station');await phys('POWER ARCHIVE',14);
  if(optional){await click(player,'Retrieve CINDER');await player.locator('#notice').getByText(/Carrier delivered: CINDER/).waitFor();await click(player,'Return to ISB officer’s terminal');await click(player,'Insert CINDER');await player.locator('#screen').getByText(/OPERATION CINDER/).waitFor();await click(player,'Use archive station')}
  await click(player,'Retrieve CLONE BATCH SIGMA');await waitStep(dm,15);await click(player,'Return to ISB officer’s terminal');await click(player,'Insert CLONE BATCH SIGMA');await waitStep(dm,16);
  await cmd(player,'OPEN Specimen Transfer Ledger');await player.locator('#screen').getByText(kids?/James and Kai/:/Known survivors: 6/).waitFor();
@@ -52,9 +52,9 @@ let dm,player;try{
    await click(dm,'Operator view');await click(dm,'Restore: Before final playback');await waitStep(dm,16);
    await click(dm,'Reset session');await waitStep(dm,0);await click(dm,'Undo last action');await waitStep(dm,16);
    const download=dm.waitForEvent('download');await click(dm,'Export checkpoint');const checkpoint=await (await download).path();
-   const offline=await b.newPage();offline.on('dialog',d=>d.accept());await offline.goto(new URL('../offline.html',import.meta.url).href);
+   const offline=await b.newPage();await offline.clock.install();offline.on('dialog',d=>d.accept());await offline.goto(new URL('../offline.html',import.meta.url).href);
    await click(offline,'Open offline station');await waitStep(offline,0);await offline.getByLabel('Import checkpoint').setInputFiles(checkpoint);await waitStep(offline,16);
-   await click(offline,'Player view');await offline.locator('#saver').click();await cmd(offline,'PLAY 7');await offline.getByRole('heading',{name:'Biohazard alert'}).waitFor({timeout:45000});
+   await click(offline,'Player view');await offline.locator('#saver').click();const priorObjective=await offline.locator('#objective').textContent();const priorScreen=await offline.locator('#screen').textContent();await offline.clock.fastForward(58000);assert(!(await offline.locator('#saver').isVisible()));await offline.clock.fastForward(3000);await visible(offline,'#saver');await offline.locator('#saver').click();assert.equal(await offline.locator('#objective').textContent(),priorObjective);assert.equal(await offline.locator('#screen').textContent(),priorScreen);await cmd(offline,'PLAY 7');await offline.getByRole('heading',{name:'Biohazard alert'}).waitFor({timeout:45000});
  }
  console.log('PASS independent identities; optional path='+optional+'; full main route, clue, code errors, privacy, refresh, hold, local continuation, single crisis, narrow screen.');
 }catch(e){for(const p of [dm,player])if(p)console.error((await p.locator('body').innerText()).slice(0,2600));throw e}finally{await b.close()}

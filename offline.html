@@ -331,9 +331,15 @@ function activity(){lastActivity=Date.now()}
 function wake(e){if(!$('saver').hidden){e?.preventDefault();e?.stopImmediatePropagation();$('saver').hidden=true;activity();$('command').focus();try{audioCtx||=new AudioContext();audioCtx.resume().catch(()=>{})}catch{};return true}}
 for(const event of ['keydown','pointerdown'])document.addEventListener(event,e=>{activity();if(wake(e))return;if(busy&&player()){e.preventDefault();e.stopImmediatePropagation()}},true);
 $('saver').onclick=wake;
-$('insignia').innerHTML='<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="50" cy="50" r="32" fill="none" stroke="currentColor" stroke-width="8"/>'+Array.from({length:6},(_,i)=>'<path d="M45 8h10v21l5 5-7 10h-6l-7-10 5-5z" transform="rotate('+i*60+' 50 50)"/>').join('')+'<circle cx="50" cy="50" r="9"/></svg>';
+document.addEventListener('pointermove',()=>{if($('saver').hidden)activity()},{passive:true});
+// Six-spoke Imperial cog, redrawn from the Galactic Empire crest reference.
+// https://www.starwars.com/news/5-symbols-in-the-star-wars-universe
+// https://commons.wikimedia.org/wiki/File:Emblem_of_the_First_Galactic_Empire.svg
+$('insignia').innerHTML='<svg viewBox="0 0 100 100" aria-hidden="true" fill="currentColor"><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="50" cy="50" r="21"/>'+Array.from({length:6},(_,i)=>'<g transform="rotate('+i*60+' 50 50)"><path d="M30 16 A39.45 39.45 0 0 1 70 16 L64 26 L56 22 L56 35 L44 35 L44 22 L36 26 Z"/><path d="M44 27 H56 V50 H44 Z"/></g>').join('')+'</svg>';
 function bounce(t){if(!$('saver').hidden){const pos=(size,rate)=>{let m=Math.max(1,size-76),d=(t*rate)%(2*m);return reduced?m/2:Math.min(d,2*m-d)};$('insignia').style.transform='translate('+pos(innerWidth,.049)+'px,'+pos(innerHeight,.037)+'px)'}requestAnimationFrame(bounce)}requestAnimationFrame(bounce);
-setInterval(()=>{if(s&&player()&&!busy&&!s.playing&&s.step<17&&Date.now()-lastActivity>90000)$('saver').hidden=false},2000);
+const SAVER_IDLE_MS=60000;
+function shouldShowSaver(state,isPlayer,isBusy,idleMs){return !!state&&isPlayer&&!isBusy&&!state.playing&&state.step<17&&idleMs>=SAVER_IDLE_MS}
+setInterval(()=>{if(shouldShowSaver(s,player(),busy,Date.now()-lastActivity))$('saver').hidden=false},250);
 async function act(a,arg=''){if(!host)throw Error('Connecting…');$('error').textContent='';await host.send(a,String(arg),player()?'PLAYER':'DM')}
 function nav(p,sel=''){page=p;selected=sel;mediaKey='';draw()}
 function textOut(str,animate=false){
@@ -347,7 +353,7 @@ function receive(state,info){
  const first=!s,changed=s?.revision!==state.revision,alarm=s&&s.step<17&&state.step>=17;
  const moved=s?.deck!==state.deck;s=state;net=info;if(moved){page='Home';selected='';mediaKey=''}$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
  if(changed){$('notice').textContent=s.notice;if(!first)beep(alarm);activity()}
- if(first||changed){if(alarm||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
+ if(first||changed){if(alarm||s.playing||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
  if(first&&player()&&!s.playing&&s.step<17)$('saver').hidden=false;
 }
 async function connect(create=false,local=false,source=''){
@@ -378,10 +384,11 @@ function draw(){
    $('heading').textContent=s.step>=14?'Tape elevator':'Retrieval station';textOut(s.step>=14?'Select a carrier for mechanical delivery. Decryption requires the ISB officer’s terminal.':'Display dark.');
    if(s.step>=14)Object.keys(tapes).filter(x=>!s.retrieved[x]&&!s.inserted[x]&&(page!=='Search'||x.includes(query.toUpperCase()))).forEach(x=>btn('Retrieve '+x,()=>retrieve(x)));
    if(s.step>=14)btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'));
+   btn('Return to laboratory workstation',()=>act('DECK','Lab'));
  }else if(s.deck==='Director'){
-   $('heading').textContent='Research Director’s terminal';textOut(!s.directorCylinder?'EXECUTIVE AUTHENTICATION REQUIRED\nInsert the Research Director’s security cylinder.':!s.inserted['CLONE BATCH SIGMA']?'Executive credentials verified. Classified archive authorization pending.':s.doors['Director office door']!=='CLOSED'?'Security cylinder detected...\nExecutive credentials verified.\nCONFIDENTIAL TRANSMISSION AVAILABLE\nPRIVACY PROTOCOL ACTIVE\nClose the office door to authorize playback.':'PRIVACY CHECK COMPLETE\nCONFIDENTIAL PLAYBACK AVAILABLE');if(canPlay(s,7)&&s.doors['Director office door']==='CLOSED')btn('Play REC-007',()=>act('PLAY',7));
+   $('heading').textContent='Research Director’s terminal';textOut(!s.directorCylinder?'EXECUTIVE AUTHENTICATION REQUIRED\nInsert the Research Director’s security cylinder.':!s.inserted['CLONE BATCH SIGMA']?'Executive credentials verified. Classified archive authorization pending.':s.doors['Director office door']!=='CLOSED'?'Security cylinder detected...\nExecutive credentials verified.\nCONFIDENTIAL TRANSMISSION AVAILABLE\nPRIVACY PROTOCOL ACTIVE\nClose the office door to authorize playback.':'PRIVACY CHECK COMPLETE\nCONFIDENTIAL PLAYBACK AVAILABLE');if(canPlay(s,7)&&s.doors['Director office door']==='CLOSED')btn('Play REC-007',()=>act('PLAY',7));btn('Return to laboratory workstation',()=>act('DECK','Lab'));
  }else if(page==='Home'){
-   textOut(s.deck==='ISB'?(s.inserted['CLONE BATCH SIGMA']?'CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.':'ISB OFFICER’S READER\nInsert retrieved archive tape to decrypt.'):'Local directories available. Select a directory or enter HELP.');if(s.deck!=='ISB')go('Media Archive');if(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA'])go('Clone Batch Sigma');go('Records');go('Doors');go('Status');
+   textOut(s.deck==='ISB'?(s.inserted['CLONE BATCH SIGMA']?'CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.':'ISB OFFICER’S READER\nInsert retrieved archive tape to decrypt.'):'Local directories available. Select a directory or enter HELP.');if(s.deck!=='ISB')go('Media Archive');if(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA'])go('Clone Batch Sigma');go('Records');go('Doors');go('Status');go('Help');
  }else if(page==='Media Archive'){textOut('One local index mounted.');go('Research Recordings')}
  else if(page==='Research Recordings'){textOut('Select a recording to play.');for(let i=1;i<recordings.length;i++)if(canPlay(s,i))btn('Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i))}
  else if(page==='Clone Batch Sigma'&&s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']){textOut('CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.');const names=s.campaign==='MEN'?['Specimen Transfer Ledger','Drellis Minor Recovery Operation','Crime Lord Morgan','Research Oversight Authorization']:['Specimen Transfer Ledger','Transfer receipt'];for(const name of names)if(files(s)[name])btn(name,()=>selectPage('Read',name));}
@@ -395,7 +402,7 @@ function draw(){
  else {textOut('DIR · OPEN <directory or file> · SEARCH <text> · PLAY <record> · STATUS · DOORS'+(s.step>=6?' · AUTH <code>':'')+(s.repaired?' · SCAN <subject>':''))}
  if(s.deck!=='Archive'&&s.deck!=='Director'){
    if(s.deck==='Primary'&&s.step===7&&s.card)btn('Enter authorization code',()=>{const v=prompt('Six-digit facility authorization');if(v)return act('AUTH',v.trim())});
-   if(s.step>=13)btn('Use archive station',()=>act('DECK','Archive'));if(s.step>=12&&s.deck!=='Lab')btn('Return to laboratory workstation',()=>act('DECK','Lab'));if(s.step>=14&&s.deck!=='ISB')btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'));
+   if(s.step>=13)btn('Use archive station',()=>act('DECK','Archive'));if(s.step>=12&&s.deck!=='Lab')btn('Return to laboratory workstation',()=>act('DECK','Lab'));if(s.step>=12&&s.deck!=='Primary')btn('Return to reception terminal',()=>act('DECK','Primary'));if(s.step>=14&&s.deck!=='ISB')btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'));
    if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>btn('Insert '+x,async()=>{await act('INSERT',x);nav(x==='CLONE BATCH SIGMA'?'Clone Batch Sigma':'Read',x)}));
    if(s.deck==='Lab'&&s.repaired&&page!=='Analysis')go('Analysis');if(s.deck==='Lab'&&canPlay(s,6)&&!s.seen[6]&&page!=='Research Recordings')btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6));if(page!=='Home')go('Home');
  }
@@ -467,7 +474,7 @@ async function command(value){
  if(s.deck==='Archive'&&s.step<14)return;
  if(s.deck==='Archive'){
    if(v==='DIR'){nav('Archive');return}if(v.startsWith('SEARCH ')){query=raw.slice(7);nav('Search');return}
-   if(v.startsWith('RETRIEVE '))return retrieve(v.slice(9));if(v==='ISB')return act('DECK','ISB');throw Error('Use DIR, SEARCH, RETRIEVE or ISB.')
+   if(v.startsWith('RETRIEVE '))return retrieve(v.slice(9));if(v==='ISB')return act('DECK','ISB');if(v==='LAB')return act('DECK','Lab');throw Error('Use DIR, SEARCH, RETRIEVE, ISB or LAB.')
  }
  if(['AUTH BLUE','CODE BLUE','CODE CLEARANCE BLUE','AUTHORIZATION CODE BLUE'].includes(v))return act('BLUE');
  if(/^\d{6}$/.test(v))return act('AUTH',v);if(v.startsWith('AUTH '))return act('AUTH',v.slice(5));
@@ -477,7 +484,7 @@ async function command(value){
  if(v==='UNLOCK SECURITY EQUIPMENT ROOM')return act('EQUIPMENT');
  if(v.startsWith('SEARCH ')){query=raw.slice(7);selectPage('Search');return}
  if(v.startsWith('OPEN ')){const path=v.slice(5);
-   const options=['Media Archive','Research Recordings','Doors','Records','Status',...(s.deck==='Lab'&&s.repaired?['Analysis','Saved results']:[]),...(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']?['Clone Batch Sigma']:[])];
+   const options=['Media Archive','Research Recordings','Doors','Records','Status','Help',...(s.deck==='Lab'&&s.repaired?['Analysis','Saved results']:[]),...(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']?['Clone Batch Sigma']:[])];
    const name=options.find(k=>k.toUpperCase()===path);if(name==='Research Recordings'&&!s.seen[1]&&page!=='Media Archive')throw Error('Select the parent media directory first.');if(name)return selectPage(name);
    const doc=Object.keys(files(s)).find(k=>k.toUpperCase()===path);if(doc)return selectPage('Read',doc);
  }

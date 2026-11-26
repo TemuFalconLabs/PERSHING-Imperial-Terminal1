@@ -66,3 +66,7 @@ LONG LIVE THE EMPIRE.
 ```
 
 The purple DM reminder remains visible. Do not actually lock doors, prohibit escape, or trigger combat automatically. The commander’s evacuation order and the subsequent automated denial of authorization are intentionally contradictory Imperial messaging.
+
+## Final development usability pass
+
+Player terminal displays a six-spoke Imperial cog after 60 seconds of inactivity. Tap or press any key to wake; the overlay does not mutate session state, current objective, unlocked records or selected page. Playback, active processing and crisis screens are excluded. The archive and Director's terminal provide a return to the lab; entry to the Director's terminal still requires DM room selection. Ordinary unlocked stations provide a return to reception for earlier recording replays. HELP is visible from ordinary home directories. Follow the physical map and confirm actual discoveries; switching display does not replace table movement.
