@@ -116,3 +116,7 @@ Open Narration voice settings near the sound controls. Choose an exposed voice (
 
 ### Version 16 — cleaner player monitor and final recording
 After REC-005, completed recordings remain in the collapsed Completed recordings · replay group, and secondary workstations are grouped. M-count Analysis opens directly from step 8, showing diagnostic or online subject list depending on station/repair. Operator view preserves the current player page. Scan results and saved results display individually labelled subject, species, count and registry fields. At step 16, use Final recording · readiness to confirm physical arrival, cylinder insertion and door closure; REC-007 READY indicates all existing conditions are satisfied. The DM must confirm physical actions, not simply click through the puzzle. Playback remains in the Director’s terminal.
+
+
+### Version 17 — visual priority and M-count analysis
+Administrative Archives groups routine records; meaningful unreviewed discoveries are yellow NEW until opened, and advancement actions stay yellow while available. Acknowledgments are local to the browser/session, not new gates. Open M-count Analysis, then Analyze biological specimen when the local instrument is repaired. Normal mode displays three one-second scan phases before executing the existing scan, fast/reduced-motion skips animation. The result view is focused, including matching dossier access and YES — SAVE / NO — DISCARD. T0DD’s approved can-opener assessment replaces the old multimeter line. Existing progression and crisis controls are unchanged.

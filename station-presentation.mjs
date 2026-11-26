@@ -18,7 +18,7 @@ const adultReports={
  Glitch:['UNCONFIRMED','ELEVATED','CONFIRMED — MG-1842','Subject matches existing research specimen.'],
  Crosseye:['CLONE','ELEVATED','CONFIRMED — MG-6931','Subject matches existing research specimen.'],
  Erik:['TRANDOSHAN','NORMAL','NONE','Ordinary result.'],
- T0DD:['INORGANIC','N/A','N/A','No biological material. This instrument is not a multimeter.'],
+ T0DD:['INORGANIC','NOT APPLICABLE','NONE','Subject appears to be a defective, ambulatory can opener.\nCorrection: Partially ambulatory.'],
  Ryan:['HUMAN','AVERAGE','NONE','Ordinary result.'],
  Chris:['DUROS','ELEVATED','NONE','Subject meets preliminary research criteria.'],
  Merg:['HUMAN','VERY HIGH','UNAVAILABLE','Registry determination unavailable.'],
@@ -30,5 +30,12 @@ export function structuredScan(campaign,name,raw){
  const row=campaign==='MEN'?adultReports[name]:null;
  if(campaign==='MEN'&&!row)return null;
  const [species,count,registry,note]=row||['UNCLASSIFIED','UNKNOWN','UNAVAILABLE',raw];
- return {subject:name.toUpperCase(),species,count,registry,note,tone:campaign==='MEN'&&name==='Sam'?'critical':/^(ELEVATED|VERY HIGH)$/.test(count)?'warning':'normal'};
+ return {subject:name.toUpperCase(),species,count,registry,note,...(campaign==='MEN'&&name==='T0DD'?{classification:true,condition:'DEFECTIVE',missing:'RIGHT LEG',warning:'NO BIOLOGICAL SAMPLE DETECTED.'}:{}),tone:campaign==='MEN'&&name==='Sam'?'critical':/^(ELEVATED|VERY HIGH)$/.test(count)?'warning':'normal'};
 }
+
+const administrativeRecords=new Set(['Staff directory','Property office','Refreshments','Droid port','Security abstract','Legacy duty circular','Laboratory inventory','Previous service ticket']);
+export const isAdministrativeRecord=name=>administrativeRecords.has(name);
+export function partitionRecords(names){return {important:names.filter(n=>!isAdministrativeRecord(n)),routine:names.filter(isAdministrativeRecord)}}
+export const discoveryTone=(key,reviewed,action=false)=>action?'advance':reviewed.has(key)?'reviewed':'new';
+export const scanPhases=['Acquiring biological sample...','Analyzing M-count...','Querying Imperial specimen registry...'];
+export function scanResultCue(state){return state.campaign==='MEN'&&state.lastScan==='Sam'?'denied':state.matches?.[state.lastScan]?'match':'scan'}

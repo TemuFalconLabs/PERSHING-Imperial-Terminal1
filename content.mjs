@@ -96,7 +96,7 @@ export const dossiers = {
 };
 export const adultScans = {
   Glitch:'ELEVATED · specimen match MG-1842.', Crosseye:'ELEVATED · specimen match MG-6931.',
-  Erik:'Trandoshan · NORMAL · no specimen match.', T0DD:'Inorganic · N/A · no biological material. This instrument is not a multimeter.',
+  Erik:'Trandoshan · NORMAL · no specimen match.', T0DD:'Inorganic · NOT APPLICABLE · no registry match. DEFECTIVE · RIGHT LEG MISSING. Subject appears to be a defective, ambulatory can opener. Correction: Partially ambulatory. NO BIOLOGICAL SAMPLE DETECTED.',
   Ryan:'Human · AVERAGE · no specimen match.', Chris:'Duros · ELEVATED · explicitly no specimen match.',
   Merg:'Human · VERY HIGH · registry determination unavailable.',
   Ben:'Rodian · VERY HIGH · registry determination unavailable. Recalibrating ethanol sensor. Fictional BAC 0.67%.',

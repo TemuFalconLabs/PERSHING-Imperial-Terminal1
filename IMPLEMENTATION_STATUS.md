@@ -102,3 +102,8 @@ Adds browser-exposed voice selection and audition, British English first; automa
 ### Version 16 — late-game usability and scan presentation
 Screenplay updated first. Completed replays and secondary workstations grouped; step-16 final recording DM readiness controls preserve physical prerequisites; Analysis opens directly and player page persists across operator switching. Live/saved scan reports label fields individually; preserve content, engine, matching, and campaign separation. 338 adapted source assertions in 12 groups passed; station syntax parsed. Real browser rendering/rehearsal and production release remain pending.
  Further focused page-preservation and local-view switching tests: 8 checks passed; no repeated screensaver when returning from Operator view. Combined offline script syntax parsed.
+
+
+### Version 17 — hierarchy, focused M-count instrument and T0DD override
+Screenplay amended first. Routine records grouped; meaningful new records and available advancement choices receive distinct visual priority, with local acknowledgments. Dedicated instrument, focused subject selection, labelled reports and three-phase guarded scan animation; T0DD approved replacement assessment. 351 adapted assertions across 13 groups passed; station script parsed. Browser/phone visual and sound verification remains pending. No engine or Firebase rules changes.
+ Focused mocked scan sequence and cancellation: 7 checks passed, including timing, fast skip, registry/error cues and stale revision guard. Combined offline script syntax parsed. Acknowledgment is browser-local; actual Firebase callback timing still requires rehearsal.
