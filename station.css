@@ -19,3 +19,9 @@
 .objectivePanel [data-status="current"],.shownObjective{color:var(--objective);font-weight:600}
 .objectivePanel [data-status="future"]{color:var(--dim)}
 .objectivePanel [data-status="completed"]{color:var(--mint)}
+
+/* Approved recording index and bottom-of-screen availability notices. */
+:root{--available:#ffea00}
+#notice[data-tone="available"]{color:var(--available);font-weight:700;text-shadow:0 0 5px rgba(255,234,0,.16)}
+#choices .lockedRecording{flex-basis:100%;color:var(--critical);font-weight:700;border:1px solid var(--edge);border-left:3px solid var(--critical);padding:8px 12px;border-radius:3px;line-height:1.5;cursor:default}
+#choices .availableRecording{color:var(--response);font-weight:600}

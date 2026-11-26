@@ -222,6 +222,30 @@ function responseTone(str){
  if(/access(?:\s*:\s*|\s+)(?:denied|unavailable|restricted)|request denied|authorization(?:\s*:\s*|\s+)(?:denied|required|still denied)|operation unavailable|security (?:warning|notified)|obstruction detected|personnel file has been flagged|disciplinary proceedings|(?:^|\b)error (?:403|418):|authorization key: REQUIRED|containment: FAILED|credentials are required|EXECUTIVE AUTHENTICATION REQUIRED|PRIVACY PROTOCOL ACTIVE|CONFIDENTIAL PLAYBACK WITHHELD|warning: unstable/i.test(v))return 'warning';
  return 'normal';
 }
+function recordingPlayable(s,id){return s.step<17&&canPlay(s,id)&&(id!==7||s.doors['Director office door']==='CLOSED')}
+function nextLockedRecording(s){
+ if(s.step>=17)return 0;
+ // Only the next sequential recording, and only after its predecessor is completed.
+ // Earlier stations may display the numeric identifier but not the location or title.
+ for(let id=2;id<=7;id++){
+   if(!s.seen[id-1]||s.seen[id])continue;
+   const priorDeck=id<=6?'Primary':'Lab';
+   if(s.deck===priorDeck||(id===7&&s.deck==='Director')){
+     if(!recordingPlayable(s,id))return id;
+   }
+ }
+ return 0;
+}
+function lockedRecordingRow(node,id){
+ const row=el('div',rid(id)+' · ACCESS DENIED',node);row.className='lockedRecording';return row;
+}
+function noticeTone(str){
+ const v=String(str||'');
+ if(responseTone(v)==='critical')return 'critical';
+ // Positive resource/authorization events only; the engine's approved text remains untouched.
+ if(/^(?:Cylinder mounted\. Recovered recording available\.|NETWORK CONNECTION RESTORED|ISB SECURITY CREDENTIAL VERIFIED|Authorization accepted\. Research index expanded|ENVIRONMENTAL RELAYS: 2 OF 2 ONLINE|Local laboratory archive detected\.|IMPERIAL RESEARCH ARCHIVE · Power supply: RESTORED|TAPE AUTHENTICATED|Executive credentials verified\.|Security Equipment Room released\.|Analysis bench calibrated\.|CODE CLEARANCE BLUE RECEIVED|Lift aligned\. Carrier delivered:)/i.test(v))return 'available';
+ return responseTone(v);
+}
 function paintObjective(){const n=$('objective'),v=visibleObjective(s);n.hidden=!v;n.textContent=v?'CURRENT OBJECTIVE\n'+v:''}
 function objectiveOnlyUpdate(before,after){
  if(!before||before.objectiveReveal===after.objectiveReveal)return false;
@@ -239,8 +263,8 @@ function textOut(str,animate=false,tone=responseTone(str)){
 function selectPage(p,sel=''){nav(p,sel);if(!s.playing)textOut($('screen').textContent,true)}
 function receive(state,info){
  const before=s,first=!s,changed=s?.revision!==state.revision,alarm=s&&s.step<17&&state.step>=17,objectiveOnly=changed&&objectiveOnlyUpdate(s,state);
- const moved=s?.deck!==state.deck;if(first||net?.code!==info.code||(before?.step>0&&state.step===0))eggHistory=newEggHistory();s=state;net=info;if(moved){page='Home';selected='';mediaKey=''}$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
- if(!objectiveOnly&&before&&(before.playing!==s.playing||before.step!==s.step||s.mute||s.fast))cancelAnnouncement();if(!s.playing)finalSilence=false;syncAudio();if(changed&&!objectiveOnly){$('notice').textContent=s.notice;$('notice').dataset.tone=responseTone(s.notice);if(!first)playCue(cueForState(before,s));activity()}
+ const completedRecording=before?.playing&&!state.playing&&state.seen?.[before.playing]&&!before.seen?.[before.playing]&&state.step>before.step&&state.step<17;const moved=s?.deck!==state.deck;if(first||net?.code!==info.code||(before?.step>0&&state.step===0))eggHistory=newEggHistory();s=state;net=info;if(moved){page='Home';selected='';mediaKey=''}else if(completedRecording&&['Primary','Lab'].includes(s.deck)){page='Research Recordings';selected=''}$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
+ if(!objectiveOnly&&before&&(before.playing!==s.playing||before.step!==s.step||s.mute||s.fast))cancelAnnouncement();if(!s.playing)finalSilence=false;syncAudio();if(changed&&!objectiveOnly){$('notice').textContent=s.notice;$('notice').dataset.tone=noticeTone(s.notice);if(!first)playCue(cueForState(before,s));activity()}
  if(objectiveOnly){if(player())paintObjective();else dashboard()}else if(first||changed){if(alarm||s.playing||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
  if(first&&player()&&!s.playing&&s.step<17)$('saver').hidden=false;syncAudio();
  if(!first&&alarm&&s.step===17)announce(biohazardAlert,1650);else if(!first&&before.step===10&&s.step===11)announce('Your safety is our priority.',400);
@@ -275,11 +299,11 @@ function draw(){
    if(s.step>=14)btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'),'ISB');
    btn('Return to laboratory workstation',()=>act('DECK','Lab'),'LAB');
  }else if(s.deck==='Director'){
-   $('heading').textContent='Research Director’s terminal';textOut(!s.directorCylinder?'EXECUTIVE AUTHENTICATION REQUIRED\nInsert the Research Director’s security cylinder.':!s.inserted['CLONE BATCH SIGMA']?'Executive credentials verified. Classified archive authorization pending.':s.doors['Director office door']!=='CLOSED'?'Security cylinder detected...\nExecutive credentials verified.\nCONFIDENTIAL TRANSMISSION AVAILABLE\nPRIVACY PROTOCOL ACTIVE\nClose the office door to authorize playback.':'PRIVACY CHECK COMPLETE\nCONFIDENTIAL PLAYBACK AVAILABLE');if(canPlay(s,7)&&s.doors['Director office door']==='CLOSED')btn('Play REC-007',()=>act('PLAY',7),'PLAY REC-007');btn('Return to laboratory workstation',()=>act('DECK','Lab'),'LAB');
+   $('heading').textContent='Research Director’s terminal';textOut(!s.directorCylinder?'EXECUTIVE AUTHENTICATION REQUIRED\nInsert the Research Director’s security cylinder.':!s.inserted['CLONE BATCH SIGMA']?'Executive credentials verified. Classified archive authorization pending.':s.doors['Director office door']!=='CLOSED'?'Security cylinder detected...\nExecutive credentials verified.\nCONFIDENTIAL TRANSMISSION AVAILABLE\nPRIVACY PROTOCOL ACTIVE\nClose the office door to authorize playback.':'PRIVACY CHECK COMPLETE\nCONFIDENTIAL PLAYBACK AVAILABLE');if(recordingPlayable(s,7)){const b=btn('Play REC-007',()=>act('PLAY',7),'PLAY REC-007');b.classList.add('availableRecording')}else if(nextLockedRecording(s)===7)lockedRecordingRow(out,7);btn('Return to laboratory workstation',()=>act('DECK','Lab'),'LAB');
  }else if(page==='Home'){
    textOut(s.deck==='ISB'?(s.inserted['CLONE BATCH SIGMA']?'CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.':'ISB OFFICER’S READER\nInsert retrieved archive tape to decrypt.'):'Local directories available. Select a directory or enter HELP.');if(s.deck!=='ISB')go('Media Archive');if(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA'])go('Clone Batch Sigma');go('Records');btn('Search records',()=>prepareManual('SEARCH '));go('Doors');go('Status');go('Help');
  }else if(page==='Media Archive'){textOut('One local index mounted.');go('Research Recordings')}
- else if(page==='Research Recordings'){textOut('Select a recording to play.');for(let i=1;i<recordings.length;i++)if(canPlay(s,i))btn('Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i),'PLAY '+rid(i))}
+ else if(page==='Research Recordings'){textOut('Select a recording to play.');for(let i=1;i<recordings.length;i++)if(recordingPlayable(s,i)){const b=btn('Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i),'PLAY '+rid(i));b.classList.add('availableRecording')}const locked=nextLockedRecording(s);if(locked)lockedRecordingRow(out,locked)}
  else if(page==='Clone Batch Sigma'&&s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']){textOut('CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.');const names=s.campaign==='MEN'?['Specimen Transfer Ledger','Drellis Minor Recovery Operation','Crime Lord Morgan','Research Oversight Authorization']:['Specimen Transfer Ledger','Transfer receipt'];for(const name of names)if(files(s)[name])btn(name,()=>selectPage('Read',name),'OPEN '+name.toUpperCase());}
  else if(page==='Records'||page==='Search'){const names=Object.keys(files(s)).filter(x=>page!=='Search'||(x+' '+files(s)[x]).toLowerCase().includes(query.toLowerCase()));textOut(names.length?'Available records':'No local records match.');names.forEach(x=>btn(x,()=>selectPage('Read',x),'OPEN '+x.toUpperCase()))}
  else if(page==='Read'){const body=files(s)[selected];$('heading').textContent=body?selected:'Record unavailable';textOut(body||'Access unavailable.')}
@@ -343,7 +367,7 @@ function playback(){
    }
    const frac=Math.min(1,elapsed/duration),i=Math.max(0,ends.findIndex(end=>elapsed<end));
    transcript.textContent=speaker+'  /  '+lines[frac===1?lines.length-1:i];meter.value=frac*lines.length;
-   chalk.hidden=!(id===3&&frac>=.32);if(!chalk.hidden){chalk.textContent='rack Ⅲ     '+code.board+'     Δ';if(s.boardAid)chalk.setAttribute('aria-label','Frame description: blackboard reads '+code.board);else chalk.setAttribute('aria-hidden','true');if(s.boardAid)chalk.removeAttribute('aria-hidden')}
+   chalk.hidden=!(id===3&&frac>=.32);if(!chalk.hidden){chalk.textContent='PLACEHOLDER';if(s.boardAid)chalk.setAttribute('aria-label','Frame description: blackboard reads '+code.board);else chalk.setAttribute('aria-hidden','true');if(s.boardAid)chalk.removeAttribute('aria-hidden')}
    if(frac===1&&!finishing){finishing=true;cancelSpeech();try{if(id===7){transcript.textContent='';chalk.hidden=true;finalSilence=true;syncAudio();await new Promise(r=>setTimeout(r,s.fast?100:3000));}if(valid())await act('FINISH',id)}catch(e){finalSilence=false;syncAudio();report(e);button(box,'Confirm playback completion',()=>act('FINISH',id))}return}
    requestAnimationFrame(frame)
  }requestAnimationFrame(frame)
