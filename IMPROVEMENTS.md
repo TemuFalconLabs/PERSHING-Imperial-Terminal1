@@ -211,3 +211,5 @@ Approved hybrid command UX supersedes pending proposal: automatic command echo a
 Approved freestyle library implemented; see TERMINAL-COMMANDS.md. No gate engine or creative baseline edits.
 
 Expanded approved standalone lore across Skywalker saga, sequel-era database jokes, syndicates, Clone Wars, Rogue One/Andor and galactic culture. Google Doc updated first; no gate changes.
+
+Approved DM-only objective reveal and phosphor response palette implemented. Existing objective wording and progression gates retained; no automatic next objective. Preview verification pending.

@@ -5,3 +5,17 @@
 #audioTools{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:.4rem 0}#audioTools button{font-size:.82rem;margin:0}#audioStatus{flex-basis:100%;font-size:.74rem;opacity:.82}
 
 #commandEcho{font-size:.82rem;color:var(--mint);border-left:2px solid var(--edge);padding:.35rem .65rem;margin:.3rem 0 .75rem;overflow-wrap:anywhere;min-height:1.5em}#commandEchoText{letter-spacing:.045em}
+
+/* Approved phosphor hierarchy: keep navigation subdued, not the returned text. */
+:root{--response:#65ff91;--command-ink:#829b8b;--amber:#ffb454;--critical:#ff5555;--objective:#73d9ff}
+#screen,#notice{color:var(--response);font-weight:600;line-height:1.65;text-shadow:0 0 5px rgba(101,255,145,.15);overflow-wrap:anywhere}
+#screen[data-tone="warning"],#notice[data-tone="warning"],#error{color:var(--amber);font-weight:600;text-shadow:0 0 5px rgba(255,180,84,.13)}
+#screen[data-tone="critical"],#notice[data-tone="critical"],body.emergency #screen,body.emergency #notice{color:var(--critical);text-shadow:0 0 5px rgba(255,85,85,.16)}
+#screen button,#screen small,#screen h3{font-weight:400;text-shadow:none}
+#screen .chalk{font-weight:400;text-shadow:none;line-height:1.55}
+#commandEcho,#commandForm label,#crumb{color:var(--command-ink)}
+#commandForm input{color:var(--ink)}
+#objective{color:var(--objective);font:600 .95rem/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;border-top:1px solid var(--objective);padding-top:.65rem;text-shadow:0 0 5px rgba(115,217,255,.13)}
+.objectivePanel [data-status="current"],.shownObjective{color:var(--objective);font-weight:600}
+.objectivePanel [data-status="future"]{color:var(--dim)}
+.objectivePanel [data-status="completed"]{color:var(--mint)}

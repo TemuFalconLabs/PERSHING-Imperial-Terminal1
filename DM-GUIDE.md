@@ -92,3 +92,7 @@ Player navigation, record, playback-start, archive and scanner shortcuts visibly
 ## Approved hidden terminal commands
 
 See TERMINAL-COMMANDS.md for the complete DM-only catalog. All hidden outputs are standalone jokes, not actual access, actions or rewards. Existing progression commands remain exact and gated. Do not advertise the catalog to players.
+
+## DM-controlled objective assistance and response palette
+
+Current objective hidden by default. Open Display current objective on operator dashboard; the seven recording-linked groups show completed/current/future, and the precise current gate is listed. Display reveals only that gate’s existing wording; Hide withdraws it. Revealed objectives survive navigation/playback/refresh and clear on completion, with no next-objective auto-reveal. Both-relays instruction persists through relay 1. Director entry/cylinder/door/playback each clear on completion. Older checkpoints default hidden; restored valid checkpoint reveals persist. Existing hints and purple reminders remain separate. Player text: phosphor green #65FF91, amber warnings #FFB454, red crisis #FF5555, cyan objective #73D9FF, muted command #829B8B, purple reminder #C5A0ED. No change to existing diagnostics or approved story.

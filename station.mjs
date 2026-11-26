@@ -1,6 +1,6 @@
 import {findEgg,eggReply,newEggHistory} from './easter-eggs.mjs';
 import {files,tapes,code,media,recordings} from './content.mjs';
-import {route,rooms,stages,recordingAt,physical,scans,validSave,canPlay,objective,biohazardAlert} from './engine.mjs';
+import {route,rooms,stages,recordingAt,physical,scans,validSave,canPlay,objective,visibleObjective,currentObjectiveId,objectiveGroup,biohazardAlert} from './engine.mjs';
 import {localSession,networkSession,newCode,cacheKey} from './session.mjs';
 const $=id=>document.getElementById(id), params=new URLSearchParams(location.search),standalone=document.documentElement.hasAttribute('data-offline'),dm=standalone||params.has('dm'), reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let host,s,net,localPlayer=false,page='Home',selected='',query='',lastActivity=Date.now(),busy=false,renderTicket=0,mediaKey='',audioCtx,muted=false;
@@ -216,18 +216,32 @@ function shouldShowSaver(state,isPlayer,isBusy,idleMs){return !!state&&isPlayer&
 setInterval(()=>{if($('saver').hidden&&shouldShowSaver(s,player(),busy||commandPending,Date.now()-lastActivity)){$('saver').hidden=false;syncAudio()}},250);
 async function act(a,arg=''){if(!host)throw Error('Connecting…');$('error').textContent='';await host.send(a,String(arg),player()?'PLAYER':'DM')}
 function nav(p,sel=''){if(mediaKey)cancelAnnouncement();page=p;selected=sel;mediaKey='';draw()}
-function textOut(str,animate=false){
- const ticket=++renderTicket,out=$('screen');busy=false;out.textContent=str;
+function responseTone(str){
+ const v=String(str||'');
+ if(/BIOHAZARD ALERT|AIRBORNE CONTAMINANT DETECTED|EMERGENCY CONTAINMENT PROTOCOL|SPECIMEN ACTIVITY/i.test(v))return 'critical';
+ if(/access (?:denied|unavailable|restricted)|request denied|authorization (?:denied|required|still denied)|operation unavailable|security (?:warning|notified)|obstruction detected|personnel file has been flagged|disciplinary proceedings|(?:^|\b)error (?:403|418):|authorization key: REQUIRED|containment: FAILED|credentials are required|EXECUTIVE AUTHENTICATION REQUIRED|PRIVACY PROTOCOL ACTIVE|CONFIDENTIAL PLAYBACK WITHHELD|warning: unstable/i.test(v))return 'warning';
+ return 'normal';
+}
+function paintObjective(){const n=$('objective'),v=visibleObjective(s);n.hidden=!v;n.textContent=v?'CURRENT OBJECTIVE\n'+v:''}
+function objectiveOnlyUpdate(before,after){
+ if(!before||before.objectiveReveal===after.objectiveReveal)return false;
+ const comparable=v=>Object.fromEntries(Object.entries(v).filter(([k])=>!['revision','objectiveReveal','log'].includes(k)));
+ // Stable field ordering even when Firebase returns maps with different key order.
+ const canonical=v=>v&&typeof v==='object'?Array.isArray(v)?v.map(canonical):Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v;
+ return JSON.stringify(canonical(comparable(before)))===JSON.stringify(canonical(comparable(after)));
+}
+function textOut(str,animate=false,tone=responseTone(str)){
+ const ticket=++renderTicket,out=$('screen');busy=false;out.dataset.tone=tone;out.textContent=str;
  if(!animate||s.fast||reduced||!str)return;
- busy=true;playCue('link');out.textContent='PROCESSING …';const start=performance.now()+750,ms=Math.min(3200,str.length*14);
- function tick(now){if(ticket!==renderTicket)return;if(now>=start){out.textContent=str.slice(0,Math.ceil(str.length*Math.min(1,(now-start)/ms)));if(now>=start+ms){busy=false;return}}requestAnimationFrame(tick)}requestAnimationFrame(tick)
+ busy=true;playCue('link');out.dataset.tone='normal';out.textContent='PROCESSING …';const start=performance.now()+750,ms=Math.min(3200,str.length*14);
+ function tick(now){if(ticket!==renderTicket)return;if(now>=start){out.dataset.tone=tone;out.textContent=str.slice(0,Math.ceil(str.length*Math.min(1,(now-start)/ms)));if(now>=start+ms){busy=false;return}}requestAnimationFrame(tick)}requestAnimationFrame(tick)
 }
 function selectPage(p,sel=''){nav(p,sel);if(!s.playing)textOut($('screen').textContent,true)}
 function receive(state,info){
- const before=s,first=!s,changed=s?.revision!==state.revision,alarm=s&&s.step<17&&state.step>=17;
+ const before=s,first=!s,changed=s?.revision!==state.revision,alarm=s&&s.step<17&&state.step>=17,objectiveOnly=changed&&objectiveOnlyUpdate(s,state);
  const moved=s?.deck!==state.deck;if(first||net?.code!==info.code||(before?.step>0&&state.step===0))eggHistory=newEggHistory();s=state;net=info;if(moved){page='Home';selected='';mediaKey=''}$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
- if(before&&(before.playing!==s.playing||before.step!==s.step||s.mute||s.fast))cancelAnnouncement();if(!s.playing)finalSilence=false;syncAudio();if(changed){$('notice').textContent=s.notice;if(!first)playCue(cueForState(before,s));activity()}
- if(first||changed){if(alarm||s.playing||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
+ if(!objectiveOnly&&before&&(before.playing!==s.playing||before.step!==s.step||s.mute||s.fast))cancelAnnouncement();if(!s.playing)finalSilence=false;syncAudio();if(changed&&!objectiveOnly){$('notice').textContent=s.notice;$('notice').dataset.tone=responseTone(s.notice);if(!first)playCue(cueForState(before,s));activity()}
+ if(objectiveOnly){if(player())paintObjective();else dashboard()}else if(first||changed){if(alarm||s.playing||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
  if(first&&player()&&!s.playing&&s.step<17)$('saver').hidden=false;syncAudio();
  if(!first&&alarm&&s.step===17)announce(biohazardAlert,1650);else if(!first&&before.step===10&&s.step===11)announce('Your safety is our priority.',400);
 }
@@ -250,7 +264,7 @@ function draw(){
  $('top').textContent=(player()?s.deck.toUpperCase()+' STATION':'WATCH CONTROL · '+s.campaign)+'   /   '+net.code;
  $('board').hidden=player();$('monitor').hidden=!player();syncAudio();
  if(!player()){dashboard();return}
- const out=$('choices');out.replaceChildren();$('objective').textContent=s.step<17?'CURRENT OBJECTIVE\n'+objective(s):'';$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
+ const out=$('choices');out.replaceChildren();paintObjective();$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
  if(s.playing){playback();return}
  mediaKey='';$('crumb').textContent=s.deck+' / '+page;$('heading').textContent=page;
  const btn=(label,fn,shortcut='')=>button(out,label,fn,shortcut), go=(p)=>btn(p,()=>selectPage(p),p==='Home'?'DIR':['Help','Status','Doors'].includes(p)?p.toUpperCase():'OPEN '+p.toUpperCase());
@@ -294,7 +308,7 @@ let pausePlayback=()=>{};
 function playback(){
  const id=s.playing,key=net.code+':'+id;if(mediaKey===key)return;cancelAnnouncement();mediaKey=key;busy=false;++renderTicket;
  $('crumb').textContent='Media Archive / Research Recordings';$('heading').textContent=rid(id)+' · '+recordings[id][0];
- const target=$('screen');target.replaceChildren();const [title,speaker,lines]=recordings[id];
+ const target=$('screen');target.dataset.tone='normal';target.replaceChildren();const [title,speaker,lines]=recordings[id];
  const transcript=el('p','',target),chalk=el('div','',target);chalk.className='chalk';chalk.hidden=true;
  const meter=el('progress','',target),status=el('small','',target),box=el('div','',target);meter.max=lines.length;
  let elapsed=0,paused=false,last=performance.now(),finishing=false,voiceIndex=-1,voiceWaiting=false,voiceAge=0,voiceFailed=false;
@@ -348,6 +362,10 @@ function dashboard(){
  if(net.local)button(session,'Player view',toggleView);
  else {let link=new URL(location.href);link.searchParams.delete('dm');let a=el('a','Player link',session);a.href=link.href;a.style.color='var(--mint)';button(session,'Continue on this laptop offline',()=>{if(confirm('Start an independent offline copy of this checkpoint?')){location.href='?dm&offline='+net.code}})}
  op(session,s.fast?'Normal output':'Fast mode','fast');op(session,s.mute?'Enable station sound':'Mute station','mute');
+ const objectivePanel=card('Display current objective');objectivePanel.classList.add('objectivePanel');
+ const group=objectiveGroup(s);el('p',Object.keys(s.seen).filter(k=>s.seen[k]).length+'/7 recordings completed',objectivePanel);
+ for(let i=1;i<=7;i++){const status=i<group?'completed':i===group?'current':'future';const line=el('div','Objective '+i+' · '+rid(i)+' · '+status.toUpperCase(),objectivePanel);line.dataset.status=status}
+ if(s.step<17){const shown=visibleObjective(s),current=objective(s);el('p','Current: '+current,objectivePanel);if(shown){const shownLine=el('p','DISPLAYED: '+shown,objectivePanel);shownLine.className='shownObjective';op(objectivePanel,'Hide current objective','HIDE OBJECTIVE')}else op(objectivePanel,'Display current objective','SHOW OBJECTIVE',currentObjectiveId(s))}else el('p','All recording-linked objectives completed.',objectivePanel);
  const hints=card('Operator assistance');if(s.step<18)[1,2,3].forEach(i=>op(hints,'Hint '+i,'HINT',i-1));if(s.step>=4)op(hints,'Accessible board clue','BOARD AID');
  const sys=card('Facility');el('p','Server '+(s.step>=4?'online':'offline')+' · relays '+(s.step>=11?2:s.step>=10?1:0)+'/2 · bench '+(s.repaired?'ready':s.parts?'parts received':'offline'),sys);
  if(s.step>=8&&!s.parts)op(sys,'Register scanner parts','PARTS');if(s.parts&&s.step>=12&&!s.repaired)op(sys,'Calibrate repaired bench','REPAIR');
@@ -365,12 +383,12 @@ function dashboard(){
 function updateClock(){let n=$('dangerClock');if(n)n.textContent='Circulation elapsed · '+Math.max(0,Math.floor((Date.now()-Number(n.dataset.time))/60000))+' min · manual cue'}setInterval(updateClock,3000);
 if(dm&&params.has('offline'))connect(false,true,params.get('offline')).catch(report);
 function showEggProgram(p){
- const out=$('screen');++renderTicket;busy=false;out.replaceChildren();
+ const out=$('screen');++renderTicket;busy=false;out.dataset.tone='normal';out.replaceChildren();
  el('h3',p.title,out);el('p',p.question,out);const choices=el('div','',out);choices.className='actions';
  for(const [label,response] of p.choices)button(choices,label,()=>{choices.replaceChildren();el('p','RESPONSE RECORDED: '+label.toUpperCase(),choices);el('p',response,choices);el('p',p.ending,choices);button(choices,p.reset,()=>showEggProgram(p));button(choices,'Return to terminal',()=>draw())});
  button(choices,'Return to terminal',()=>draw());
 }
-function freestyle(raw){if(!raw)return;const reply=eggReply(raw,eggHistory);if(reply.program)showEggProgram(reply.program);else {if(reply.unknown)playCue('denied');textOut(reply.text,true)}}
+function freestyle(raw){if(!raw)return;const reply=eggReply(raw,eggHistory);if(reply.program)showEggProgram(reply.program);else {if(reply.unknown)playCue('denied');textOut(reply.text,true,reply.unknown?'warning':responseTone(reply.text))}}
 function recordSearchMatches(raw){const q=raw.toLowerCase().trim();return !!q&&Object.entries(files(s)).some(([name,body])=>(name+' '+body).toLowerCase().includes(q))}
 async function command(value){
  let raw=value.trim().replace(/\s+/g,' '),v=raw.toUpperCase();

@@ -74,3 +74,7 @@ Implemented 153 response entries, 11 self-contained interactive programs, 20 rot
 ## Additional approved lore expansion
 
 Google Doc updated and read back first; GitHub expansion sourced directly from that approved section. 93 items (92 new canonical entries; EXECUTE ORDER 66 merges as alias), four extended repeat responses. Total 256 canonical entries including 11 programs. Specific Skywalker names override generic; SABACC text and SABACC.EXE distinct; ORDER 65 and EXECUTE ORDER 65 distinct. Accent normalization added. 533 canonical, alias, response and precedence checks and 74/74 progression assertions passed; offline syntax parsed. Phone preview only; browser audition and production release pending.
+
+## DM-controlled objective and phosphor palette checkpoint
+
+Google Doc specification updated and verified first. Implemented owner-only SHOW/HIDE OBJECTIVE using persisted reveal ID; old checkpoints normalize hidden, fulfilled reveals cleared even on force advance; public view carries visibility; no new allowed player actions or database rules. Objective-only receive updates avoid redrawing active playback or terminal output. Seven-group DM panel, exact existing text, both-relay and Director subgoal lifecycle. Bright semibold response hierarchy and existing reminders preserved. 63 targeted source checks plus original 74 progression assertions and new regression test assertions passed in adapted harness; offline syntax parsed. Browser and two-laptop verification pending. Production unchanged.
