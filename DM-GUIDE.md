@@ -108,3 +108,7 @@ At the REC-004 gate, correct code 471938 validates even if the physical card has
 ## Final crisis visual
 
 After the final biohazard alert, ideally wait about 20 seconds and click **Show blood handprint** in the crisis panel. The approved terminal image fills Player view, suspending player commands, and persists through the crisis cue and refresh. Use **Hide blood handprint** to remove it without changing the encounter; **Undo last action** also reverses the reveal when it is the latest available action. In offline phone rehearsal, use the image's **Operator view** button to return to the controls. Live player seats have no operator return control. The effect is manual, does not start combat or change escape routes, and is not available before the final alert.
+
+
+### Local narration voice (Version 15)
+Open Narration voice settings near the sound controls. Choose an exposed voice (British English voices are listed first), then Test voice. Automatic preserves the original research speaker profiles; the selected voice is local to the device, retained through refresh, and does not change the automated facility announcement. On a separate player laptop, set its own voice before play. Controls are disabled during playback/announcements, mute or the final artwork. Installed voices are supplied by the browser; if the saved voice disappears, Automatic is used. Actual recorded media still takes precedence.

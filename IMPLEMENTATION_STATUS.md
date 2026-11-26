@@ -92,3 +92,8 @@ Google Doc updated and verified before implementation. Correct code at step 7 va
 ## Version 14 — manual final-crisis blood handprint
 
 Screenplay amended and verified before implementation. Owner-only SHOW/HIDE BLOOD OVERLAY during steps 17–18; shared state persists through checkpoints, refresh and crisis progression, with normal immediate undo and dedicated hide. Player commands rejected while shown; offline operator return remains available. Approved JPEG artwork embedded locally, preserving the original alert and unchanged Firebase rules. 188 adapted source assertions across 8 test groups passed (existing progression/objectives plus targeted final visual and session recovery); source syntax parsed. Actual browser visual rendering, live Firebase and two-laptop rehearsal remain unverified. Production root not changed by this development update.
+
+
+### Version 15 — local narration voice selection
+Adds browser-exposed voice selection and audition, British English first; automatic profiles remain default and facility announcements retain their existing profile. Local persistence; no campaign state or Firebase changes. Voice controls guard playback, announcements, mute and final visual. 25 targeted source-level assertions passed in adapted harness; station script parses. Physical-device voice availability and audible playback require browser rehearsal; no new recorded media or production release.
+ Additional mocked speech/DOM integration: 15 assertions passed; original automatic voice candidate ordering preserved. Combined offline script syntax parsed.

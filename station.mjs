@@ -1,5 +1,6 @@
 import {findEgg,eggReply,newEggHistory} from './easter-eggs.mjs';
 import {crisisArtwork} from './crisis-art.mjs';
+import {voicePreferenceKey,voiceIdentity,isBritishVoice,orderedVoices,resolveNarrationVoice,voiceControlsLocked} from './voice-selection.mjs';
 import {files,tapes,code,media,recordings} from './content.mjs';
 import {route,rooms,stages,recordingAt,physical,scans,validSave,canPlay,objective,visibleObjective,currentObjectiveId,objectiveGroup,biohazardAlert} from './engine.mjs';
 import {localSession,networkSession,newCode,cacheKey} from './session.mjs';
@@ -95,26 +96,61 @@ function chooseSpeechVoice(voices,id){
  function score(v){return (gender(v)===profile.gender?8:gender(v)==='unknown'?2:0)+(profile.preferred.test(v.name)?4:0)+(v.localService?1:0)}
 }
 const synth=window.speechSynthesis;
-let speechJob=null,announcementTicket=0;
-try{synth?.getVoices()}catch{}
+let speechJob=null,announcementTicket=0,announcementPending=false,voicePreference='',voiceTestMessage='';
+try{voicePreference=localStorage.getItem(voicePreferenceKey)||''}catch{}
+function deviceVoices(){try{return Array.from(synth?.getVoices()||[])}catch{return []}}
+function speechSupported(){return !!synth&&typeof window.SpeechSynthesisUtterance==='function'}
+function syncVoiceControls(){
+ const select=$('narrationVoice'),test=$('voiceTest'),status=$('voiceStatus');if(!select||!test||!status)return;
+ const locked=voiceControlsLocked(s,muted,finalSilence,announcementPending,speechJob,document.hidden);
+ select.disabled=!speechSupported()||locked;test.disabled=!speechSupported()||locked;
+ const voices=deviceVoices(),selected=voices.find(v=>voiceIdentity(v)===voicePreference),uk=voices.filter(isBritishVoice).length;
+ status.textContent=!speechSupported()?'Browser speech unavailable; recordings use text.':voiceTestMessage||(!voices.length?'Voice list not exposed yet. Automatic narration may still work.':voicePreference&&!selected?'Saved voice not available on this device; using Automatic.':(voices.length+' available · '+uk+' British English. Voice choice is local to this device.'));
+}
+function refreshVoiceList(){
+ const select=$('narrationVoice');if(!select)return;
+ const voices=orderedVoices(deviceVoices());select.replaceChildren();
+ const option=(value,label)=>{const n=el('option',label,select);n.value=value;return n};
+ option('','Automatic (existing speaker profiles)');
+ for(const v of voices)option(voiceIdentity(v),v.name+' ('+v.lang+')');
+ if(voicePreference&&!voices.some(v=>voiceIdentity(v)===voicePreference))option(voicePreference,'Saved voice (currently unavailable)');
+ select.value=voicePreference;syncVoiceControls();
+}
+function previewNarrationVoice(){
+ if(!speechSupported()||voiceControlsLocked(s,muted,finalSilence,announcementPending,speechJob,document.hidden))return;
+ try{
+  const u=new window.SpeechSynthesisUtterance('Imperial Science Division. Your safety is our priority.'),p=voiceProfiles[1],v=resolveNarrationVoice(deviceVoices(),1,voicePreference,chooseSpeechVoice);
+  u.lang=v?.lang||'en-GB';if(v)u.voice=v;u.rate=p.rate;u.pitch=p.pitch;u.volume=.86;
+  const job={u,preview:true};speechJob=job;voiceTestMessage='Testing '+(v?.name||'automatic voice')+'…';syncVoiceControls();
+  const finish=message=>{if(speechJob!==job)return;speechJob=null;voiceTestMessage=message;syncVoiceControls()};
+  u.onend=()=>finish('Voice test complete.');u.onerror=()=>finish('Voice test unavailable. Try another voice.');
+  synth.speak(u);
+  setTimeout(()=>{if(speechJob===job){cancelSpeech();voiceTestMessage='Voice test timed out. Try another voice.';syncVoiceControls()}},12000);
+ }catch{cancelSpeech();voiceTestMessage='Voice test unavailable. Try another voice.';syncVoiceControls()}
+}
+$('narrationVoice').onchange=()=>{voicePreference=$('narrationVoice').value;voiceTestMessage='';try{localStorage.setItem(voicePreferenceKey,voicePreference)}catch{voiceTestMessage='Voice selected for this visit; local storage is unavailable.'}syncVoiceControls()};
+$('voiceTest').onclick=previewNarrationVoice;
+try{synth?.addEventListener('voiceschanged',refreshVoiceList)}catch{}
+window.addEventListener('focus',refreshVoiceList);
+refreshVoiceList();
 function narrationAllowed(){return !!synth&&typeof window.SpeechSynthesisUtterance==='function'&&player()&&!muted&&!s?.mute&&!s?.fast&&!finalSilence}
-function cancelSpeech(){const job=speechJob;speechJob=null;if(job){job.u.onend=null;job.u.onerror=null;try{synth.cancel()}catch{}}}
+function cancelSpeech(){const job=speechJob;speechJob=null;if(job){job.u.onend=null;job.u.onerror=null;try{synth.cancel()}catch{}if(job.preview)voiceTestMessage=''}syncVoiceControls()}
 function speakParagraph(text,id,onEnd,onError){
  if(!narrationAllowed())return false;
  cancelSpeech();
  try{
-  const u=new window.SpeechSynthesisUtterance(text),p=voiceProfiles[id],v=chooseSpeechVoice(synth.getVoices(),id);
+  const u=new window.SpeechSynthesisUtterance(text),p=voiceProfiles[id],v=resolveNarrationVoice(deviceVoices(),id,voicePreference,chooseSpeechVoice);
   u.lang=v?.lang||'en-GB';if(v)u.voice=v;u.rate=p.rate;u.pitch=p.pitch;u.volume=.86;
-  const job={u};speechJob=job;
-  u.onend=()=>{if(speechJob!==job)return;speechJob=null;onEnd?.()};
-  u.onerror=()=>{if(speechJob!==job)return;speechJob=null;onError?.()};
+  const job={u};speechJob=job;syncVoiceControls();
+  u.onend=()=>{if(speechJob!==job)return;speechJob=null;syncVoiceControls();onEnd?.()};
+  u.onerror=()=>{if(speechJob!==job)return;speechJob=null;syncVoiceControls();onError?.()};
   synth.speak(u);return true;
  }catch{cancelSpeech();return false}
 }
-function cancelAnnouncement(){announcementTicket++;cancelSpeech()}
+function cancelAnnouncement(){announcementTicket++;announcementPending=false;cancelSpeech()}
 function announce(text,delay=0){
- const ticket=++announcementTicket,session=net?.code,step=s?.step;
- setTimeout(()=>{if(ticket!==announcementTicket||net?.code!==session||s?.step!==step||!narrationAllowed()||s.playing)return;speakParagraph(text,8,()=>{},()=>{})},delay);
+ const ticket=++announcementTicket,session=net?.code,step=s?.step;announcementPending=true;syncVoiceControls();
+ setTimeout(()=>{if(ticket!==announcementTicket)return;announcementPending=false;syncVoiceControls();if(net?.code!==session||s?.step!==step||!narrationAllowed()||s.playing)return;speakParagraph(text,8,()=>{},()=>{})},delay);
 }
 
 function soundAllowed(){return !muted&&!s?.mute&&!finalSilence&&!document.hidden&&(player()||standalone||net?.local)}
@@ -129,7 +165,7 @@ function syncAudio(){
  const b=$('soundToggle');if(b){b.textContent=s?.mute?'Sound muted by operator':muted?'Enable sound':'Mute sound';b.disabled=!!s?.mute;b.setAttribute('aria-pressed',String(!!(muted||s?.mute)))}
  const test=$('soundTest');if(test)test.disabled=!!(s?.mute||muted||finalSilence||s?.playing);
  const av=$('screen').querySelector('video,audio');if(av)av.muted=!!(muted||s?.mute);
- audioStatus();
+ audioStatus();syncVoiceControls();
 }
 function setupAudio(){
  if(audioCtx)return;
@@ -201,7 +237,7 @@ function wake(e){if(!$('saver').hidden){e?.preventDefault();e?.stopImmediateProp
 // A touch click is the reliable mobile activation; do not consume it on pointerdown.
 document.addEventListener('pointerdown',()=>activity(),true);
 document.addEventListener('keydown',e=>{activity();if(wake(e))return;if((busy||commandPending)&&player()){e.preventDefault();e.stopImmediatePropagation();return}if(e.key==='Enter'&&e.target.id==='command')gestureCue('tap');else gestureCue(null)},true);
-document.addEventListener('click',e=>{activity();if(wake(e))return;const button=e.target.closest?.('button');if((busy||commandPending)&&player()&&button?.id!=='soundToggle'&&button?.id!=='soundTest'&&button?.id!=='bloodOperator'){e.preventDefault();e.stopImmediatePropagation();return}if(button&&!button.disabled&&button.id!=='soundTest'&&button.id!=='soundToggle'&&!button.dataset.command)gestureCue('tap');else gestureCue(null)},true);
+document.addEventListener('click',e=>{activity();if(wake(e))return;const button=e.target.closest?.('button');if((busy||commandPending)&&player()&&button?.id!=='soundToggle'&&button?.id!=='soundTest'&&button?.id!=='bloodOperator'&&button?.id!=='voiceTest'){e.preventDefault();e.stopImmediatePropagation();return}if(button&&!button.disabled&&button.id!=='soundTest'&&button.id!=='soundToggle'&&button.id!=='voiceTest'&&!button.dataset.command)gestureCue('tap');else gestureCue(null)},true);
 document.addEventListener('input',e=>{if(['command','codeInput'].includes(e.target.id))gestureCue('key')},true);
 $('soundToggle').onclick=()=>{muted=!muted;if(muted)cancelAnnouncement();syncAudio();if(!muted)gestureCue('approval')};
 $('soundTest').onclick=()=>gestureCue('test');
@@ -346,7 +382,7 @@ function playback(){
  const valid=()=>mediaKey===key&&s.playing===id&&player();
  function useText(reason){cancelSpeech();voiceWaiting=false;voiceFailed=true;status.textContent=reason}
  function voiceAvailable(){return !av&&!voiceFailed&&narrationAllowed()}
- function updateStatus(){if(av)status.textContent='Recorded media';else if(voiceFailed){}else if(s.fast)status.textContent='Fast mode · text playback';else if(muted||s.mute)status.textContent='Muted · text playback';else if(!synth||typeof window.SpeechSynthesisUtterance!=='function')status.textContent='Device speech unavailable · text playback';else status.textContent='Device narration · British English preferred'}
+ function updateStatus(){if(av)status.textContent='Recorded media';else if(voiceFailed){}else if(s.fast)status.textContent='Fast mode · text playback';else if(muted||s.mute)status.textContent='Muted · text playback';else if(!synth||typeof window.SpeechSynthesisUtterance!=='function')status.textContent='Device speech unavailable · text playback';else {const chosen=deviceVoices().find(v=>voiceIdentity(v)===voicePreference);status.textContent=chosen?'Device narration · '+chosen.name+' ('+chosen.lang+')':'Device narration · British English preferred'}}
  if(paths.video||paths.audio){av=el(paths.video?'video':'audio','',target);av.src=paths.video||paths.audio;av.muted=muted||s.mute;av.onended=()=>{elapsed=duration};av.onerror=()=>{av?.remove();av=null;last=performance.now();updateStatus()};av.play().catch(()=>{if(av){av.remove();av=null;updateStatus()}})}
  updateStatus();
  const pause=button(box,'Pause',()=>{if(finishing)return;paused=!paused;pause.textContent=paused?'Resume':'Pause';if(av){if(paused)av.pause();else av.play().catch(report)}else if(voiceWaiting){if(paused){try{synth.pause()}catch{}}else{try{synth.resume()}catch{}}}});

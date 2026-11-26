@@ -1,6 +1,6 @@
 import {readFile,writeFile} from 'node:fs/promises';
 const source=async n=>readFile(new URL(n,import.meta.url),'utf8');
-const parts=await Promise.all(['content.mjs','engine.mjs','session.mjs','easter-eggs.mjs','crisis-art.mjs','station.mjs'].map(source));
+const parts=await Promise.all(['content.mjs','engine.mjs','session.mjs','easter-eggs.mjs','crisis-art.mjs','voice-selection.mjs','station.mjs'].map(source));
 const js=parts.map(x=>x.replace(/^import .*;$/gm,'').replace(/^export /gm,'')).join('\n');
 const css=await source('station.css');
 const doc=(await source('index.html')).replace('<html lang','<html data-offline lang').replace('<link rel="stylesheet" href="station.css">',()=>'<style>'+css+'</style>');
