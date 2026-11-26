@@ -70,3 +70,7 @@ Implemented player shortcut DOS-style command echo with quiet per-step keystroke
 ## Approved freestyle library checkpoint — 25 November 2026
 
 Implemented 153 response entries, 11 self-contained interactive programs, 20 rotating unknown responses and six milestones. Previously underspecified examples and executable branches completed as creative additions. Flexible keyword/spacing/punctuation and bounded typo recognition; exact progression commands and accessible searches prioritized. ORDER 66 wins embedded lore conflicts. DM catalog generated from implementation. All 164 canonical and 30 variation checks, repeated GONK and unknown milestones passed; command-routing mock checks and adapted progression suite 74/74 passed; offline syntax parsed. Browser rehearsal pending; phone preview only, production root/Firebase unchanged.
+
+## Additional approved lore expansion
+
+Google Doc updated and read back first; GitHub expansion sourced directly from that approved section. 93 items (92 new canonical entries; EXECUTE ORDER 66 merges as alias), four extended repeat responses. Total 256 canonical entries including 11 programs. Specific Skywalker names override generic; SABACC text and SABACC.EXE distinct; ORDER 65 and EXECUTE ORDER 65 distinct. Accent normalization added. 533 canonical, alias, response and precedence checks and 74/74 progression assertions passed; offline syntax parsed. Phone preview only; browser audition and production release pending.

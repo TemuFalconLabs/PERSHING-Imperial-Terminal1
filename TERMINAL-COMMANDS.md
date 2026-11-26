@@ -357,7 +357,7 @@ Your ideological compliance assessment is overdue.
 LUTHEN (aliases: LUTHEN RAEL)
 Antiquities import documentation requested.
 
-SKYWALKER (aliases: LUKE SKYWALKER; ANAKIN SKYWALKER)
+SKYWALKER
 Personnel surname associated with recurring administrative complications.
 
 MIDICHLORIANS (aliases: MIDICHLORIAN)
@@ -390,7 +390,7 @@ Unauthorized salvage operation suspected.
 SAND
 Environmental complaint registered: coarse, irritating, pervasive.
 
-EXECUTE ORDER 65 (aliases: ORDER 65)
+EXECUTE ORDER 65
 Historical authorization restricted. Please reconsider your career objectives.
 
 BOTHANS (aliases: BOTHAN)
@@ -618,7 +618,7 @@ Request a promotion → Further ambition may be hazardous to your career.
 REQUEST CLOSED.
 Controls: New request; Return to terminal.
 
-SABACC.EXE (aliases: SABACC; RUN SABACC)
+SABACC.EXE (aliases: RUN SABACC)
 IMPERIAL RECREATION SIMULATOR
 Your hand: 17. The house has declined to disclose its hand.
 Stand → House wins. Imperial accounting is final.
@@ -710,3 +710,328 @@ Controls: New ticket; Return to terminal.
 10: Are you being paid to do this?
 15: Your dedication to unproductive activity is remarkable.
 20: Honorary appointment: Deputy Assistant Undersecretary of Wasting Imperial Resources.
+
+## Additional lore commands — approved expansion
+Approved additional standalone lore. Existing gameplay gates and earlier approved text remain unchanged. Specific character names take precedence over generic names. Multi-line special responses appear on repeat queries; short B1/B2/B3 commands retain their own jokes. SABACC opens the new text joke; SABACC.EXE and RUN SABACC still launch the existing game. ORDER 65 and EXECUTE ORDER 65 are distinct responses. EXECUTE ORDER 66 is the same ORDER 66 entry, not a separate unlock.
+
+### Skywalker saga — characters
+
+LEIA ORGANA (aliases: LEIA)
+Diplomatic immunity does not extend to acts of terrorism.
+
+PRINCESS LEIA
+Royal title associated with a planet no longer requiring administrative oversight.
+
+LUKE SKYWALKER (aliases: LUKE)
+Agricultural worker with an unusually disruptive employment history.
+
+ANAKIN SKYWALKER (aliases: ANAKIN)
+Personnel record sealed by executive order. Further inquiries are strongly discouraged.
+
+PADMÉ AMIDALA (aliases: PADME AMIDALA; PADME; AMIDALA)
+Former senator. Historical voting record demonstrates concerning levels of independent thought.
+
+COUNT DOOKU (aliases: DOOKU; DARTH TYRANUS)
+Former political extremist. Leadership contract terminated.
+
+GENERAL GRIEVOUS (aliases: GRIEVOUS)
+Excessive lightsaber ownership. Significant respiratory difficulties.
+Response 2:
+HISTORICAL ASSET INVENTORY
+
+Lightsabers recovered: Numerous
+Organic components: Minimal
+Maintenance requirements: Extensive
+Cough suppressant expenditure: Excessive
+
+FINAL ASSESSMENT:
+Economically unsustainable.
+
+QUI-GON JINN
+Known advocate of unauthorized interpretations of established doctrine.
+
+MACE WINDU (aliases: WINDU)
+Former Jedi Council member. Employment terminated following executive disagreement.
+
+DARTH MAUL (aliases: MAUL)
+Personnel status: surprisingly difficult to establish.
+
+AHSOKA TANO (aliases: AHSOKA)
+Former Jedi. Subsequent attempts to locate her have been administratively inconvenient.
+
+CAPTAIN REX (aliases: REX)
+Distinguished military service. Subsequent loyalty assessment inconclusive.
+
+COMMANDER CODY (aliases: CODY)
+Demonstrated satisfactory compliance with executive instructions.
+
+QUI-GON
+Unauthorized gambling on sporting events identified in historical records.
+
+### Sequel trilogy — pre-sequel database jokes
+
+KYLO REN (aliases: KYLO)
+No personnel record found. Unusually dramatic name.
+
+REY
+Search criteria insufficient. Please provide a surname.
+Response 2:
+SEARCHING PERSONNEL DATABASE...
+
+SURNAME REQUIRED.
+
+REY SKYWALKER
+Surname verification unsuccessful.
+Response 2:
+SURNAME VERIFICATION FAILED.
+
+Employees are not permitted to select their own surnames.
+
+SNOKE
+No registered personnel found.
+
+FIRST ORDER
+Please specify which order. The Empire has issued several thousand.
+
+SUPREME LEADER
+Unauthorized job title.
+
+FINN
+Search returned several thousand aquatic anatomy references.
+
+POE DAMERON (aliases: POE)
+No registered pilot found.
+
+BB-8
+Spherical mobility concept. Stability assessment pending.
+
+STARKILLER BASE
+Search returned an excessively ambitious engineering proposal.
+
+### Criminal syndicates and the underworld
+
+PYKE SYNDICATE (aliases: PYKES; PYKE)
+Unlicensed pharmaceutical distribution network.
+
+CRIMSON DAWN
+Commercial organization with unusually high executive turnover.
+
+HUTT CARTEL (aliases: HUTT SYNDICATE; HUTTS)
+Regional criminal administration. Tax collection efforts remain unsuccessful.
+Response 2:
+IMPERIAL REVENUE SERVICE
+
+Outstanding tax assessments: CLASSIFIED
+
+Collection attempts: 17
+Successful collections: 0
+
+Missing revenue agents: 17
+
+Further collection activities suspended.
+
+BLACK SUN
+Unauthorized commercial activity. Authorized commercial activity requires additional fees.
+
+SPICE
+Cafeteria seasonings are available through approved suppliers. Other interpretations have been reported.
+
+SMUGGLING (aliases: SMUGGLER; SMUGGLERS)
+Customs violations are punishable by confiscation, imprisonment, or employment with Imperial Intelligence.
+
+BOUNTY HUNTER (aliases: BOUNTY HUNTERS)
+Independent contractor. No health benefits provided.
+
+KESSEL RUN
+Unauthorized route deviation is not considered a performance achievement.
+
+SABACC
+Financial losses incurred during working hours are not reimbursable.
+
+NAR SHADDAA
+Travel advisory: everything is probably stolen.
+
+### Clone Wars and Separatists
+
+CLONE WARS
+Historical conflict concluded through successful administrative restructuring.
+
+B1 BATTLE DROID (aliases: B-1 BATTLE DROID; B1 DROID)
+Inexpensive. Expendable. Occasionally capable of conversation.
+
+B2 SUPER BATTLE DROID (aliases: B-2 SUPER BATTLE DROID; B2 BATTLE DROID; B2 DROID)
+Improved combat performance. Reduced conversational inconvenience.
+
+DROIDEKA
+Unauthorized rolling inside research facilities is prohibited.
+
+DESTROYER DROID
+Collision damage is not covered by the manufacturer's warranty.
+
+SEPARATISTS (aliases: SEPARATIST; CIS)
+Your interest in historical disloyalty has been noted.
+
+TRADE FEDERATION
+Former commercial organization. Negotiation privileges revoked.
+
+NUTE GUNRAY (aliases: GUNRAY)
+Historical example of unsuccessful executive negotiation.
+
+WAT TAMBOR
+Unauthorized vocal modulation equipment detected.
+
+GEONOSIS
+Tourism applications suspended indefinitely.
+
+KAMINO
+Weather advisory: rain. Further information unavailable.
+
+CLONE TROOPER (aliases: CLONE TROOPERS)
+Military personnel produced under an unusually efficient recruitment model.
+
+ORDER 65
+Please reconsider the implications of your request.
+
+EXECUTE ORDER 66
+Historical directive. Current operational details restricted.
+
+501ST (aliases: 501ST LEGION)
+Distinguished military service. Further details require authorization.
+
+212TH (aliases: 212TH ATTACK BATTALION)
+Historical infantry designation.
+
+REPUBLIC COMMANDO (aliases: REPUBLIC COMMANDOS)
+Specialized personnel. Replacement costs classified.
+
+BAD BATCH (aliases: CLONE FORCE 99)
+Quality control exception.
+
+### Rogue One and Andor
+
+JYN ERSO (aliases: JYN)
+Personnel records indicate a persistent disregard for administrative boundaries.
+
+CASSIAN ANDOR (aliases: CASSIAN; ANDOR)
+Outstanding security inquiries.
+
+GALEN ERSO (aliases: GALEN)
+Distinguished scientific contributor. Performance review subsequently amended.
+
+DIRECTOR KRENNIC (aliases: KRENNIC; ORSON KRENNIC)
+Career advancement application pending executive review.
+
+SCARIF
+Beautiful beaches. Restricted access. Excellent security record, according to the last available report.
+
+JEDHA
+Historical tourism information unavailable.
+
+CHIRRUT ÎMWE (aliases: CHIRRUT IMWE; CHIRRUT)
+Religious accommodation request denied.
+
+BAZE MALBUS (aliases: BAZE)
+Unauthorized equipment modifications suspected.
+
+BODHI ROOK (aliases: BODHI)
+Employee departure paperwork incomplete.
+
+SAW GERRERA (aliases: SAW GERRERA)
+Extremist activity. Respiratory equipment reimbursement denied.
+
+ROGUE ONE (aliases: ROGUE 1)
+Unregistered flight designation.
+
+BLUE SQUADRON
+Unauthorized flight operations.
+
+KRENNIC'S CAPE (aliases: KRENNIC CAPE)
+Cape privileges are determined by rank.
+
+DEDRA MEERO (aliases: DEDRA)
+Employee demonstrates exceptional commitment to investigating other employees.
+
+SYRIL KARN (aliases: SYRIL)
+Personnel file contains an extraordinary number of self-authored commendations.
+
+MON MOTHMA
+Financial transactions subject to routine review.
+
+KINO LOY (aliases: KINO)
+Employee swimming proficiency not documented.
+
+MAARVA (aliases: MAARVA ANDOR)
+Unauthorized public address detected.
+
+### Galactic culture, vehicles and technology
+
+PODRACING (aliases: POD RACE; POD RACING)
+Recreational activity with unacceptable employee mortality rates.
+
+NOW THIS IS PODRACING (aliases: NOW THIS IS POD RACING)
+Incorrect. This is a workstation.
+
+SEBULBA
+Numerous unresolved sporting misconduct allegations.
+
+LIGHTSABER (aliases: LIGHTSABERS; LIGHT SABER)
+Unauthorized illumination device.
+
+HYPERDRIVE
+Please ensure your destination has been approved before departing.
+
+MILLENNIUM FALCON (aliases: MILLENIUM FALCON)
+Historical maintenance records indicate a remarkable tolerance for mechanical failure.
+
+SLAVE I (aliases: SLAVE 1)
+Independent contractor transportation.
+
+X-WING (aliases: X WINGS; XWINGS)
+Unauthorized aircraft design with excessive wing articulation.
+
+Y-WING (aliases: Y WINGS; YWINGS)
+Obsolete equipment. Continued operational effectiveness is statistically inconvenient.
+
+SARLACC
+Estimated processing time exceeds standard administrative targets.
+
+RANCOR
+Emotional support animal application denied.
+
+TAUNTAUN
+Emergency shelter usage voids the manufacturer's warranty.
+
+WAMPA
+Workplace temperature complaint received.
+
+JAWA (aliases: JAWAS)
+Unauthorized acquisition of unattended equipment.
+
+TUSKEN RAIDER (aliases: TUSKEN RAIDERS; SAND PEOPLE)
+Regional security advisory: avoid unnecessary shouting.
+
+HOLOCRON (aliases: HOLOCRONS)
+Unauthorized data storage device.
+
+BESKAR
+Unauthorized personal protective equipment.
+
+DEATH STICKS (aliases: DEATH STICK)
+You do not want to submit this request.
+
+MOS EISLEY
+Travel advisory: heightened levels of scum and villainy.
+
+CANTINA
+Employees are reminded that lunch breaks are not recreational excursions.
+
+### Special short commands
+
+B1
+ROGER ROGER.
+
+B2
+ROGER.
+
+B3
+Procurement request denied. Two versions were sufficient.

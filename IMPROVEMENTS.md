@@ -209,3 +209,5 @@ Phone sound test passed per DM. Softened input keystroke only. Proposed DOS comm
 Approved hybrid command UX supersedes pending proposal: automatic command echo and soft keystroke feedback on ordinary player shortcuts; manual code/query entry remains deliberate. Existing gate engine and narrative unchanged. Phone rehearsal pending.
 
 Approved freestyle library implemented; see TERMINAL-COMMANDS.md. No gate engine or creative baseline edits.
+
+Expanded approved standalone lore across Skywalker saga, sequel-era database jokes, syndicates, Clone Wars, Rogue One/Andor and galactic culture. Google Doc updated first; no gate changes.
