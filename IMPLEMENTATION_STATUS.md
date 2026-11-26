@@ -62,3 +62,7 @@ User reported device narration audible but terminal effects absent. Code review 
 ## Phone audition — soft keystrokes
 
 DM confirmed sound test audible on phone; requested softer typing sound after a squeaky key cue. Replaced square-wave sweep with short low-level triangle/sine click; PCM verification confirmed reduced peak and energy and identical output for every other cue. Adapted progression suite 74/74; offline syntax parsed. Actual softer cue awaits phone audition. Button-driven automatic command typing discussed as a proposal only; no gate/UI flow change. Refresh isolated preview, not production.
+
+## Approved hybrid command UI checkpoint — 25 November 2026
+
+Implemented player shortcut DOS-style command echo with quiet per-step keystrokes and approximately one second maximum scheduled typing delay, skipping animation in Fast/reduced-motion modes. Existing gated action executes once; duplicate input blocked, revision/deck/session change cancels stale typing. Manual AUTH and SEARCH input preserved (prefill only); secret six-digit echo masked. Added matching manual reception, scan save/discard and tape-insert navigation behavior. Playback/audio/operator controls remain immediate. Offline regenerated; source harness checked command echo, duplicate rejection, stale revision cancellation, draft restoration, masking, instant mode; 74/74 progression assertions passed. Native browser test assertions added but not run. Phone preview only; main root and Firebase remain unchanged.

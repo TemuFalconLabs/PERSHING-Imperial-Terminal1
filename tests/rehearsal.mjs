@@ -21,7 +21,7 @@ let dm,player;try{
  dm=await client();player=await client(390);await dm.goto(url+'?dm&emulator');if(kids)await dm.locator('#camp').selectOption('KIDS');await click(dm,'Create live session');await waitStep(dm,0);
  const session=new URL(dm.url()).searchParams.get('session');assert(session);
  await player.goto(url+'?emulator&session='+session);await visible(player,'#saver');await player.locator('#saver').click();
- await click(dm,'Fast mode');await click(dm,'Mute station');await cmd(player,'PLAY 1');await player.getByText('Select the local recording directory first.').waitFor();await click(player,'Help');await player.locator('#screen').getByText(/DIR · OPEN/).waitFor();await click(player,'Home');await click(player,'Media Archive');await click(player,'Research Recordings');
+ await click(dm,'Fast mode');await click(dm,'Mute station');await cmd(player,'PLAY 1');await player.getByText('Select the local recording directory first.').waitFor();await click(player,'Help');await player.locator('#screen').getByText(/DIR · OPEN/).waitFor();await click(player,'Home');await click(player,'Media Archive');await player.locator('#commandEchoText').getByText('OPEN MEDIA ARCHIVE',{exact:true}).waitFor();await click(player,'Research Recordings');await player.locator('#commandEchoText').getByText('OPEN RESEARCH RECORDINGS',{exact:true}).waitFor();
  const play=async(id,step)=>{await cmd(player,'PLAY '+id);await waitStep(dm,step)};
  const phys=async(label,step)=>{await click(dm,label);await waitStep(dm,step)};
  await cmd(player,'AUTH 471938');await player.getByText('Authorization denied. Review registered media.',{exact:true}).waitFor();

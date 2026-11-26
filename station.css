@@ -3,3 +3,5 @@
 #soundToggle{font-size:.82rem;margin:.25rem 0 .65rem;opacity:.85}
 
 #audioTools{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:.4rem 0}#audioTools button{font-size:.82rem;margin:0}#audioStatus{flex-basis:100%;font-size:.74rem;opacity:.82}
+
+#commandEcho{font-size:.82rem;color:var(--mint);border-left:2px solid var(--edge);padding:.35rem .65rem;margin:.3rem 0 .75rem;overflow-wrap:anywhere;min-height:1.5em}#commandEchoText{letter-spacing:.045em}

@@ -205,3 +205,5 @@ Free Web Speech device voices for all seven recordings, text fallback, individua
 Raised terminal cue audibility, added awake-only hum and explicit sound check, moved activation to mobile click, added generated WAV fallback and visible diagnostics. Actual phone sound output remains user test; no narrative or progression changes.
 
 Phone sound test passed per DM. Softened input keystroke only. Proposed DOS command echo on player buttons remains pending design approval; no implementation yet.
+
+Approved hybrid command UX supersedes pending proposal: automatic command echo and soft keystroke feedback on ordinary player shortcuts; manual code/query entry remains deliberate. Existing gate engine and narrative unchanged. Phone rehearsal pending.
