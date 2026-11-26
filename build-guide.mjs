@@ -1,15 +1,17 @@
-import {code,recordings,media} from './content.mjs';
+import {code,recordings} from './content.mjs';
 import {writeFile} from 'node:fs/promises';
+// Keep approved media directions and prop notes synchronized with MEDIA.md.
 const directions=[
- '', 'Empty duty desk; a grey coat hangs behind the speaker. Introduce the cylinder desk.',
- 'Engineering report identifies the disconnected network cable beneath the server-room service panel.',
- 'Frame a chalkboard behind the researcher. Hold the full board showing '+code.board+'. Keep digits out of spoken captions.',
- 'ISB officer speaks. No spoken digits; damaged key card is in the trapped safe in the ISB office.',
- 'Two blank signature boxes on an occupancy permit. Make the repairs look routine.',
- 'Track empty slide racks, then hold on a surviving label and the vault direction marker. Lead to physical storage.',
- 'Heavy breathing. At 8s hear movement; at 16s metal strikes; at 23s the commander names the air. At 32s footsteps approach. Cut the last word mid-syllable, hold silence, then alarm.'
+  "",
+  "Duty handover: identify MEDIA drawer, insertion and return.",
+  "Engineering report: identify disconnected server cable.",
+  "Frame the board with 1938; no spoken digits.",
+  "ISB officer's personal log. Physical card in trapped ISB safe; no spoken digits.",
+  "Routine occupational safety report; both relays.",
+  "Lab workstation; memory suppression and archive designation.",
+  "Commander visibly distressed, attempting to maintain composure. Distant blaster fire. After “they didn't stay dead,” loud impact; commander turns toward something outside the camera’s field of view. After “I said seal it,” blaster fire intensifies; commander returns to recording. On final cutoff, violent noise and abrupt termination. Allow approximately three seconds of complete silence before the red biohazard alarm appears. Actual media still to be produced."
 ];
-let out='# Recording and prop book · DM only\n\nDamaged key card complementary digits: **'+code.prefix+'**. Recording 003 board suffix: **'+code.board+'**. Authorized entry: **'+code.prefix+code.board+'**. The ID is a string.\n\n';
-for(let i=1;i<recordings.length;i++){const [title,speaker,lines]=recordings[i],id=String(i).padStart(3,'0');out+='## REC-'+id+' · '+title+'\n\n'+speaker+' · approximately '+Math.round(lines.reduce((n,l)=>n+Math.max(4500,l.length*58),0)/1000)+' seconds · future file: media/rec-'+id+'.mp4 or .mp3\n\n'+directions[i]+'\n\n'+lines.map(x=>'> '+x).join('\n\n')+'\n\n';}
-out+='## Adding your performance\n\nPlace the finished file under media/ and set its relative path in the media entry for that recording in content.mjs, for example media[3].video = "media/rec-003.mp4". Set the audio field for an audio-only performance. Leave unused fields empty. The built-in transcript and timed visual clue remain available. Play, pause, replay and completion use the same progression gates. Check the board at laptop viewing distance before release. Run node build-guide.mjs and node build-offline.mjs after changes. The offline file works with its built-in text even without a media folder.\n';
+let out='# Recording and prop book · DM only\n\nProvisional damaged card **'+code.prefix+code.board.slice(0,2)+'??**, blackboard **'+code.board+'**, full code **'+code.prefix+code.board+'**. Three cylinders: duty, partially damaged ISB, Research Director. REC-001–005 reception; REC-006 lab; REC-007 Director only after Sigma and closed office door.\n\n';
+for(let i=1;i<recordings.length;i++){const [title,speaker,lines]=recordings[i],id=String(i).padStart(3,'0');out+='## REC-'+id+' · '+title+'\n\n'+speaker+'\n\n'+directions[i]+'\n\n'+lines.map(x=>'> '+x).join('\n\n')+'\n\n';}
+out+="Actual audio/video media still pending; built-in captions and the visual blackboard are available. Run npm run guides after edits.\n";
 await writeFile(new URL('./MEDIA.md',import.meta.url),out);

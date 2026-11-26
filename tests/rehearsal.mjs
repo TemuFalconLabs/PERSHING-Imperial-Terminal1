@@ -34,7 +34,7 @@ let dm,player;try{
    await player.locator('#notice').getByText('Instrument consignment received.').waitFor();
    await cmd(player,'UNLOCK SECURITY EQUIPMENT ROOM');await player.locator('#notice').getByText('Security Equipment Room released.').waitFor();
  }
- await play(5,9);await phys('RELAY 1',10);await phys('RELAY 2',11);await phys('ENTER LAB',12);
+ await play(5,9);await phys('RELAY 1',10);await player.locator('#notice').getByText(/Safety interlock verification: 1 of 2/).waitFor();await phys('RELAY 2',11);await player.locator('#notice').getByText(/Resuming normal air circulation/).waitFor();await phys('ENTER LAB',12);
  await player.reload();await visible(player,'#saver');await player.locator('#saver').click();
  if(optional){await click(dm,'Calibrate repaired bench');await click(player,'Analysis');await click(player,'Scan Sam');await player.getByText(/SAVE SPECIMEN TO RESEARCH DATABASE/).waitFor();await click(player,'Yes — save locally');await player.locator('#notice').getByText('Sample filed in this session.').waitFor()}
  await play(6,13);await phys('POWER ARCHIVE',14);
@@ -45,7 +45,7 @@ let dm,player;try{
  await cmd(player,'PLAY 7');await player.getByText(/Confidential playback unavailable/).waitFor();await dm.getByLabel('Physical station / room').selectOption('Director');await player.getByText(/EXECUTIVE AUTHENTICATION REQUIRED/).waitFor();await click(dm,'Confirm Director’s cylinder inserted');
  await dm.getByLabel('Director office door').selectOption('OBSTRUCTED');await player.locator('#notice').getByText('Director office door · OBSTRUCTED').waitFor();await cmd(player,'PLAY 7');await player.getByText(/Confidential playback withheld/).waitFor();
  await dm.getByLabel('Director office door').selectOption('CLOSED');await player.getByText(/CONFIDENTIAL PLAYBACK AVAILABLE/).waitFor();
- await click(dm,'Hold crisis');await player.locator('#notice').getByText('Operator setting updated.').waitFor();await play(7,17);await click(dm,'BEGIN CRISIS');await dm.getByText('Release the crisis hold first.').waitFor();await click(dm,'Release crisis hold');await phys('BEGIN CRISIS',18);
+ await click(dm,'Hold crisis');await player.locator('#notice').getByText('Operator setting updated.').waitFor();await play(7,17);await player.locator('#screen').getByText(/Biological containment: FAILED/).waitFor();await visible(player,'#dmReminder');await click(dm,'BEGIN CRISIS');await dm.getByText('Release the crisis hold first.').waitFor();await click(dm,'Release crisis hold');await phys('BEGIN CRISIS',18);
  await player.getByRole('heading',{name:'Unexpected specimen activity'}).waitFor();await dm.reload();await waitStep(dm,18);
  await click(dm,'Continue on this laptop offline');await waitStep(dm,18);await click(dm,'Player view');await dm.getByRole('heading',{name:'Unexpected specimen activity'}).waitFor();
  if(optional){

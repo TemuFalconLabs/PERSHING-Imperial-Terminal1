@@ -150,3 +150,36 @@ Audit limitations: source inspection, not fresh runtime verification; exact room
 ## 25 November approved walkthrough implementation checkpoint
 
 Core approved recordings, six tape records, distinct stations, per-subject dossier unlocks, Omega card gate and Director's own cylinder/office-door gate implemented on the feature branch. The original proposals above are historical and superseded where inconsistent. Remaining: actual media and portraits, exact map/trap and prop labels, final player comprehension review, browser/emulator and production smoke tests, preview and Pages release. Some interface polish items remain unverified; do not mark all IMP entries complete.
+
+
+## Creative baseline reconciliation — 25 November 2026
+
+This section supersedes historical proposals only where the approved walkthrough does so. Preserve the original entries for history. See [CREATIVE_BASELINE.md](CREATIVE_BASELINE.md) and [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md). Status is source/harness evidence, not production acceptance.
+
+| ID | Current disposition |
+|---|---|
+| IMP-001 | Implemented approved handover and security desk insertion objective. |
+| IMP-002 | Implemented engineering report and cable restoration; review exact transition display during rehearsal. |
+| IMP-003 | Major creative writing matched to walkthrough; first-time player clarity and ordinary-record audit remain open. |
+| IMP-004 | Earlier Director locker design superseded by deceased ISB officer's cylinder and trapped safe; separate final Director's office. |
+| IMP-005 | Bare six-digit code and AUTH alias implemented; physical card prerequisite. |
+| IMP-006 | Popup replacement remains proposed/unapproved; no change. |
+| IMP-007 | Scanner naming and diagnostic review remains open pending presentation rehearsal. |
+| IMP-008 | Qualitative adult results present; full structured presentation and provisional fields need DM review; KIDS unknown. |
+| IMP-009 | Director-only cylinder/door gate implemented; full final alert and DM reminder restored; browser verification pending. |
+| IMP-010 | Folder navigation and scanner controls present; review first-time player use. |
+| IMP-011 | Persistent objectives implemented; exact transition wording and UX rehearsal pending. |
+| IMP-012 | Tape lifecycle implemented and duplicate rejection tested in JS harness. |
+| IMP-013 | REC-003 approved writing and visual-only clue present; actual media/board legibility pending. |
+| IMP-014 | REC-004–006 and revised physical route implemented; full relay notices restored. |
+| IMP-015 | ISB-only durable tape records implemented; live recovery test pending; v1 migration superseded by fresh v2 session requirement. |
+| IMP-016 | Recording gates and notices present; browser clarity/replay review pending. |
+| IMP-017 | Scan/save and independently matched dossiers present; decline persistence decision and full UI review pending. |
+| IMP-018 | DM controls present; practical rehearsal pending. |
+| IMP-019 | Settings can still overwrite the mutable last notice; persistent objective and final alert remain; review as separate UX issue. |
+| IMP-020 | Wake/processing present; real browser and visual review pending. |
+| IMP-021 | Help/command feedback present; first-time player spoiler and comprehension review pending. |
+| IMP-022 | Offline rebuilt; main/mobile preview and Pages intentionally unchanged until release gate. |
+| IMP-023 | First-time player and actual two-browser rehearsal outstanding. |
+| IMP-024 | Physical station supervision vs player digital switching remains review item; no architecture change authorized. |
+| IMP-025 | Media guide and generator synchronized; actual map, props, media and final DM kit pending. |

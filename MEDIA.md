@@ -90,7 +90,7 @@ Lab workstation; memory suppression and archive designation.
 
 Facility commander
 
-Commander distressed, distant blaster fire; impact after they didn't stay dead; fire intensifies after seal it; cutoff, three seconds silence, alarm.
+Commander visibly distressed, attempting to maintain composure. Distant blaster fire. After “they didn't stay dead,” loud impact; commander turns toward something outside the camera’s field of view. After “I said seal it,” blaster fire intensifies; commander returns to recording. On final cutoff, violent noise and abrupt termination. Allow approximately three seconds of complete silence before the red biohazard alarm appears. Actual media still to be produced.
 
 > This is the facility commander. We have suffered a catastrophic containment failure. I am ordering the immediate evacuation of all surviving personnel.
 

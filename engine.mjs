@@ -1,4 +1,7 @@
 import {code,tapes,recordings,adultScans,kidScans} from './content.mjs';
+export const biohazardAlert="BIOHAZARD ALERT\nAIRBORNE CONTAMINANT DETECTED\n\nEnvironmental relays: ONLINE\nAir circulation: ACTIVE\nBiological containment: FAILED\n\nEMERGENCY PROTOCOL INITIATED";
+export const relayOneStatus="ENVIRONMENTAL RELAY 1: ONLINE\nENVIRONMENTAL RELAY 2: OFFLINE\n\nSafety interlock verification: 1 of 2\nLaboratory access: RESTRICTED";
+export const relayTwoStatus="ENVIRONMENTAL RELAYS: 2 OF 2 ONLINE\n\nResuming normal air circulation...\nOccupational safety check: COMPLETE\n\nLABORATORY ACCESS GRANTED\nYOUR SAFETY IS OUR PRIORITY.";
 export const route=['PLAY 1','MOUNT CYLINDER','PLAY 2','CONNECT SERVER','PLAY 3','MOUNT ISB','PLAY 4','AUTH','PLAY 5','RELAY 1','RELAY 2','ENTER LAB','PLAY 6','POWER ARCHIVE','RETRIEVE CLONE BATCH SIGMA','INSERT CLONE BATCH SIGMA','PLAY 7','BEGIN CRISIS'];
 export const recordingAt=[0,0,2,4,6,8,12,16];
 export const rooms={Reception:['Vestibule','Service passage'],Laboratory:['Lab corridor','Analysis door'],Engineering:['Plant hatch'],ISB:['ISB office door'],Archive:['Vault door'],Director:['Director office door']};
@@ -43,7 +46,7 @@ export function apply(raw,who,action,arg='',now=Date.now()){
    need(!s.playing||s.playing===id,'A recording is in progress.');s.playing=id;note='Playback · '+recordings[id][0];
  }else if(action==='FINISH'){
    const id=Number(arg);need(id&&id===s.playing);s.seen[id]=true;s.playing=0;
-   if(next==='PLAY '+id)advance();note=id===7?'BIOHAZARD ALERT · Airborne contaminant detected. Stand by.':'Playback complete. Archive index synchronized.';
+   if(next==='PLAY '+id)advance();note=id===7?biohazardAlert:'Playback complete. Archive index synchronized.';
  }else if(action==='AUTH'){
    need(s.deck==='Primary'&&next==='AUTH'&&s.card&&arg===code.prefix+code.board,'Authorization denied. Review registered media.');
    advance();note='Authorization accepted. Research index expanded. Laboratory safety interlock active.';
@@ -69,7 +72,7 @@ export function apply(raw,who,action,arg='',now=Date.now()){
  }else if(['fast','mute','hold'].includes(action)){need(dm);s[action]=!s[action];note='Operator setting updated.';
  }else throw Error('Unknown operation.');
  if(action==='FINISH'&&Number(arg)!==7)note=({1:'IMPERIAL SECURITY AUTHENTICATION · Authorization cylinder: NOT DETECTED · Research archive access: RESTRICTED',2:'NETWORK DIAGNOSTIC · Local terminal: OPERATIONAL · Server connection: OFFLINE · Remote research archive: UNAVAILABLE · Fault location: Server Room',3:'ISB SECURITY AUTHENTICATION REQUIRED · Registered duty location: ISB Officer’s Office',4:'MULTIFACTOR AUTHENTICATION · ISB security credentials: VERIFIED · Omega clearance: PENDING · Six-digit authorization key: REQUIRED',5:'ENVIRONMENTAL CONTROL SYSTEM · Ventilation relay 1 and 2: OFFLINE · Laboratory access: RESTRICTED',6:'CLASSIFIED RESEARCH ARCHIVE · Requested records: CLONE BATCH SIGMA · Storage medium: Physical data tape · Location: Imperial Research Archive Vault · Retrieval station: OFFLINE'})[Number(arg)]||note;
- if(action==='CONNECT SERVER')note='NETWORK CONNECTION RESTORED · Synchronization complete. RECORDING 003 AVAILABLE';if(action==='RELAY 2')note='ENVIRONMENTAL RELAYS: 2 OF 2 ONLINE · LABORATORY ACCESS GRANTED · YOUR SAFETY IS OUR PRIORITY.';
- if(action==='POWER ARCHIVE')note='IMPERIAL RESEARCH ARCHIVE · Power supply: RESTORED · Mechanical systems: OPERATIONAL · Archive inventory: AVAILABLE · Outstanding maintenance ticket: Terminal broken again. Diagnostic findings: Terminal was unplugged. Corrective action: Connected power. Technical expertise required: NONE. Ticket automatically closed.';if(action==='RELAY 1')note='ENVIRONMENTAL RELAY 1: ONLINE · ENVIRONMENTAL RELAY 2: OFFLINE · Verification: 1 of 2 · Laboratory access: RESTRICTED';
+ if(action==='CONNECT SERVER')note='NETWORK CONNECTION RESTORED · Synchronization complete. RECORDING 003 AVAILABLE';if(action==='RELAY 2')note=relayTwoStatus;
+ if(action==='POWER ARCHIVE')note='IMPERIAL RESEARCH ARCHIVE · Power supply: RESTORED · Mechanical systems: OPERATIONAL · Archive inventory: AVAILABLE · Outstanding maintenance ticket: Terminal broken again. Diagnostic findings: Terminal was unplugged. Corrective action: Connected power. Technical expertise required: NONE. Ticket automatically closed.';if(action==='RELAY 1')note=relayOneStatus;
  s.notice=note;s.revision++;s.log=[...s.log.slice(-59),{at:now,who,action:action==='AUTH'?'Authorization accepted':action,detail:action==='AUTH'?'':String(arg)}];return s;
 }
