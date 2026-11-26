@@ -4,11 +4,13 @@
 #soundToggle{font-size:.82rem;margin:.25rem 0 .65rem;opacity:.85}
 
 #audioTools{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:.4rem 0}#audioTools button{font-size:.82rem;margin:0}#audioStatus{flex-basis:100%;font-size:.74rem;opacity:.82}
+
+#commandEcho{font-size:.82rem;color:var(--mint);border-left:2px solid var(--edge);padding:.35rem .65rem;margin:.3rem 0 .75rem;overflow-wrap:anywhere;min-height:1.5em}#commandEchoText{letter-spacing:.045em}
 </style></head>
 <body><main><header><div class="stamp">ISD<span>07</span></div><div><small>IMPERIAL SCIENCE DIVISION</small><h1 id="title">Duty station</h1></div><output id="link">STANDBY</output></header><div id="audioTools"><button id="soundToggle" type="button" aria-pressed="false">Mute sound</button><button id="soundTest" type="button">Test sound</button><small id="audioStatus" role="status">Tap Test sound to check output.</small></div>
 <section id="setup"><h2 id="setupTitle">Connect to duty station</h2><form id="join"><label>Session code <input id="codeInput" maxlength="8" autocapitalize="characters" autocomplete="off" required></label><button>Connect</button></form>
 <div id="dmSetup" hidden><label>Campaign <select id="camp"><option>MEN</option><option>KIDS</option></select></label><button id="create">Create live session</button><button id="local">Local rehearsal</button><div id="recover"></div></div></section>
-<section id="work" hidden><div id="top" class="rail"></div><div id="board"></div><div id="monitor"><nav id="crumb"></nav><h2 id="heading"></h2><div id="screen"></div><pre id="objective" aria-live="polite" style="white-space:pre-wrap;border-top:1px solid currentColor;padding-top:.65rem"></pre><p id="dmReminder" hidden style="color:#c5a0ed;font-weight:bold">*** DM BACKEND INPUT REQUIRED UPON SUCCESS ***</p><div id="choices" class="actions"></div><form id="commandForm"><label for="command">COMMAND &gt;</label><input id="command" autocomplete="off" autocapitalize="characters" spellcheck="false"><button>Enter</button></form></div><div id="notice" role="status"></div></section>
+<section id="work" hidden><div id="top" class="rail"></div><div id="board"></div><div id="monitor"><nav id="crumb"></nav><h2 id="heading"></h2><div id="commandEcho" hidden>COMMAND &gt; <span id="commandEchoText"></span></div><div id="screen"></div><pre id="objective" aria-live="polite" style="white-space:pre-wrap;border-top:1px solid currentColor;padding-top:.65rem"></pre><p id="dmReminder" hidden style="color:#c5a0ed;font-weight:bold">*** DM BACKEND INPUT REQUIRED UPON SUCCESS ***</p><div id="choices" class="actions"></div><form id="commandForm"><label for="command">COMMAND &gt;</label><input id="command" autocomplete="off" autocapitalize="characters" spellcheck="false"><button>Enter</button></form></div><div id="notice" role="status"></div></section>
 <p id="error" role="alert"></p><section id="saver" tabindex="0" hidden aria-label="Wake duty station"><div id="insignia" aria-hidden="true">✺</div><small>TOUCH OR PRESS ANY KEY TO WAKE</small></section>
 <footer>ISD FIELD SYSTEMS <span>LOCAL PORT 07</span></footer></main><script type="module">const code = Object.freeze({ prefix: '47', board: '1938' });
 // Leave media paths empty for built-in captions. URLs are relative to this station.
@@ -328,7 +330,30 @@ const $=id=>document.getElementById(id), params=new URLSearchParams(location.sea
 let host,s,net,localPlayer=false,page='Home',selected='',query='',lastActivity=Date.now(),busy=false,renderTicket=0,mediaKey='',audioCtx,muted=false;
 const player=()=>!dm||localPlayer;
 const el=(tag,txt='',parent)=>{const n=document.createElement(tag);n.textContent=txt;if(parent)parent.append(n);return n};
-function button(node,label,fn){const b=el('button',label,node);b.type='button';b.onclick=()=>{if(!player()||!busy)Promise.resolve().then(fn).catch(report)};return b}
+function button(node,label,fn,shortcut=''){const b=el('button',label,node);b.type='button';if(shortcut)b.dataset.command=shortcut;b.onclick=()=>{if(player()&&(busy||commandPending))return;Promise.resolve().then(()=>shortcut?autoCommand(shortcut,fn):fn()).catch(report)};return b}
+// Local presentation only: each shortcut invokes its existing guarded action once.
+let commandPending=false;
+function echoCommand(value){$('commandEcho').hidden=false;$('commandEchoText').textContent=value}
+function displayCommand(value){const v=value.trim();return /^(?:AUTH\s+)?\d{6}$/i.test(v)?'AUTH ******':v.toUpperCase()}
+function commandTypingPlan(value,instant){return instant?{step:value.length||1,delay:0}:{step:Math.max(1,Math.ceil(value.length/23)),delay:44}}
+async function autoCommand(value,fn){
+ if(commandPending||busy||!s||!player()||s.playing)return;
+ commandPending=true;const revision=s.revision,deck=s.deck,session=net.code,input=$('command'),draft=input.value,previousReadonly=input.readOnly;
+ const valid=()=>player()&&s.revision===revision&&s.deck===deck&&net.code===session&&!s.playing;
+ input.readOnly=true;input.value='';echoCommand('');$('error').textContent='';
+ const plan=commandTypingPlan(value,s.fast||reduced);
+ try{
+  for(let i=plan.step;i<value.length+plan.step;i+=plan.step){
+   if(!valid())return;
+   const fragment=value.slice(0,i);input.value=fragment;echoCommand(fragment);
+   if(plan.delay){playCue('key');await new Promise(resolve=>setTimeout(resolve,plan.delay))}
+  }
+  if(!valid())return;
+  input.value=draft;input.readOnly=previousReadonly;
+  await fn();
+ }finally{input.value=draft;input.readOnly=previousReadonly;commandPending=false}
+}
+function prepareManual(prefix){const input=$('command');input.value=prefix;input.focus();input.setSelectionRange(prefix.length,prefix.length)}
 // Original, synthesized Imperial-style UI effects. No files, network or speech synthesis.
 const cuePatterns={
  tap:[[0,.075,820,390,'triangle',.065]],
@@ -496,8 +521,8 @@ function activity(){lastActivity=Date.now()}
 function wake(e){if(!$('saver').hidden){e?.preventDefault();e?.stopImmediatePropagation();$('saver').hidden=true;activity();$('command').focus();syncAudio();gestureCue('wake');return true}}
 // A touch click is the reliable mobile activation; do not consume it on pointerdown.
 document.addEventListener('pointerdown',()=>activity(),true);
-document.addEventListener('keydown',e=>{activity();if(wake(e))return;if(busy&&player()){e.preventDefault();e.stopImmediatePropagation();return}if(e.key==='Enter'&&e.target.id==='command')gestureCue('tap');else gestureCue(null)},true);
-document.addEventListener('click',e=>{activity();if(wake(e))return;const button=e.target.closest?.('button');if(busy&&player()&&button?.id!=='soundToggle'&&button?.id!=='soundTest'){e.preventDefault();e.stopImmediatePropagation();return}if(button&&!button.disabled&&button.id!=='soundTest'&&button.id!=='soundToggle')gestureCue('tap');else gestureCue(null)},true);
+document.addEventListener('keydown',e=>{activity();if(wake(e))return;if((busy||commandPending)&&player()){e.preventDefault();e.stopImmediatePropagation();return}if(e.key==='Enter'&&e.target.id==='command')gestureCue('tap');else gestureCue(null)},true);
+document.addEventListener('click',e=>{activity();if(wake(e))return;const button=e.target.closest?.('button');if((busy||commandPending)&&player()&&button?.id!=='soundToggle'&&button?.id!=='soundTest'){e.preventDefault();e.stopImmediatePropagation();return}if(button&&!button.disabled&&button.id!=='soundTest'&&button.id!=='soundToggle'&&!button.dataset.command)gestureCue('tap');else gestureCue(null)},true);
 document.addEventListener('input',e=>{if(['command','codeInput'].includes(e.target.id))gestureCue('key')},true);
 $('soundToggle').onclick=()=>{muted=!muted;if(muted)cancelAnnouncement();syncAudio();if(!muted)gestureCue('approval')};
 $('soundTest').onclick=()=>gestureCue('test');
@@ -511,7 +536,7 @@ $('insignia').innerHTML='<svg viewBox="0 0 100 100" aria-hidden="true" fill="cur
 function bounce(t){if(!$('saver').hidden){const pos=(size,rate)=>{let m=Math.max(1,size-76),d=(t*rate)%(2*m);return reduced?m/2:Math.min(d,2*m-d)};$('insignia').style.transform='translate('+pos(innerWidth,.049)+'px,'+pos(innerHeight,.037)+'px)'}requestAnimationFrame(bounce)}requestAnimationFrame(bounce);
 const SAVER_IDLE_MS=60000;
 function shouldShowSaver(state,isPlayer,isBusy,idleMs){return !!state&&isPlayer&&!isBusy&&!state.playing&&state.step<17&&idleMs>=SAVER_IDLE_MS}
-setInterval(()=>{if($('saver').hidden&&shouldShowSaver(s,player(),busy,Date.now()-lastActivity)){$('saver').hidden=false;syncAudio()}},250);
+setInterval(()=>{if($('saver').hidden&&shouldShowSaver(s,player(),busy||commandPending,Date.now()-lastActivity)){$('saver').hidden=false;syncAudio()}},250);
 async function act(a,arg=''){if(!host)throw Error('Connecting…');$('error').textContent='';await host.send(a,String(arg),player()?'PLAYER':'DM')}
 function nav(p,sel=''){if(mediaKey)cancelAnnouncement();page=p;selected=sel;mediaKey='';draw()}
 function textOut(str,animate=false){
@@ -551,33 +576,33 @@ function draw(){
  const out=$('choices');out.replaceChildren();$('objective').textContent=s.step<17?'CURRENT OBJECTIVE\n'+objective(s):'';$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
  if(s.playing){playback();return}
  mediaKey='';$('crumb').textContent=s.deck+' / '+page;$('heading').textContent=page;
- const btn=(label,fn)=>button(out,label,fn), go=(p)=>btn(p,()=>selectPage(p));
+ const btn=(label,fn,shortcut='')=>button(out,label,fn,shortcut), go=(p)=>btn(p,()=>selectPage(p),p==='Home'?'DIR':['Help','Status','Doors'].includes(p)?p.toUpperCase():'OPEN '+p.toUpperCase());
  if(s.step>=17){$('heading').textContent=s.step===18?'Unexpected specimen activity':'Biohazard alert';textOut(s.step===18?'Emergency routes: return via the entrance or follow the cave exit. Movement reported in the laboratory.':biohazardAlert);if(localPlayer)btn('Operator view',toggleView);return}
  if(s.deck==='Archive'){
    $('heading').textContent=s.step>=14?'Tape elevator':'Retrieval station';textOut(s.step>=14?'Select a carrier for mechanical delivery. Decryption requires the ISB officer’s terminal.':'Display dark.');
-   if(s.step>=14)Object.keys(tapes).filter(x=>!s.retrieved[x]&&!s.inserted[x]&&(page!=='Search'||x.includes(query.toUpperCase()))).forEach(x=>btn('Retrieve '+x,()=>retrieve(x)));
-   if(s.step>=14)btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'));
-   btn('Return to laboratory workstation',()=>act('DECK','Lab'));
+   if(s.step>=14)Object.keys(tapes).filter(x=>!s.retrieved[x]&&!s.inserted[x]&&(page!=='Search'||x.includes(query.toUpperCase()))).forEach(x=>btn('Retrieve '+x,()=>retrieve(x),'RETRIEVE '+x));
+   if(s.step>=14)btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'),'ISB');
+   btn('Return to laboratory workstation',()=>act('DECK','Lab'),'LAB');
  }else if(s.deck==='Director'){
-   $('heading').textContent='Research Director’s terminal';textOut(!s.directorCylinder?'EXECUTIVE AUTHENTICATION REQUIRED\nInsert the Research Director’s security cylinder.':!s.inserted['CLONE BATCH SIGMA']?'Executive credentials verified. Classified archive authorization pending.':s.doors['Director office door']!=='CLOSED'?'Security cylinder detected...\nExecutive credentials verified.\nCONFIDENTIAL TRANSMISSION AVAILABLE\nPRIVACY PROTOCOL ACTIVE\nClose the office door to authorize playback.':'PRIVACY CHECK COMPLETE\nCONFIDENTIAL PLAYBACK AVAILABLE');if(canPlay(s,7)&&s.doors['Director office door']==='CLOSED')btn('Play REC-007',()=>act('PLAY',7));btn('Return to laboratory workstation',()=>act('DECK','Lab'));
+   $('heading').textContent='Research Director’s terminal';textOut(!s.directorCylinder?'EXECUTIVE AUTHENTICATION REQUIRED\nInsert the Research Director’s security cylinder.':!s.inserted['CLONE BATCH SIGMA']?'Executive credentials verified. Classified archive authorization pending.':s.doors['Director office door']!=='CLOSED'?'Security cylinder detected...\nExecutive credentials verified.\nCONFIDENTIAL TRANSMISSION AVAILABLE\nPRIVACY PROTOCOL ACTIVE\nClose the office door to authorize playback.':'PRIVACY CHECK COMPLETE\nCONFIDENTIAL PLAYBACK AVAILABLE');if(canPlay(s,7)&&s.doors['Director office door']==='CLOSED')btn('Play REC-007',()=>act('PLAY',7),'PLAY REC-007');btn('Return to laboratory workstation',()=>act('DECK','Lab'),'LAB');
  }else if(page==='Home'){
-   textOut(s.deck==='ISB'?(s.inserted['CLONE BATCH SIGMA']?'CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.':'ISB OFFICER’S READER\nInsert retrieved archive tape to decrypt.'):'Local directories available. Select a directory or enter HELP.');if(s.deck!=='ISB')go('Media Archive');if(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA'])go('Clone Batch Sigma');go('Records');go('Doors');go('Status');go('Help');
+   textOut(s.deck==='ISB'?(s.inserted['CLONE BATCH SIGMA']?'CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.':'ISB OFFICER’S READER\nInsert retrieved archive tape to decrypt.'):'Local directories available. Select a directory or enter HELP.');if(s.deck!=='ISB')go('Media Archive');if(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA'])go('Clone Batch Sigma');go('Records');btn('Search records',()=>prepareManual('SEARCH '));go('Doors');go('Status');go('Help');
  }else if(page==='Media Archive'){textOut('One local index mounted.');go('Research Recordings')}
- else if(page==='Research Recordings'){textOut('Select a recording to play.');for(let i=1;i<recordings.length;i++)if(canPlay(s,i))btn('Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i))}
- else if(page==='Clone Batch Sigma'&&s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']){textOut('CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.');const names=s.campaign==='MEN'?['Specimen Transfer Ledger','Drellis Minor Recovery Operation','Crime Lord Morgan','Research Oversight Authorization']:['Specimen Transfer Ledger','Transfer receipt'];for(const name of names)if(files(s)[name])btn(name,()=>selectPage('Read',name));}
- else if(page==='Records'||page==='Search'){const names=Object.keys(files(s)).filter(x=>page!=='Search'||(x+' '+files(s)[x]).toLowerCase().includes(query.toLowerCase()));textOut(names.length?'Available records':'No local records match.');names.forEach(x=>btn(x,()=>selectPage('Read',x)))}
+ else if(page==='Research Recordings'){textOut('Select a recording to play.');for(let i=1;i<recordings.length;i++)if(canPlay(s,i))btn('Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i),'PLAY '+rid(i))}
+ else if(page==='Clone Batch Sigma'&&s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']){textOut('CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.');const names=s.campaign==='MEN'?['Specimen Transfer Ledger','Drellis Minor Recovery Operation','Crime Lord Morgan','Research Oversight Authorization']:['Specimen Transfer Ledger','Transfer receipt'];for(const name of names)if(files(s)[name])btn(name,()=>selectPage('Read',name),'OPEN '+name.toUpperCase());}
+ else if(page==='Records'||page==='Search'){const names=Object.keys(files(s)).filter(x=>page!=='Search'||(x+' '+files(s)[x]).toLowerCase().includes(query.toLowerCase()));textOut(names.length?'Available records':'No local records match.');names.forEach(x=>btn(x,()=>selectPage('Read',x),'OPEN '+x.toUpperCase()))}
  else if(page==='Read'){const body=files(s)[selected];$('heading').textContent=body?selected:'Record unavailable';textOut(body||'Access unavailable.')}
- else if(page==='Doors'){textOut('Current room · '+s.room+'\n'+rooms[s.room].map(d=>d+' · '+s.doors[d]).join('\n')+'\nSecurity Equipment Room · '+(s.equipment?'RELEASED':'SEALED'));if(s.step>=8){btn('Close current room',closeDoors);btn('Release equipment room',()=>act('EQUIPMENT'))}}
- else if(page==='Analysis'&&s.repaired&&s.deck==='Lab'){textOut('Select a subject for local analysis.');Object.keys(scans(s)).forEach(name=>btn('Scan '+name,()=>scan(name)));go('Saved results');for(const name of Object.keys(s.matches))if(s.matches[name])btn('Individual specimen record — '+name,()=>selectPage('Read','Individual specimen record — '+name))}
+ else if(page==='Doors'){textOut('Current room · '+s.room+'\n'+rooms[s.room].map(d=>d+' · '+s.doors[d]).join('\n')+'\nSecurity Equipment Room · '+(s.equipment?'RELEASED':'SEALED'));if(s.step>=8){btn('Close current room',closeDoors,'CLOSE CURRENT ROOM');btn('Release equipment room',()=>act('EQUIPMENT'),'UNLOCK SECURITY EQUIPMENT ROOM')}}
+ else if(page==='Analysis'&&s.repaired&&s.deck==='Lab'){textOut('Select a subject for local analysis.');Object.keys(scans(s)).forEach(name=>btn('Scan '+name,()=>scan(name),'SCAN '+name.toUpperCase()));go('Saved results');for(const name of Object.keys(s.matches))if(s.matches[name])btn('Individual specimen record — '+name,()=>selectPage('Read','Individual specimen record — '+name),'OPEN INDIVIDUAL SPECIMEN RECORD — '+name.toUpperCase())}
  else if(page==='Saved results'&&s.deck==='Lab'&&s.repaired){const names=Object.keys(s.saved).filter(n=>s.saved[n]);textOut(names.length?names.map(n=>n+' · '+scans(s)[n]).join('\n\n'):'No saved specimens.');go('Analysis')}
- else if(page==='Sample'&&s.repaired&&s.deck==='Lab'&&s.lastScan===selected){textOut(selected+' · '+scans(s)[selected]+'\nSAVE SPECIMEN TO RESEARCH DATABASE?');if(s.matches[selected])btn('View individual specimen record',()=>selectPage('Read','Individual specimen record — '+selected));btn('Yes — save locally',async()=>{await act('SAVE SCAN',selected);nav('Analysis')});btn('No — discard',()=>nav('Analysis'));go('Analysis')}
+ else if(page==='Sample'&&s.repaired&&s.deck==='Lab'&&s.lastScan===selected){textOut(selected+' · '+scans(s)[selected]+'\nSAVE SPECIMEN TO RESEARCH DATABASE?');if(s.matches[selected])btn('View individual specimen record',()=>selectPage('Read','Individual specimen record — '+selected),'OPEN INDIVIDUAL SPECIMEN RECORD — '+selected.toUpperCase());btn('Yes — save locally',()=>saveCurrentScan(),'SAVE SCAN');btn('No — discard',()=>nav('Analysis'),'DISCARD SCAN');go('Analysis')}
  else if(page==='Status'){textOut(s.notice+(s.hint?'\n'+s.hint:''))}
- else {textOut('DIR · OPEN <directory or file> · SEARCH <text> · PLAY <record> · STATUS · DOORS'+(s.step>=6?' · AUTH <code>':'')+(s.repaired?' · SCAN <subject>':''))}
+ else {textOut('DIR · OPEN <directory or file> · SEARCH <text> · PLAY <record> · STATUS · DOORS'+(s.step>=6?' · AUTH <code>':'')+(s.repaired?' · SCAN <subject> · SAVE SCAN · DISCARD SCAN':'')+(s.step>=12?' · LAB · RECEPTION':'')+(s.step>=13?' · ARCHIVE':'')+(s.step>=14?' · ISB · INSERT <tape>':''))}
  if(s.deck!=='Archive'&&s.deck!=='Director'){
-   if(s.deck==='Primary'&&s.step===7&&s.card)btn('Enter authorization code',()=>{const v=prompt('Six-digit facility authorization');if(v)return act('AUTH',v.trim())});
-   if(s.step>=13)btn('Use archive station',()=>act('DECK','Archive'));if(s.step>=12&&s.deck!=='Lab')btn('Return to laboratory workstation',()=>act('DECK','Lab'));if(s.step>=12&&s.deck!=='Primary')btn('Return to reception terminal',()=>act('DECK','Primary'));if(s.step>=14&&s.deck!=='ISB')btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'));
-   if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>btn('Insert '+x,async()=>{await act('INSERT',x);nav(x==='CLONE BATCH SIGMA'?'Clone Batch Sigma':'Read',x)}));
-   if(s.deck==='Lab'&&s.repaired&&page!=='Analysis')go('Analysis');if(s.deck==='Lab'&&canPlay(s,6)&&!s.seen[6]&&page!=='Research Recordings')btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6));if(page!=='Home')go('Home');
+   if(s.deck==='Primary'&&s.step===7&&s.card)btn('Enter authorization code',()=>prepareManual('AUTH '));
+   if(s.step>=13)btn('Use archive station',()=>act('DECK','Archive'),'ARCHIVE');if(s.step>=12&&s.deck!=='Lab')btn('Return to laboratory workstation',()=>act('DECK','Lab'),'LAB');if(s.step>=12&&s.deck!=='Primary')btn('Return to reception terminal',()=>act('DECK','Primary'),'RECEPTION');if(s.step>=14&&s.deck!=='ISB')btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'),'ISB');
+   if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>btn('Insert '+x,()=>insertTape(x),'INSERT '+x));
+   if(s.deck==='Lab'&&s.repaired&&page!=='Analysis')go('Analysis');if(s.deck==='Lab'&&canPlay(s,6)&&!s.seen[6]&&page!=='Research Recordings')btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6),'PLAY REC-006');if(page!=='Home')go('Home');
  }
  if(localPlayer)btn('Operator view',toggleView);
 }
@@ -585,6 +610,8 @@ function rid(i){return 'REC-'+String(i).padStart(3,'0')}
 function closeDoors(){if(confirm('Close the doors serving '+s.room+'?'))return act('CLOSE')}
 async function retrieve(x){$('screen').classList.add('retrieving');try{textOut('Carriage moving…');await new Promise(r=>setTimeout(r,s.fast||reduced?0:900));await act('RETRIEVE',x)}finally{$('screen').classList.remove('retrieving')}}
 async function scan(name){await act('SCAN',name);nav('Sample',name)}
+async function saveCurrentScan(){if(s.deck!=='Lab'||!s.repaired||page!=='Sample'||s.lastScan!==selected)throw Error('Select a specimen sample first.');await act('SAVE SCAN',selected);nav('Analysis')}
+async function insertTape(x){await act('INSERT',x);nav(x==='CLONE BATCH SIGMA'?'Clone Batch Sigma':'Read',x)}
 function toggleView(){cancelAnnouncement();finalSilence=false;localPlayer=!localPlayer;nav('Home');if(localPlayer&&s.step<17&&!s.playing)$('saver').hidden=false;else $('saver').hidden=true;syncAudio()}
 let pausePlayback=()=>{};
 function playback(){
@@ -663,7 +690,7 @@ if(dm&&params.has('offline'))connect(false,true,params.get('offline')).catch(rep
 async function command(value){
  let raw=value.trim().replace(/\s+/g,' '),v=raw.toUpperCase();
  if(s.playing){if(v==='PAUSE')pausePlayback();return}
- if(s.deck==='Archive'&&s.step<14)return;
+ if(s.deck==='Archive'&&s.step<14){if(v==='LAB')return act('DECK','Lab');return}
  if(s.deck==='Archive'){
    if(v==='DIR'){nav('Archive');return}if(v.startsWith('SEARCH ')){query=raw.slice(7);nav('Search');return}
    if(v.startsWith('RETRIEVE '))return retrieve(v.slice(9));if(v==='ISB')return act('DECK','ISB');if(v==='LAB')return act('DECK','Lab');throw Error('Use DIR, SEARCH, RETRIEVE, ISB or LAB.')
@@ -681,11 +708,12 @@ async function command(value){
    const doc=Object.keys(files(s)).find(k=>k.toUpperCase()===path);if(doc)return selectPage('Read',doc);
  }
  const m=v.match(/^(?:PLAY|REPLAY) (?:REC-)?0*([1-7])$/);if(m){if(+m[1]===1&&!s.seen[1]&&page!=='Research Recordings')throw Error('Select the local recording directory first.');return act('PLAY',m[1])}
- if(v==='ARCHIVE')return act('DECK','Archive');if(v==='ISB')return act('DECK','ISB');if(v==='LAB')return act('DECK','Lab');if(v.startsWith('INSERT '))return act('INSERT',v.slice(7));
+ if(v==='ARCHIVE')return act('DECK','Archive');if(v==='ISB')return act('DECK','ISB');if(v==='LAB')return act('DECK','Lab');if(v==='RECEPTION')return act('DECK','Primary');if(v.startsWith('INSERT '))return insertTape(v.slice(7));
+ if(v==='SAVE SCAN')return saveCurrentScan();if(v==='DISCARD SCAN'&&s.deck==='Lab'&&s.repaired&&page==='Sample'&&s.lastScan===selected)return nav('Analysis');
  if(v.startsWith('SCAN ')&&s.deck==='Lab'&&s.repaired){let key=Object.keys(scans(s)).find(k=>k.toUpperCase()===v.slice(5).replace(/^TODD$/,'T0DD'));if(key)return scan(key)}
  if(['WHOAMI','PLEASE','ADMIN'].includes(v))return textOut({WHOAMI:'Unregistered duty operator.',PLEASE:'Magic word accepted. Authorization still denied.',ADMIN:'Nice try.'}[v],true);
  throw Error('Entry unavailable. Use DIR to browse or HELP for commands.')
 }
-$('commandForm').onsubmit=e=>{e.preventDefault();if(busy)return;let value=$('command').value;$('command').value='';$('error').textContent='';command(value).catch(report)};
+$('commandForm').onsubmit=e=>{e.preventDefault();if(busy||commandPending)return;let value=$('command').value;$('command').value='';$('error').textContent='';echoCommand(displayCommand(value));commandPending=true;command(value).catch(report).finally(()=>{commandPending=false})};
 if('serviceWorker' in navigator&&!params.has('emulator'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script></body></html>
