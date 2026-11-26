@@ -897,7 +897,7 @@ function nav(p,sel=''){if(mediaKey)cancelAnnouncement();page=p;selected=sel;medi
 function responseTone(str){
  const v=String(str||'');
  if(/BIOHAZARD ALERT|AIRBORNE CONTAMINANT DETECTED|EMERGENCY CONTAINMENT PROTOCOL|SPECIMEN ACTIVITY/i.test(v))return 'critical';
- if(/access (?:denied|unavailable|restricted)|request denied|authorization (?:denied|required|still denied)|operation unavailable|security (?:warning|notified)|obstruction detected|personnel file has been flagged|disciplinary proceedings|(?:^|\b)error (?:403|418):|authorization key: REQUIRED|containment: FAILED|credentials are required|EXECUTIVE AUTHENTICATION REQUIRED|PRIVACY PROTOCOL ACTIVE|CONFIDENTIAL PLAYBACK WITHHELD|warning: unstable/i.test(v))return 'warning';
+ if(/access(?:\s*:\s*|\s+)(?:denied|unavailable|restricted)|request denied|authorization(?:\s*:\s*|\s+)(?:denied|required|still denied)|operation unavailable|security (?:warning|notified)|obstruction detected|personnel file has been flagged|disciplinary proceedings|(?:^|\b)error (?:403|418):|authorization key: REQUIRED|containment: FAILED|credentials are required|EXECUTIVE AUTHENTICATION REQUIRED|PRIVACY PROTOCOL ACTIVE|CONFIDENTIAL PLAYBACK WITHHELD|warning: unstable/i.test(v))return 'warning';
  return 'normal';
 }
 function paintObjective(){const n=$('objective'),v=visibleObjective(s);n.hidden=!v;n.textContent=v?'CURRENT OBJECTIVE\n'+v:''}

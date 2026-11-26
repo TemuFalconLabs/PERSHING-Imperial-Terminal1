@@ -78,3 +78,5 @@ Google Doc updated and read back first; GitHub expansion sourced directly from t
 ## DM-controlled objective and phosphor palette checkpoint
 
 Google Doc specification updated and verified first. Implemented owner-only SHOW/HIDE OBJECTIVE using persisted reveal ID; old checkpoints normalize hidden, fulfilled reveals cleared even on force advance; public view carries visibility; no new allowed player actions or database rules. Objective-only receive updates avoid redrawing active playback or terminal output. Seven-group DM panel, exact existing text, both-relay and Director subgoal lifecycle. Bright semibold response hierarchy and existing reminders preserved. 63 targeted source checks plus original 74 progression assertions and new regression test assertions passed in adapted harness; offline syntax parsed. Browser and two-laptop verification pending. Production unchanged.
+
+Regression test wired into npm test; two-client rehearsal now asserts hidden/reveal/hide, two-relay persistence and reload persistence. Native browser/emulator rehearsal not yet executed. Colon-separated diagnostic restrictions classified amber; four tone checks passed.
