@@ -74,3 +74,7 @@ Player terminal displays a six-spoke Imperial cog after 60 seconds of inactivity
 ## Synthesized station audio
 
 Original electronic effects are generated on-device using Web Audio: keys/taps, wake, errors, approval/unlock, network restoration, relays, archive transport, scan/match, playback/completion, door, containment klaxon and crisis. Tap to enable audio if the browser requires interaction. Player Mute sound remains accessible during recording and emergency screens; DM Mute station overrides local sound. Live DM controls remain silent; standalone rehearsal can play cues in either view. The post-REC-007 silence is preserved before the finite containment klaxon. Actual recorded voices remain separate future media. Test speaker volume and phone browser audio during rehearsal.
+
+## Free browser narration (phone rehearsal)
+
+REC-001–007 use the exact approved paragraphs, with British English preferred and individual pitch/rate profiles. The available device voice library determines accent and identity. Each paragraph advances on speech completion; unavailable, blocked, timed-out or muted speech falls back to text. Pause/resume and replay are available; Text only bypasses device speech. Fast mode deliberately skips narration. The 3-second normal-mode silence, containment klaxon and automated alert narration follow REC-007; the alert voice also reads the earlier safety phrase. Actual recorded audio/video paths remain available for a future replacement. Audio quality, native pause/resume and autoplay require phone audition; no voice files are bundled.

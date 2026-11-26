@@ -195,3 +195,7 @@ IMP-020: redraw six-spoke Imperial cog with segmented geometry, 60-second non-de
 ## Phone rehearsal audio amendment
 
 Original synthesized terminal feedback added at DM request; distinct non-looping sounds, volume envelopes and mute controls, including final containment klaxon after approved silence. No narrative, progression, rules or recording dialogue changes. Actual phone audio audition pending.
+
+## Browser narration trial
+
+Free Web Speech device voices for all seven recordings, text fallback, individual delivery profiles and separate alert narration; no modifications to exact scripts or gate engine. Preview only; phone audition pending.
