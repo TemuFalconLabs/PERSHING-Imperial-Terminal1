@@ -195,6 +195,8 @@ export function findEgg(raw){
  if(/^CD\s*\.\.$/i.test(v))return eggEntries.find(e=>e.key==='CD ..');
  const exact=eggAliases.find(x=>x.c===compact);if(exact)return exact.e;
  const wrapped=' '+words+' ';
+ // ORDER 66 was explicitly approved as an embedded trigger, even alongside other lore.
+ if(/(?:^| )O *R *D *E *R *6 *6(?: |$)/.test(wrapped))return eggEntries.find(e=>e.key==='ORDER 66');
  for(const x of eggAliases){if(new RegExp('(?:^| )'+x.c.split('').join(' *')+'(?: |$)').test(wrapped))return x.e}
  if(compact.length>=5&&compact.length<=24&&!/\d/.test(compact)){
    const candidates=eggAliases.filter(x=>x.c.length>=5&&!/\d/.test(x.c)&&eggDistance(compact,x.c)===1);

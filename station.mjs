@@ -1,8 +1,10 @@
+import {findEgg,eggReply,newEggHistory} from './easter-eggs.mjs';
 import {files,tapes,code,media,recordings} from './content.mjs';
 import {route,rooms,stages,recordingAt,physical,scans,validSave,canPlay,objective,biohazardAlert} from './engine.mjs';
 import {localSession,networkSession,newCode,cacheKey} from './session.mjs';
 const $=id=>document.getElementById(id), params=new URLSearchParams(location.search),standalone=document.documentElement.hasAttribute('data-offline'),dm=standalone||params.has('dm'), reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let host,s,net,localPlayer=false,page='Home',selected='',query='',lastActivity=Date.now(),busy=false,renderTicket=0,mediaKey='',audioCtx,muted=false;
+let eggHistory=newEggHistory();
 const player=()=>!dm||localPlayer;
 const el=(tag,txt='',parent)=>{const n=document.createElement(tag);n.textContent=txt;if(parent)parent.append(n);return n};
 function button(node,label,fn,shortcut=''){const b=el('button',label,node);b.type='button';if(shortcut)b.dataset.command=shortcut;b.onclick=()=>{if(player()&&(busy||commandPending))return;Promise.resolve().then(()=>shortcut?autoCommand(shortcut,fn):fn()).catch(report)};return b}
@@ -223,7 +225,7 @@ function textOut(str,animate=false){
 function selectPage(p,sel=''){nav(p,sel);if(!s.playing)textOut($('screen').textContent,true)}
 function receive(state,info){
  const before=s,first=!s,changed=s?.revision!==state.revision,alarm=s&&s.step<17&&state.step>=17;
- const moved=s?.deck!==state.deck;s=state;net=info;if(moved){page='Home';selected='';mediaKey=''}$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
+ const moved=s?.deck!==state.deck;if(first||net?.code!==info.code||(before?.step>0&&state.step===0))eggHistory=newEggHistory();s=state;net=info;if(moved){page='Home';selected='';mediaKey=''}$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
  if(before&&(before.playing!==s.playing||before.step!==s.step||s.mute||s.fast))cancelAnnouncement();if(!s.playing)finalSilence=false;syncAudio();if(changed){$('notice').textContent=s.notice;if(!first)playCue(cueForState(before,s));activity()}
  if(first||changed){if(alarm||s.playing||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
  if(first&&player()&&!s.playing&&s.step<17)$('saver').hidden=false;syncAudio();
@@ -362,13 +364,21 @@ function dashboard(){
 }
 function updateClock(){let n=$('dangerClock');if(n)n.textContent='Circulation elapsed · '+Math.max(0,Math.floor((Date.now()-Number(n.dataset.time))/60000))+' min · manual cue'}setInterval(updateClock,3000);
 if(dm&&params.has('offline'))connect(false,true,params.get('offline')).catch(report);
+function showEggProgram(p){
+ const out=$('screen');++renderTicket;busy=false;out.replaceChildren();
+ el('h3',p.title,out);el('p',p.question,out);const choices=el('div','',out);choices.className='actions';
+ for(const [label,response] of p.choices)button(choices,label,()=>{choices.replaceChildren();el('p','RESPONSE RECORDED: '+label.toUpperCase(),choices);el('p',response,choices);el('p',p.ending,choices);button(choices,p.reset,()=>showEggProgram(p));button(choices,'Return to terminal',()=>draw())});
+ button(choices,'Return to terminal',()=>draw());
+}
+function freestyle(raw){if(!raw)return;const reply=eggReply(raw,eggHistory);if(reply.program)showEggProgram(reply.program);else {if(reply.unknown)playCue('denied');textOut(reply.text,true)}}
+function recordSearchMatches(raw){const q=raw.toLowerCase().trim();return !!q&&Object.entries(files(s)).some(([name,body])=>(name+' '+body).toLowerCase().includes(q))}
 async function command(value){
  let raw=value.trim().replace(/\s+/g,' '),v=raw.toUpperCase();
  if(s.playing){if(v==='PAUSE')pausePlayback();return}
  if(s.deck==='Archive'&&s.step<14){if(v==='LAB')return act('DECK','Lab');return}
  if(s.deck==='Archive'){
-   if(v==='DIR'){nav('Archive');return}if(v.startsWith('SEARCH ')){query=raw.slice(7);nav('Search');return}
-   if(v.startsWith('RETRIEVE '))return retrieve(v.slice(9));if(v==='ISB')return act('DECK','ISB');if(v==='LAB')return act('DECK','Lab');throw Error('Use DIR, SEARCH, RETRIEVE, ISB or LAB.')
+   if(v==='DIR'){nav('Archive');return}if(v.startsWith('SEARCH ')){const term=raw.slice(7);if(!Object.keys(tapes).some(x=>x.includes(term.toUpperCase()))&&findEgg(term))return freestyle(term);query=term;nav('Search');return}
+   if(v.startsWith('RETRIEVE '))return retrieve(v.slice(9));if(v==='ISB')return act('DECK','ISB');if(v==='LAB')return act('DECK','Lab');return freestyle(raw)
  }
  if(['AUTH BLUE','CODE BLUE','CODE CLEARANCE BLUE','AUTHORIZATION CODE BLUE'].includes(v))return act('BLUE');
  if(/^\d{6}$/.test(v))return act('AUTH',v);if(v.startsWith('AUTH '))return act('AUTH',v.slice(5));
@@ -376,18 +386,17 @@ async function command(value){
  if(v==='HELP')return selectPage('Help');if(v==='STATUS')return selectPage('Status');if(v==='DOORS')return selectPage('Doors');
  if(v==='CLOSE CURRENT ROOM')return closeDoors();
  if(v==='UNLOCK SECURITY EQUIPMENT ROOM')return act('EQUIPMENT');
- if(v.startsWith('SEARCH ')){query=raw.slice(7);selectPage('Search');return}
+ if(v.startsWith('SEARCH ')){const term=raw.slice(7);if(!recordSearchMatches(term)&&findEgg(term))return freestyle(term);query=term;selectPage('Search');return}
  if(v.startsWith('OPEN ')){const path=v.slice(5);
    const options=['Media Archive','Research Recordings','Doors','Records','Status','Help',...(s.deck==='Lab'&&s.repaired?['Analysis','Saved results']:[]),...(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']?['Clone Batch Sigma']:[])];
    const name=options.find(k=>k.toUpperCase()===path);if(name==='Research Recordings'&&!s.seen[1]&&page!=='Media Archive')throw Error('Select the parent media directory first.');if(name)return selectPage(name);
    const doc=Object.keys(files(s)).find(k=>k.toUpperCase()===path);if(doc)return selectPage('Read',doc);
  }
  const m=v.match(/^(?:PLAY|REPLAY) (?:REC-)?0*([1-7])$/);if(m){if(+m[1]===1&&!s.seen[1]&&page!=='Research Recordings')throw Error('Select the local recording directory first.');return act('PLAY',m[1])}
- if(v==='ARCHIVE')return act('DECK','Archive');if(v==='ISB')return act('DECK','ISB');if(v==='LAB')return act('DECK','Lab');if(v==='RECEPTION')return act('DECK','Primary');if(v.startsWith('INSERT '))return insertTape(v.slice(7));
+ if(v==='ARCHIVE')return act('DECK','Archive');if(v==='ISB')return s.step>=14?act('DECK','ISB'):freestyle(raw);if(v==='LAB')return act('DECK','Lab');if(v==='RECEPTION')return act('DECK','Primary');if(v.startsWith('INSERT '))return insertTape(v.slice(7));
  if(v==='SAVE SCAN')return saveCurrentScan();if(v==='DISCARD SCAN'&&s.deck==='Lab'&&s.repaired&&page==='Sample'&&s.lastScan===selected)return nav('Analysis');
  if(v.startsWith('SCAN ')&&s.deck==='Lab'&&s.repaired){let key=Object.keys(scans(s)).find(k=>k.toUpperCase()===v.slice(5).replace(/^TODD$/,'T0DD'));if(key)return scan(key)}
- if(['WHOAMI','PLEASE','ADMIN'].includes(v))return textOut({WHOAMI:'Unregistered duty operator.',PLEASE:'Magic word accepted. Authorization still denied.',ADMIN:'Nice try.'}[v],true);
- throw Error('Entry unavailable. Use DIR to browse or HELP for commands.')
+ return freestyle(raw)
 }
 $('commandForm').onsubmit=e=>{e.preventDefault();if(busy||commandPending)return;let value=$('command').value;$('command').value='';$('error').textContent='';echoCommand(displayCommand(value));commandPending=true;command(value).catch(report).finally(()=>{commandPending=false})};
 if('serviceWorker' in navigator&&!params.has('emulator'))navigator.serviceWorker.register('./sw.js').catch(()=>{});

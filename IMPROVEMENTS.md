@@ -207,3 +207,5 @@ Raised terminal cue audibility, added awake-only hum and explicit sound check, m
 Phone sound test passed per DM. Softened input keystroke only. Proposed DOS command echo on player buttons remains pending design approval; no implementation yet.
 
 Approved hybrid command UX supersedes pending proposal: automatic command echo and soft keystroke feedback on ordinary player shortcuts; manual code/query entry remains deliberate. Existing gate engine and narrative unchanged. Phone rehearsal pending.
+
+Approved freestyle library implemented; see TERMINAL-COMMANDS.md. No gate engine or creative baseline edits.

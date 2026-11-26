@@ -88,3 +88,7 @@ Phone audition: the DM confirmed the sound test was audible, but typing produced
 ## Approved hybrid command interface
 
 Player navigation, record, playback-start, archive and scanner shortcuts visibly type their DOS-style command with the softened key cue before invoking the existing action. The echo stays visible above the output; Fast mode/reduced motion skip the animation. Authorization and Search buttons only prepare the editable input; the player supplies the actual code/query. Manual commands remain available; six-digit codes are masked in the persistent echo. Playback controls, sound controls and DM/operator controls are direct. In-flight shortcuts reject repeated input and abandon stale commands if DM changes the session during typing. No change to puzzle prerequisites or approved text. Phone audition pending.
+
+## Approved hidden terminal commands
+
+See TERMINAL-COMMANDS.md for the complete DM-only catalog. All hidden outputs are standalone jokes, not actual access, actions or rewards. Existing progression commands remain exact and gated. Do not advertise the catalog to players.
