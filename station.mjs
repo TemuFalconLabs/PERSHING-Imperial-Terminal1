@@ -1,5 +1,5 @@
 import {files,tapes,code,media,recordings} from './content.mjs';
-import {route,rooms,stages,recordingAt,physical,scans,validSave} from './engine.mjs';
+import {route,rooms,stages,recordingAt,physical,scans,validSave,canPlay,objective} from './engine.mjs';
 import {localSession,networkSession,newCode,cacheKey} from './session.mjs';
 const $=id=>document.getElementById(id), params=new URLSearchParams(location.search),standalone=document.documentElement.hasAttribute('data-offline'),dm=standalone||params.has('dm'), reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let host,s,net,localPlayer=false,page='Home',selected='',query='',lastActivity=Date.now(),busy=false,renderTicket=0,mediaKey='',audioCtx,muted=false;
@@ -26,7 +26,7 @@ function textOut(str,animate=false){
 function selectPage(p,sel=''){nav(p,sel);if(!s.playing)textOut($('screen').textContent,true)}
 function receive(state,info){
  const first=!s,changed=s?.revision!==state.revision,alarm=s&&s.step<17&&state.step>=17;
- s=state;net=info;$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
+ const moved=s?.deck!==state.deck;s=state;net=info;if(moved){page='Home';selected='';mediaKey=''}$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
  if(changed){$('notice').textContent=s.notice;if(!first)beep(alarm);activity()}
  if(first||changed){if(alarm||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
  if(first&&player()&&!s.playing&&s.step<17)$('saver').hidden=false;
@@ -50,31 +50,33 @@ function draw(){
  $('top').textContent=(player()?s.deck.toUpperCase()+' STATION':'WATCH CONTROL · '+s.campaign)+'   /   '+net.code;
  $('board').hidden=player();$('monitor').hidden=!player();
  if(!player()){dashboard();return}
- const out=$('choices');out.replaceChildren();$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
+ const out=$('choices');out.replaceChildren();$('objective').textContent=s.step<17?'CURRENT OBJECTIVE\n'+objective(s):'';$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
  if(s.playing){playback();return}
  mediaKey='';$('crumb').textContent=s.deck+' / '+page;$('heading').textContent=page;
  const btn=(label,fn)=>button(out,label,fn), go=(p)=>btn(p,()=>selectPage(p));
  if(s.step>=17){$('heading').textContent=s.step===18?'Unexpected specimen activity':'Biohazard alert';textOut(s.step===18?'Emergency routes: return via the entrance or follow the cave exit. Movement reported in the laboratory.':'Airborne contaminant detected. Emergency channel open.');if(localPlayer)btn('Operator view',toggleView);return}
  if(s.deck==='Archive'){
-   $('heading').textContent=s.step>=14?'Tape elevator':'Retrieval station';textOut(s.step>=14?'Select a carrier for mechanical delivery. Decryption requires the primary reader.':'Display dark.');
-   if(s.step>=14)Object.keys(tapes).filter(x=>page!=='Search'||x.includes(query.toUpperCase())).forEach(x=>btn('Retrieve '+x,()=>retrieve(x)));
-   btn('Return to primary station',()=>act('DECK','Primary'));
+   $('heading').textContent=s.step>=14?'Tape elevator':'Retrieval station';textOut(s.step>=14?'Select a carrier for mechanical delivery. Decryption requires the ISB officer’s terminal.':'Display dark.');
+   if(s.step>=14)Object.keys(tapes).filter(x=>!s.retrieved[x]&&!s.inserted[x]&&(page!=='Search'||x.includes(query.toUpperCase()))).forEach(x=>btn('Retrieve '+x,()=>retrieve(x)));
+   if(s.step>=14)btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'));
+ }else if(s.deck==='Director'){
+   $('heading').textContent='Research Director’s terminal';textOut(!s.directorCylinder?'EXECUTIVE AUTHENTICATION REQUIRED\nInsert the Research Director’s security cylinder.':!s.inserted['CLONE BATCH SIGMA']?'Executive credentials verified. Classified archive authorization pending.':s.doors['Director office door']!=='CLOSED'?'Security cylinder detected...\nExecutive credentials verified.\nCONFIDENTIAL TRANSMISSION AVAILABLE\nPRIVACY PROTOCOL ACTIVE\nClose the office door to authorize playback.':'PRIVACY CHECK COMPLETE\nCONFIDENTIAL PLAYBACK AVAILABLE');if(canPlay(s,7)&&s.doors['Director office door']==='CLOSED')btn('Play REC-007',()=>act('PLAY',7));
  }else if(page==='Home'){
-   textOut('Local directories available. Select a directory or enter HELP.');go('Media Archive');go('Records');go('Doors');go('Status');
+   textOut(s.deck==='ISB'?(s.inserted['CLONE BATCH SIGMA']?'CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.':'ISB OFFICER’S READER\nInsert retrieved archive tape to decrypt.'):'Local directories available. Select a directory or enter HELP.');if(s.deck!=='ISB')go('Media Archive');go('Records');go('Doors');go('Status');
  }else if(page==='Media Archive'){textOut('One local index mounted.');go('Research Recordings')}
- else if(page==='Research Recordings'){textOut('Select a recording to play.');for(let i=1;i<recordings.length;i++)if(s.step>=recordingAt[i])btn('Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i))}
+ else if(page==='Research Recordings'){textOut('Select a recording to play.');for(let i=1;i<recordings.length;i++)if(canPlay(s,i))btn('Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i))}
  else if(page==='Records'||page==='Search'){const names=Object.keys(files(s)).filter(x=>page!=='Search'||(x+' '+files(s)[x]).toLowerCase().includes(query.toLowerCase()));textOut(names.length?'Available records':'No local records match.');names.forEach(x=>btn(x,()=>selectPage('Read',x)))}
  else if(page==='Read'){const body=files(s)[selected];$('heading').textContent=body?selected:'Record unavailable';textOut(body||'Access unavailable.')}
  else if(page==='Doors'){textOut('Current room · '+s.room+'\n'+rooms[s.room].map(d=>d+' · '+s.doors[d]).join('\n')+'\nSecurity Equipment Room · '+(s.equipment?'RELEASED':'SEALED'));if(s.step>=8){btn('Close current room',closeDoors);btn('Release equipment room',()=>act('EQUIPMENT'))}}
- else if(page==='Analysis'&&s.repaired){textOut('Select a subject for local analysis.');Object.keys(scans(s)).forEach(name=>btn('Scan '+name,()=>scan(name)))}
- else if(page==='Sample'&&s.repaired){textOut(selected+' · '+scans(s)[selected]+'\nSave specimen to this session?');btn('Save specimen',async()=>{await act('SAVE SCAN',selected);nav('Analysis')});go('Analysis')}
+ else if(page==='Analysis'&&s.repaired&&s.deck==='Lab'){textOut('Select a subject for local analysis.');Object.keys(scans(s)).forEach(name=>btn('Scan '+name,()=>scan(name)))}
+ else if(page==='Sample'&&s.repaired&&s.deck==='Lab'&&s.lastScan===selected){textOut(selected+' · '+scans(s)[selected]+'\nSAVE SPECIMEN TO RESEARCH DATABASE?');if(s.matches[selected])btn('View individual specimen record',()=>selectPage('Read','Individual specimen record — '+selected));btn('Yes — save locally',async()=>{await act('SAVE SCAN',selected);nav('Analysis')});btn('No — discard',()=>nav('Analysis'));go('Analysis')}
  else if(page==='Status'){textOut(s.notice+(s.hint?'\n'+s.hint:''))}
  else {textOut('DIR · OPEN <directory or file> · SEARCH <text> · PLAY <record> · STATUS · DOORS'+(s.step>=6?' · AUTH <code>':'')+(s.repaired?' · SCAN <subject>':''))}
- if(s.deck==='Primary'){
-   if(s.step===7)btn('Enter authorization code',()=>{const v=prompt('Six-digit facility authorization');if(v)return act('AUTH',v.trim())});
+ if(s.deck!=='Archive'&&s.deck!=='Director'){
+   if(s.deck==='Primary'&&s.step===7&&s.card)btn('Enter authorization code',()=>{const v=prompt('Six-digit facility authorization');if(v)return act('AUTH',v.trim())});
    if(s.step>=13)btn('Use archive station',()=>act('DECK','Archive'));
-   Object.keys(s.retrieved).forEach(x=>btn('Insert '+x,()=>act('INSERT',x)));
-   if(s.repaired&&page!=='Analysis')go('Analysis');if(page!=='Home')go('Home');
+   if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>btn('Insert '+x,async()=>{await act('INSERT',x);nav('Records')}));
+   if(s.deck==='Lab'&&s.repaired&&page!=='Analysis')go('Analysis');if(s.deck==='Lab'&&canPlay(s,6)&&!s.seen[6])btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6));if(page!=='Home')go('Home');
  }
  btn(muted?'Enable sound':'Mute sound',()=>{muted=!muted;draw()});if(localPlayer)btn('Operator view',toggleView);
 }
@@ -91,7 +93,7 @@ function playback(){
  const transcript=el('p','',target),chalk=el('div','',target);chalk.className='chalk';chalk.hidden=true;
  const meter=el('progress','',target),box=el('div','',target);meter.max=lines.length;
  let elapsed=0,paused=false,last=performance.now(),finishing=false;
- const duration=id===7?37000:lines.length*8000;
+ const duration=lines.reduce((n,l)=>n+Math.max(4500,l.length*58),0);
  let av=null;const paths=media[id];
  if(paths.video||paths.audio){av=el(paths.video?'video':'audio','',target);av.src=paths.video||paths.audio;av.muted=muted||s.mute;av.onended=()=>{elapsed=duration};av.onerror=()=>{av?.remove();av=null;last=performance.now()};av.play().catch(()=>{if(av){av.remove();av=null}})}
  const pause=button(box,'Pause',()=>{paused=!paused;pause.textContent=paused?'Resume':'Pause';if(av){if(paused)av.pause();else av.play().catch(report)}});
@@ -104,7 +106,7 @@ function playback(){
    last=now;const frac=Math.min(1,elapsed/duration),i=Math.min(lines.length-1,Math.floor(frac*lines.length));
    transcript.textContent=speaker+'  /  '+lines[i];meter.value=frac*lines.length;
    chalk.hidden=!(id===3&&frac>=.32);if(!chalk.hidden){chalk.textContent='rack Ⅲ     '+code.board+'     Δ';if(s.boardAid)chalk.setAttribute('aria-label','Frame description: blackboard reads '+code.board);else chalk.setAttribute('aria-hidden','true');if(s.boardAid)chalk.removeAttribute('aria-hidden')}
-   if(frac===1&&!finishing){finishing=true;try{if(id===7)await new Promise(r=>setTimeout(r,700));await act('FINISH',id)}catch(e){report(e);button(box,'Confirm playback completion',()=>act('FINISH',id))}return}
+   if(frac===1&&!finishing){finishing=true;try{if(id===7){transcript.textContent='';chalk.hidden=true;await new Promise(r=>setTimeout(r,s.fast?100:3000));}await act('FINISH',id)}catch(e){report(e);button(box,'Confirm playback completion',()=>act('FINISH',id))}return}
    requestAnimationFrame(frame)
  }requestAnimationFrame(frame)
 }
@@ -116,6 +118,7 @@ function dashboard(){
  const op=(n,label,a,arg='')=>button(n,label,()=>act(a,arg));
  if(physical.includes(route[s.step]))button(main,route[s.step],()=>{if(route[s.step]!=='BEGIN CRISIS'||confirm('Cue the reanimations now?'))return act(route[s.step])});
  if(s.danger){const clock=el('p','',main);clock.id='dangerClock';clock.dataset.time=s.danger;updateClock()}
+ if(s.step===7&&!s.card)op(main,'Confirm authorization card recovered','CARD');if(s.step>=12&&s.deck==='Director'&&!s.directorCylinder)op(main,'Confirm Director’s cylinder inserted','DIRECTOR CYLINDER');
  if(s.step>=10)op(main,s.hold?'Release crisis hold':'Hold crisis','hold');
  const session=card('Session');el('p',net.code+' · '+(net.local?'Local rehearsal':net.peer?'Player connected':'Awaiting player'),session);
  if(net.local)button(session,'Player view',toggleView);
@@ -124,10 +127,10 @@ function dashboard(){
  const hints=card('Operator assistance');if(s.step<18)[1,2,3].forEach(i=>op(hints,'Hint '+i,'HINT',i-1));if(s.step>=4)op(hints,'Accessible board clue','BOARD AID');
  const sys=card('Facility');el('p','Server '+(s.step>=4?'online':'offline')+' · relays '+(s.step>=11?2:s.step>=10?1:0)+'/2 · bench '+(s.repaired?'ready':s.parts?'parts received':'offline'),sys);
  if(s.step>=8&&!s.parts)op(sys,'Register scanner parts','PARTS');if(s.parts&&s.step>=12&&!s.repaired)op(sys,'Calibrate repaired bench','REPAIR');
- el('p','Retrieved: '+(Object.keys(s.retrieved).join(', ')||'none')+' · Sigma '+(s.step>=16?'inserted':'pending'),sys);
- const doors=card('Room & doors');let room=el('select','',doors);room.ariaLabel='Playback room';Object.keys(rooms).forEach(r=>room.add(new Option(r,r,false,r===s.room)));room.onchange=()=>act('ROOM',room.value).catch(report);
+ el('p','In possession: '+(Object.keys(s.retrieved).join(', ')||'none')+' · Inserted: '+(Object.keys(s.inserted).join(', ')||'none'),sys);
+ const doors=card('Room & doors');let room=el('select','',doors);room.ariaLabel='Physical station / room';Object.keys(rooms).forEach(r=>room.add(new Option(r,r,false,r===s.room)));room.onchange=()=>act('ROOM',room.value).catch(report);
  for(const [d,v] of Object.entries(s.doors)){const row=el('label',d+' ',doors),sel=el('select','',row);['OPEN','CLOSED','OBSTRUCTED'].forEach(x=>sel.add(new Option(x,x,false,x===v)));sel.onchange=()=>act('DOOR',d+'|'+sel.value).catch(report)}
- const archive=card('Recording index');for(let i=1;i<=7;i++){let label=rid(i)+' · '+(s.playing===i?'playing':s.seen[i]?'completed':s.step>=recordingAt[i]?'available':'sealed');if(s.step>=recordingAt[i])op(archive,label,'PLAY',i);else el('div',label,archive)}
+ const archive=card('Recording index');for(let i=1;i<=7;i++){let label=rid(i)+' · '+(s.playing===i?'playing':s.seen[i]?'completed':s.step>=recordingAt[i]?'available':'sealed');if(canPlay(s,i))op(archive,label,'PLAY',i);else el('div',label,archive)}
  const recovery=card('Checkpoints');button(recovery,'Export checkpoint',()=>{const href=URL.createObjectURL(new Blob([JSON.stringify(s,null,2)],{type:'application/json'}));const a=el('a');a.href=href;a.download='pershing-'+net.code+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(href),1000)});
  const saved=JSON.parse(localStorage.getItem(cacheKey(net.code)+'.checkpoints')||'{}');
  for(const [key,label] of [['beforeCirculation','Before relay 2'],['beforeTransmission','Before final playback']])if(saved[key])button(recovery,'Restore: '+label,()=>{if(confirm('Restore '+label+'?'))return act('IMPORT',JSON.stringify(saved[key]))});
@@ -143,10 +146,10 @@ async function command(value){
  if(s.deck==='Archive'&&s.step<14)return;
  if(s.deck==='Archive'){
    if(v==='DIR'){nav('Archive');return}if(v.startsWith('SEARCH ')){query=raw.slice(7);nav('Search');return}
-   if(v.startsWith('RETRIEVE '))return retrieve(v.slice(9));if(v==='PRIMARY')return act('DECK','Primary');throw Error('Use DIR, SEARCH, RETRIEVE or PRIMARY.')
+   if(v.startsWith('RETRIEVE '))return retrieve(v.slice(9));if(v==='ISB')return act('DECK','ISB');throw Error('Use DIR, SEARCH, RETRIEVE or ISB.')
  }
  if(['AUTH BLUE','CODE BLUE','CODE CLEARANCE BLUE','AUTHORIZATION CODE BLUE'].includes(v))return act('BLUE');
- if(v.startsWith('AUTH '))return act('AUTH',v.slice(5));
+ if(/^\d{6}$/.test(v))return act('AUTH',v);if(v.startsWith('AUTH '))return act('AUTH',v.slice(5));
  if(v==='DIR'||v==='HOME')return selectPage('Home');
  if(v==='HELP')return selectPage('Help');if(v==='STATUS')return selectPage('Status');if(v==='DOORS')return selectPage('Doors');
  if(v==='CLOSE CURRENT ROOM')return closeDoors();
@@ -158,8 +161,8 @@ async function command(value){
    const doc=Object.keys(files(s)).find(k=>k.toUpperCase()===path);if(doc)return selectPage('Read',doc);
  }
  const m=v.match(/^(?:PLAY|REPLAY) (?:REC-)?0*([1-7])$/);if(m){if(+m[1]===1&&!s.seen[1]&&page!=='Research Recordings')throw Error('Select the local recording directory first.');return act('PLAY',m[1])}
- if(v==='ARCHIVE')return act('DECK','Archive');if(v.startsWith('INSERT '))return act('INSERT',v.slice(7));
- if(v.startsWith('SCAN ')&&s.repaired){let key=Object.keys(scans(s)).find(k=>k.toUpperCase()===v.slice(5).replace(/^TODD$/,'T0DD'));if(key)return scan(key)}
+ if(v==='ARCHIVE')return act('DECK','Archive');if(v==='ISB')return act('DECK','ISB');if(v.startsWith('INSERT '))return act('INSERT',v.slice(7));
+ if(v.startsWith('SCAN ')&&s.deck==='Lab'&&s.repaired){let key=Object.keys(scans(s)).find(k=>k.toUpperCase()===v.slice(5).replace(/^TODD$/,'T0DD'));if(key)return scan(key)}
  if(['WHOAMI','PLEASE','ADMIN'].includes(v))return textOut({WHOAMI:'Unregistered duty operator.',PLEASE:'Magic word accepted. Authorization still denied.',ADMIN:'Nice try.'}[v],true);
  throw Error('Entry unavailable. Use DIR to browse or HELP for commands.')
 }
