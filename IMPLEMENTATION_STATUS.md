@@ -84,3 +84,7 @@ Regression test wired into npm test; two-client rehearsal now asserts hidden/rev
 ## Approved recording-index and availability refinement
 
 Google Doc updated and verified first. Added sequential locked recording row, no title or playback until existing gates and correct terminal. Significant positive availability notices bold yellow; original notice wording and crisis priority retained. REC-003 temporary visual PLACEHOLDER; original code and optional board aid preserved. Physical clue required until final media. 86 targeted source checks and 100 existing engine/objective assertions passed; offline syntax parsed. Browser rehearsal assertions updated (not executed); phone preview only, production unchanged.
+
+## Authorization acknowledgment and DM confirmation
+
+Google Doc updated and verified before implementation. Correct code at step 7 validates independently of separate card registration; persisted authVerified flag exposes success to player and enables DM-only confirmation, which confirms physical card and advances existing gate. Wrong/premature codes and player confirmation rejected. Existing unlock notice retained. 116 regression assertions and 50 targeted authorization lifecycle checks passed; offline syntax parsed. Browser rehearsal updated but not run. Production unchanged.

@@ -60,7 +60,7 @@ function cueForState(before,after){
  if(before.playing&&!after.playing)return 'complete';
  const n=after.notice||'';
  if(after.playing)return null;
- if(/Authorization accepted|EXECUTIVE|Executive credentials|ISB SECURITY CREDENTIAL VERIFIED|CODE CLEARANCE BLUE|Sample filed/.test(n))return 'approval';
+ if(/Authorization code accepted|Authorization accepted|EXECUTIVE|Executive credentials|ISB SECURITY CREDENTIAL VERIFIED|CODE CLEARANCE BLUE|Sample filed/.test(n))return 'approval';
  if(/Obstruction detected| · OBSTRUCTED/.test(n))return 'denied';
  if(/NETWORK CONNECTION RESTORED/.test(n))return 'link';
  if(/ENVIRONMENTAL RELAY/.test(n))return 'relay';
@@ -288,7 +288,7 @@ function draw(){
  $('top').textContent=(player()?s.deck.toUpperCase()+' STATION':'WATCH CONTROL · '+s.campaign)+'   /   '+net.code;
  $('board').hidden=player();$('monitor').hidden=!player();syncAudio();
  if(!player()){dashboard();return}
- const out=$('choices');out.replaceChildren();paintObjective();$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
+ const out=$('choices');out.replaceChildren();paintObjective();$('authSuccess').hidden=!(s.step===7&&s.authVerified);$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
  if(s.playing){playback();return}
  mediaKey='';$('crumb').textContent=s.deck+' / '+page;$('heading').textContent=page;
  const btn=(label,fn,shortcut='')=>button(out,label,fn,shortcut), go=(p)=>btn(p,()=>selectPage(p),p==='Home'?'DIR':['Help','Status','Doors'].includes(p)?p.toUpperCase():'OPEN '+p.toUpperCase());
@@ -314,7 +314,7 @@ function draw(){
  else if(page==='Status'){textOut(s.notice+(s.hint?'\n'+s.hint:''))}
  else {textOut('DIR · OPEN <directory or file> · SEARCH <text> · PLAY <record> · STATUS · DOORS'+(s.step>=6?' · AUTH <code>':'')+(s.repaired?' · SCAN <subject> · SAVE SCAN · DISCARD SCAN':'')+(s.step>=12?' · LAB · RECEPTION':'')+(s.step>=13?' · ARCHIVE':'')+(s.step>=14?' · ISB · INSERT <tape>':''))}
  if(s.deck!=='Archive'&&s.deck!=='Director'){
-   if(s.deck==='Primary'&&s.step===7&&s.card)btn('Enter authorization code',()=>prepareManual('AUTH '));
+   if(s.deck==='Primary'&&s.step===7&&!s.authVerified)btn('Enter authorization code',()=>prepareManual('AUTH '));
    if(s.step>=13)btn('Use archive station',()=>act('DECK','Archive'),'ARCHIVE');if(s.step>=12&&s.deck!=='Lab')btn('Return to laboratory workstation',()=>act('DECK','Lab'),'LAB');if(s.step>=12&&s.deck!=='Primary')btn('Return to reception terminal',()=>act('DECK','Primary'),'RECEPTION');if(s.step>=14&&s.deck!=='ISB')btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'),'ISB');
    if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>btn('Insert '+x,()=>insertTape(x),'INSERT '+x));
    if(s.deck==='Lab'&&s.repaired&&page!=='Analysis')go('Analysis');if(s.deck==='Lab'&&canPlay(s,6)&&!s.seen[6]&&page!=='Research Recordings')btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6),'PLAY REC-006');if(page!=='Home')go('Home');
@@ -376,11 +376,11 @@ function dashboard(){
  const board=$('board');board.replaceChildren();
  const card=(title)=>{let n=el('section','',board);n.className='card';el('h3',title,n);return n};
  const main=card(stages[s.step]||'Watch');el('p',s.step+'/18 · '+(route[s.step]||'Encounter underway'),main);
- el('p',s.playing?'Currently playing '+rid(s.playing):'Awaiting '+(physical.includes(route[s.step])?'physical confirmation':'player interaction'),main);
+ el('p',s.playing?'Currently playing '+rid(s.playing):s.step===7&&s.authVerified?'Correct code validated · awaiting DM confirmation':'Awaiting '+(physical.includes(route[s.step])?'physical confirmation':'player interaction'),main);
  const op=(n,label,a,arg='')=>button(n,label,()=>act(a,arg));
  if(physical.includes(route[s.step]))button(main,route[s.step],()=>{if(route[s.step]!=='BEGIN CRISIS'||confirm('Cue the reanimations now?'))return act(route[s.step])});
  if(s.danger){const clock=el('p','',main);clock.id='dangerClock';clock.dataset.time=s.danger;updateClock()}
- if(s.step>=5&&s.step<8&&!s.card)op(main,'Confirm authorization card recovered','CARD');if(s.step>=12&&s.deck==='Director'&&!s.directorCylinder)op(main,'Confirm Director’s cylinder inserted','DIRECTOR CYLINDER');
+ if(s.step===7&&s.authVerified){el('p','Confirm that the party recovered the physical authorization card, then unlock Recording 005.',main);op(main,'Confirm successful entry & advance','CONFIRM AUTH')}if(s.step>=5&&s.step<8&&!s.card&&!s.authVerified)op(main,'Confirm authorization card recovered','CARD');if(s.step>=12&&s.deck==='Director'&&!s.directorCylinder)op(main,'Confirm Director’s cylinder inserted','DIRECTOR CYLINDER');
  if(s.step>=10)op(main,s.hold?'Release crisis hold':'Hold crisis','hold');
  const session=card('Session');el('p',net.code+' · '+(net.local?'Local rehearsal':net.peer?'Player connected':'Awaiting player'),session);
  if(net.local)button(session,'Player view',toggleView);

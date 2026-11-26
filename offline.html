@@ -26,11 +26,13 @@
 #notice[data-tone="available"]{color:var(--available);font-weight:700;text-shadow:0 0 5px rgba(255,234,0,.16)}
 #choices .lockedRecording{flex-basis:100%;color:var(--critical);font-weight:700;border:1px solid var(--edge);border-left:3px solid var(--critical);padding:8px 12px;border-radius:3px;line-height:1.5;cursor:default}
 #choices .availableRecording{color:var(--response);font-weight:600}
+
+#authSuccess{color:var(--response);font-weight:700;line-height:1.65;border:1px solid var(--response);padding:.7rem .85rem;margin:.65rem 0;white-space:pre-wrap;text-shadow:0 0 5px rgba(101,255,145,.15)}
 </style></head>
 <body><main><header><div class="stamp">ISD<span>07</span></div><div><small>IMPERIAL SCIENCE DIVISION</small><h1 id="title">Duty station</h1></div><output id="link">STANDBY</output></header><div id="audioTools"><button id="soundToggle" type="button" aria-pressed="false">Mute sound</button><button id="soundTest" type="button">Test sound</button><small id="audioStatus" role="status">Tap Test sound to check output.</small></div>
 <section id="setup"><h2 id="setupTitle">Connect to duty station</h2><form id="join"><label>Session code <input id="codeInput" maxlength="8" autocapitalize="characters" autocomplete="off" required></label><button>Connect</button></form>
 <div id="dmSetup" hidden><label>Campaign <select id="camp"><option>MEN</option><option>KIDS</option></select></label><button id="create">Create live session</button><button id="local">Local rehearsal</button><div id="recover"></div></div></section>
-<section id="work" hidden><div id="top" class="rail"></div><div id="board"></div><div id="monitor"><nav id="crumb"></nav><h2 id="heading"></h2><div id="commandEcho" hidden>COMMAND &gt; <span id="commandEchoText"></span></div><div id="screen"></div><pre id="objective" hidden aria-live="polite"></pre><p id="dmReminder" hidden style="color:#c5a0ed;font-weight:bold">*** DM BACKEND INPUT REQUIRED UPON SUCCESS ***</p><div id="choices" class="actions"></div><form id="commandForm"><label for="command">COMMAND &gt;</label><input id="command" autocomplete="off" autocapitalize="characters" spellcheck="false"><button>Enter</button></form></div><div id="notice" role="status"></div></section>
+<section id="work" hidden><div id="top" class="rail"></div><div id="board"></div><div id="monitor"><nav id="crumb"></nav><h2 id="heading"></h2><div id="commandEcho" hidden>COMMAND &gt; <span id="commandEchoText"></span></div><div id="screen"></div><p id="authSuccess" role="status" hidden>AUTHORIZATION CODE ACCEPTED.<br>Please have your brilliant DM confirm successful entry and advance to the next gate.</p><pre id="objective" hidden aria-live="polite"></pre><p id="dmReminder" hidden style="color:#c5a0ed;font-weight:bold">*** DM BACKEND INPUT REQUIRED UPON SUCCESS ***</p><div id="choices" class="actions"></div><form id="commandForm"><label for="command">COMMAND &gt;</label><input id="command" autocomplete="off" autocapitalize="characters" spellcheck="false"><button>Enter</button></form></div><div id="notice" role="status"></div></section>
 <p id="error" role="alert"></p><section id="saver" tabindex="0" hidden aria-label="Wake duty station"><div id="insignia" aria-hidden="true">✺</div><small>TOUCH OR PRESS ANY KEY TO WAKE</small></section>
 <footer>ISD FIELD SYSTEMS <span>LOCAL PORT 07</span></footer></main><script type="module">const code = Object.freeze({ prefix: '47', board: '1938' });
 // Leave media paths empty for built-in captions. URLs are relative to this station.
@@ -201,8 +203,8 @@ const clues=[
  ['Review the classified records, then explore the Research Director’s office beyond the laboratory.','Recover her security cylinder and insert it into her terminal.','Close the office door and deliberately play the available transmission.'],
  ['Wait for the watch officer.','Emergency signal acknowledged.','DM releases the crisis cue when the table is ready.']
 ];
-function fresh(campaign='MEN'){return {version:2,campaign,step:0,revision:0,room:'Reception',doors:{Vestibule:'OPEN','Service passage':'CLOSED','Lab corridor':'OPEN','Analysis door':'CLOSED','Plant hatch':'OPEN','ISB office door':'OPEN','Vault door':'OPEN','Director office door':'OPEN'},deck:'Primary',seen:{},playing:0,retrieved:{},inserted:{},matches:{},card:false,directorCylinder:false,lastScan:'',parts:false,repaired:false,fast:false,mute:false,hold:false,equipment:false,legacy:false,boardAid:false,saved:{},hint:'',objectiveReveal:'',notice:'LOCAL DUTY STATION',danger:0,log:[]}}
-function normalize(s){const v={...fresh(s.campaign),...s,doors:{...fresh().doors,...s.doors},log:Object.values(s.log||{}),retrieved:s.retrieved||{},inserted:s.inserted||{},matches:s.matches||{},seen:s.seen||{},saved:s.saved||{}};return reconcileObjective(v)}
+function fresh(campaign='MEN'){return {version:2,campaign,step:0,revision:0,room:'Reception',doors:{Vestibule:'OPEN','Service passage':'CLOSED','Lab corridor':'OPEN','Analysis door':'CLOSED','Plant hatch':'OPEN','ISB office door':'OPEN','Vault door':'OPEN','Director office door':'OPEN'},deck:'Primary',seen:{},playing:0,retrieved:{},inserted:{},matches:{},card:false,authVerified:false,directorCylinder:false,lastScan:'',parts:false,repaired:false,fast:false,mute:false,hold:false,equipment:false,legacy:false,boardAid:false,saved:{},hint:'',objectiveReveal:'',notice:'LOCAL DUTY STATION',danger:0,log:[]}}
+function normalize(s){const v={...fresh(s.campaign),...s,doors:{...fresh().doors,...s.doors},log:Object.values(s.log||{}),retrieved:s.retrieved||{},inserted:s.inserted||{},matches:s.matches||{},seen:s.seen||{},saved:s.saved||{}};v.authVerified=v.step===7&&v.authVerified===true;return reconcileObjective(v)}
 function validSave(s){return s?.version===2&&['MEN','KIDS'].includes(s.campaign)&&Number.isInteger(s.step)&&s.step>=0&&s.step<=18&&Object.hasOwn(rooms,s.room)&&Object.keys(fresh().doors).every(k=>['OPEN','CLOSED','OBSTRUCTED'].includes(normalize(s).doors[k]))}
 const scans=s=>s.campaign==='MEN'?adultScans:kidScans;
 const locallyClosed=s=>rooms[s.room].every(d=>s.doors[d]==='CLOSED');
@@ -252,8 +254,11 @@ function apply(raw,who,action,arg='',now=Date.now()){
    const id=Number(arg);need(id&&id===s.playing);s.seen[id]=true;s.playing=0;
    if(next==='PLAY '+id)advance();note=id===7?biohazardAlert:'Playback complete. Archive index synchronized.';
  }else if(action==='AUTH'){
-   need(s.deck==='Primary'&&next==='AUTH'&&s.card&&arg===code.prefix+code.board,'Authorization denied. Review registered media.');
-   advance();note='Authorization accepted. Research index expanded. Laboratory safety interlock active.';
+   need(s.deck==='Primary'&&next==='AUTH'&&!s.playing&&arg===code.prefix+code.board,'Authorization denied. Review registered media.');
+   s.authVerified=true;note='Authorization code accepted. Awaiting DM confirmation.';
+ }else if(action==='CONFIRM AUTH'){
+   need(dm&&next==='AUTH'&&s.authVerified&&!s.playing,'Correct code must be entered before DM confirmation.');
+   s.card=true;s.authVerified=false;advance();note='Authorization accepted. Research index expanded. Laboratory safety interlock active.';
  }else if(physical.includes(action)){
    need(dm&&next===action);if(action==='BEGIN CRISIS')need(!s.hold,'Release the crisis hold first.');
    advance();note=({'MOUNT CYLINDER':'Cylinder mounted. Recovered recording available.','CONNECT SERVER':'Server link restored. Remote index synchronized.','MOUNT ISB':'ISB SECURITY CREDENTIAL VERIFIED. RECORDING 004 AVAILABLE.','RELAY 1':'Environmental relay 1 online. Interlock 1 of 2.','RELAY 2':'Occupational safety check complete. Your safety is our priority.','ENTER LAB':'Local laboratory archive detected.','POWER ARCHIVE':'Retrieval station online. External power restored. No technical fault detected.','BEGIN CRISIS':'SPECIMEN ACTIVITY · Fall back to the exit junction. Surface and cave routes available.'})[action];
@@ -280,7 +285,7 @@ function apply(raw,who,action,arg='',now=Date.now()){
  if(action==='FINISH'&&Number(arg)!==7)note=({1:'IMPERIAL SECURITY AUTHENTICATION · Authorization cylinder: NOT DETECTED · Research archive access: RESTRICTED',2:'NETWORK DIAGNOSTIC · Local terminal: OPERATIONAL · Server connection: OFFLINE · Remote research archive: UNAVAILABLE · Fault location: Server Room',3:'ISB SECURITY AUTHENTICATION REQUIRED · Registered duty location: ISB Officer’s Office',4:'MULTIFACTOR AUTHENTICATION · ISB security credentials: VERIFIED · Omega clearance: PENDING · Six-digit authorization key: REQUIRED',5:'ENVIRONMENTAL CONTROL SYSTEM · Ventilation relay 1 and 2: OFFLINE · Laboratory access: RESTRICTED',6:'CLASSIFIED RESEARCH ARCHIVE · Requested records: CLONE BATCH SIGMA · Storage medium: Physical data tape · Location: Imperial Research Archive Vault · Retrieval station: OFFLINE'})[Number(arg)]||note;
  if(action==='CONNECT SERVER')note='NETWORK CONNECTION RESTORED · Synchronization complete. RECORDING 003 AVAILABLE';if(action==='RELAY 2')note=relayTwoStatus;
  if(action==='POWER ARCHIVE')note='IMPERIAL RESEARCH ARCHIVE · Power supply: RESTORED · Mechanical systems: OPERATIONAL · Archive inventory: AVAILABLE · Outstanding maintenance ticket: Terminal broken again. Diagnostic findings: Terminal was unplugged. Corrective action: Connected power. Technical expertise required: NONE. Ticket automatically closed.';if(action==='RELAY 1')note=relayOneStatus;
- reconcileObjective(s);if(!['SHOW OBJECTIVE','HIDE OBJECTIVE'].includes(action))s.notice=note;s.revision++;s.log=[...s.log.slice(-59),{at:now,who,action:action==='AUTH'?'Authorization accepted':action,detail:action==='AUTH'?'':String(arg)}];return s;
+ reconcileObjective(s);if(!['SHOW OBJECTIVE','HIDE OBJECTIVE'].includes(action))s.notice=note;s.revision++;s.log=[...s.log.slice(-59),{at:now,who,action:action==='AUTH'?'Authorization code validated':action,detail:action==='AUTH'?'':String(arg)}];return s;
 }
 
 
@@ -744,7 +749,7 @@ function cueForState(before,after){
  if(before.playing&&!after.playing)return 'complete';
  const n=after.notice||'';
  if(after.playing)return null;
- if(/Authorization accepted|EXECUTIVE|Executive credentials|ISB SECURITY CREDENTIAL VERIFIED|CODE CLEARANCE BLUE|Sample filed/.test(n))return 'approval';
+ if(/Authorization code accepted|Authorization accepted|EXECUTIVE|Executive credentials|ISB SECURITY CREDENTIAL VERIFIED|CODE CLEARANCE BLUE|Sample filed/.test(n))return 'approval';
  if(/Obstruction detected| · OBSTRUCTED/.test(n))return 'denied';
  if(/NETWORK CONNECTION RESTORED/.test(n))return 'link';
  if(/ENVIRONMENTAL RELAY/.test(n))return 'relay';
@@ -972,7 +977,7 @@ function draw(){
  $('top').textContent=(player()?s.deck.toUpperCase()+' STATION':'WATCH CONTROL · '+s.campaign)+'   /   '+net.code;
  $('board').hidden=player();$('monitor').hidden=!player();syncAudio();
  if(!player()){dashboard();return}
- const out=$('choices');out.replaceChildren();paintObjective();$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
+ const out=$('choices');out.replaceChildren();paintObjective();$('authSuccess').hidden=!(s.step===7&&s.authVerified);$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
  if(s.playing){playback();return}
  mediaKey='';$('crumb').textContent=s.deck+' / '+page;$('heading').textContent=page;
  const btn=(label,fn,shortcut='')=>button(out,label,fn,shortcut), go=(p)=>btn(p,()=>selectPage(p),p==='Home'?'DIR':['Help','Status','Doors'].includes(p)?p.toUpperCase():'OPEN '+p.toUpperCase());
@@ -998,7 +1003,7 @@ function draw(){
  else if(page==='Status'){textOut(s.notice+(s.hint?'\n'+s.hint:''))}
  else {textOut('DIR · OPEN <directory or file> · SEARCH <text> · PLAY <record> · STATUS · DOORS'+(s.step>=6?' · AUTH <code>':'')+(s.repaired?' · SCAN <subject> · SAVE SCAN · DISCARD SCAN':'')+(s.step>=12?' · LAB · RECEPTION':'')+(s.step>=13?' · ARCHIVE':'')+(s.step>=14?' · ISB · INSERT <tape>':''))}
  if(s.deck!=='Archive'&&s.deck!=='Director'){
-   if(s.deck==='Primary'&&s.step===7&&s.card)btn('Enter authorization code',()=>prepareManual('AUTH '));
+   if(s.deck==='Primary'&&s.step===7&&!s.authVerified)btn('Enter authorization code',()=>prepareManual('AUTH '));
    if(s.step>=13)btn('Use archive station',()=>act('DECK','Archive'),'ARCHIVE');if(s.step>=12&&s.deck!=='Lab')btn('Return to laboratory workstation',()=>act('DECK','Lab'),'LAB');if(s.step>=12&&s.deck!=='Primary')btn('Return to reception terminal',()=>act('DECK','Primary'),'RECEPTION');if(s.step>=14&&s.deck!=='ISB')btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'),'ISB');
    if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>btn('Insert '+x,()=>insertTape(x),'INSERT '+x));
    if(s.deck==='Lab'&&s.repaired&&page!=='Analysis')go('Analysis');if(s.deck==='Lab'&&canPlay(s,6)&&!s.seen[6]&&page!=='Research Recordings')btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6),'PLAY REC-006');if(page!=='Home')go('Home');
@@ -1060,11 +1065,11 @@ function dashboard(){
  const board=$('board');board.replaceChildren();
  const card=(title)=>{let n=el('section','',board);n.className='card';el('h3',title,n);return n};
  const main=card(stages[s.step]||'Watch');el('p',s.step+'/18 · '+(route[s.step]||'Encounter underway'),main);
- el('p',s.playing?'Currently playing '+rid(s.playing):'Awaiting '+(physical.includes(route[s.step])?'physical confirmation':'player interaction'),main);
+ el('p',s.playing?'Currently playing '+rid(s.playing):s.step===7&&s.authVerified?'Correct code validated · awaiting DM confirmation':'Awaiting '+(physical.includes(route[s.step])?'physical confirmation':'player interaction'),main);
  const op=(n,label,a,arg='')=>button(n,label,()=>act(a,arg));
  if(physical.includes(route[s.step]))button(main,route[s.step],()=>{if(route[s.step]!=='BEGIN CRISIS'||confirm('Cue the reanimations now?'))return act(route[s.step])});
  if(s.danger){const clock=el('p','',main);clock.id='dangerClock';clock.dataset.time=s.danger;updateClock()}
- if(s.step>=5&&s.step<8&&!s.card)op(main,'Confirm authorization card recovered','CARD');if(s.step>=12&&s.deck==='Director'&&!s.directorCylinder)op(main,'Confirm Director’s cylinder inserted','DIRECTOR CYLINDER');
+ if(s.step===7&&s.authVerified){el('p','Confirm that the party recovered the physical authorization card, then unlock Recording 005.',main);op(main,'Confirm successful entry & advance','CONFIRM AUTH')}if(s.step>=5&&s.step<8&&!s.card&&!s.authVerified)op(main,'Confirm authorization card recovered','CARD');if(s.step>=12&&s.deck==='Director'&&!s.directorCylinder)op(main,'Confirm Director’s cylinder inserted','DIRECTOR CYLINDER');
  if(s.step>=10)op(main,s.hold?'Release crisis hold':'Hold crisis','hold');
  const session=card('Session');el('p',net.code+' · '+(net.local?'Local rehearsal':net.peer?'Player connected':'Awaiting player'),session);
  if(net.local)button(session,'Player view',toggleView);

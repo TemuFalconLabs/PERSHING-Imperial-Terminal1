@@ -25,3 +25,5 @@
 #notice[data-tone="available"]{color:var(--available);font-weight:700;text-shadow:0 0 5px rgba(255,234,0,.16)}
 #choices .lockedRecording{flex-basis:100%;color:var(--critical);font-weight:700;border:1px solid var(--edge);border-left:3px solid var(--critical);padding:8px 12px;border-radius:3px;line-height:1.5;cursor:default}
 #choices .availableRecording{color:var(--response);font-weight:600}
+
+#authSuccess{color:var(--response);font-weight:700;line-height:1.65;border:1px solid var(--response);padding:.7rem .85rem;margin:.65rem 0;white-space:pre-wrap;text-shadow:0 0 5px rgba(101,255,145,.15)}

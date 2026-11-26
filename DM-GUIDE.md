@@ -100,3 +100,7 @@ Current objective hidden by default. Open Display current objective on operator 
 ## Recording index and availability refinement
 
 After a recording completes, the next sequential REC identifier is displayed in bold red ACCESS DENIED until the existing conditions and correct station permit playback. No locked title or additional future recording is shown. Newly playable entries are green; significant bottom notices are bold bright yellow (#FFEA00). REC-003 visual currently reads PLACEHOLDER at the prior cue. Supply the existing physical blackboard clue until replacement media is produced; optional DM accessibility aid still exposes the original digits to assistive technology during playback. No gate, script or objective changes.
+
+## Authorization confirmation
+
+At the REC-004 gate, correct code 471938 validates even if the physical card has not been separately registered. Player sees AUTHORIZATION CODE ACCEPTED and the brilliant DM prompt until the DM clicks Confirm successful entry & advance. DM confirms physical card recovery and unlocks REC-005 in one action. Wrong/premature code rejected; player cannot advance this gate. Force next gate remains an emergency override only.
