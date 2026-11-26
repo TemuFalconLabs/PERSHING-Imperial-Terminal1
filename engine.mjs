@@ -27,8 +27,8 @@ export const clues=[
  ['Review the classified records, then explore the Research Director’s office beyond the laboratory.','Recover her security cylinder and insert it into her terminal.','Close the office door and deliberately play the available transmission.'],
  ['Wait for the watch officer.','Emergency signal acknowledged.','DM releases the crisis cue when the table is ready.']
 ];
-export function fresh(campaign='MEN'){return {version:2,campaign,step:0,revision:0,room:'Reception',doors:{Vestibule:'OPEN','Service passage':'CLOSED','Lab corridor':'OPEN','Analysis door':'CLOSED','Plant hatch':'OPEN','ISB office door':'OPEN','Vault door':'OPEN','Director office door':'OPEN'},deck:'Primary',seen:{},playing:0,retrieved:{},inserted:{},matches:{},card:false,authVerified:false,directorCylinder:false,lastScan:'',parts:false,repaired:false,fast:false,mute:false,hold:false,equipment:false,legacy:false,boardAid:false,saved:{},hint:'',objectiveReveal:'',notice:'LOCAL DUTY STATION',danger:0,log:[]}}
-export function normalize(s){const v={...fresh(s.campaign),...s,doors:{...fresh().doors,...s.doors},log:Object.values(s.log||{}),retrieved:s.retrieved||{},inserted:s.inserted||{},matches:s.matches||{},seen:s.seen||{},saved:s.saved||{}};v.authVerified=v.step===7&&v.authVerified===true;return reconcileObjective(v)}
+export function fresh(campaign='MEN'){return {version:2,campaign,step:0,revision:0,room:'Reception',doors:{Vestibule:'OPEN','Service passage':'CLOSED','Lab corridor':'OPEN','Analysis door':'CLOSED','Plant hatch':'OPEN','ISB office door':'OPEN','Vault door':'OPEN','Director office door':'OPEN'},deck:'Primary',seen:{},playing:0,retrieved:{},inserted:{},matches:{},card:false,authVerified:false,directorCylinder:false,lastScan:'',parts:false,repaired:false,fast:false,mute:false,hold:false,equipment:false,legacy:false,boardAid:false,saved:{},hint:'',objectiveReveal:'',finalBloodOverlayVisible:false,notice:'LOCAL DUTY STATION',danger:0,log:[]}}
+export function normalize(s){const v={...fresh(s.campaign),...s,doors:{...fresh().doors,...s.doors},log:Object.values(s.log||{}),retrieved:s.retrieved||{},inserted:s.inserted||{},matches:s.matches||{},seen:s.seen||{},saved:s.saved||{}};v.authVerified=v.step===7&&v.authVerified===true;v.finalBloodOverlayVisible=v.step>=17&&v.step<=18&&v.finalBloodOverlayVisible===true;return reconcileObjective(v)}
 export function validSave(s){return s?.version===2&&['MEN','KIDS'].includes(s.campaign)&&Number.isInteger(s.step)&&s.step>=0&&s.step<=18&&Object.hasOwn(rooms,s.room)&&Object.keys(fresh().doors).every(k=>['OPEN','CLOSED','OBSTRUCTED'].includes(normalize(s).doors[k]))}
 export const scans=s=>s.campaign==='MEN'?adultScans:kidScans;
 export const locallyClosed=s=>rooms[s.room].every(d=>s.doors[d]==='CLOSED');
@@ -68,6 +68,7 @@ export function objectiveGroup(s){return s.step>=17?8:s.step>=16?7:s.step>=12?6:
 export function apply(raw,who,action,arg='',now=Date.now()){
  const s=structuredClone(normalize(raw)),dm=who==='DM',next=route[s.step];
  const need=(ok,msg='Operation unavailable at this station.')=>{if(!ok)throw Error(msg)};
+ need(dm||!s.finalBloodOverlayVisible,'Terminal input disabled.');
  const advance=()=>{s.step++;s.hint=''};
  let note='';
  if(action==='PLAY'){
@@ -100,6 +101,9 @@ export function apply(raw,who,action,arg='',now=Date.now()){
  }else if(action==='PARTS'){need(dm&&s.step>=8);s.parts=true;note='Instrument consignment received.';
  }else if(action==='REPAIR'){need(dm&&s.step>=12&&s.parts);s.repaired=true;note='Analysis bench calibrated. Sample reader ready.';
  }else if(action==='SCAN'||action==='SAVE SCAN'){need(s.deck==='Lab'&&s.repaired&&Object.hasOwn(scans(s),arg));if(action==='SCAN'){s.lastScan=arg;if(s.campaign==='MEN'&&['Glitch','Crosseye'].includes(arg))s.matches[arg]=true;note=arg+' · '+scans(s)[arg];}else{need(s.lastScan===arg,'Scan this specimen before saving.');s.saved[arg]=true;note='Sample filed in this session.';}
+ }else if(action==='SHOW BLOOD OVERLAY'||action==='HIDE BLOOD OVERLAY'){
+   need(dm&&s.step>=17&&s.step<=18&&!s.playing,'Final crisis visual unavailable.');
+   const visible=action==='SHOW BLOOD OVERLAY';need(s.finalBloodOverlayVisible!==visible,'Final crisis visual already in requested state.');s.finalBloodOverlayVisible=visible;
  }else if(action==='SHOW OBJECTIVE'){need(dm&&s.step<17&&arg===currentObjectiveId(s)&&objectivePending(s,arg)&&(!s.objectiveReveal||s.objectiveReveal===arg),'Current objective unavailable. Review the operator panel.');s.objectiveReveal=arg;note='Objective displayed.';
  }else if(action==='HIDE OBJECTIVE'){need(dm);s.objectiveReveal='';note='Objective withdrawn.';
  }else if(action==='HINT'){need(dm&&clues[s.step]&&[0,1,2].includes(+arg));s.hint=clues[s.step][+arg];note=s.hint;
@@ -109,5 +113,5 @@ export function apply(raw,who,action,arg='',now=Date.now()){
  if(action==='FINISH'&&Number(arg)!==7)note=({1:'IMPERIAL SECURITY AUTHENTICATION · Authorization cylinder: NOT DETECTED · Research archive access: RESTRICTED',2:'NETWORK DIAGNOSTIC · Local terminal: OPERATIONAL · Server connection: OFFLINE · Remote research archive: UNAVAILABLE · Fault location: Server Room',3:'ISB SECURITY AUTHENTICATION REQUIRED · Registered duty location: ISB Officer’s Office',4:'MULTIFACTOR AUTHENTICATION · ISB security credentials: VERIFIED · Omega clearance: PENDING · Six-digit authorization key: REQUIRED',5:'ENVIRONMENTAL CONTROL SYSTEM · Ventilation relay 1 and 2: OFFLINE · Laboratory access: RESTRICTED',6:'CLASSIFIED RESEARCH ARCHIVE · Requested records: CLONE BATCH SIGMA · Storage medium: Physical data tape · Location: Imperial Research Archive Vault · Retrieval station: OFFLINE'})[Number(arg)]||note;
  if(action==='CONNECT SERVER')note='NETWORK CONNECTION RESTORED · Synchronization complete. RECORDING 003 AVAILABLE';if(action==='RELAY 2')note=relayTwoStatus;
  if(action==='POWER ARCHIVE')note='IMPERIAL RESEARCH ARCHIVE · Power supply: RESTORED · Mechanical systems: OPERATIONAL · Archive inventory: AVAILABLE · Outstanding maintenance ticket: Terminal broken again. Diagnostic findings: Terminal was unplugged. Corrective action: Connected power. Technical expertise required: NONE. Ticket automatically closed.';if(action==='RELAY 1')note=relayOneStatus;
- reconcileObjective(s);if(!['SHOW OBJECTIVE','HIDE OBJECTIVE'].includes(action))s.notice=note;s.revision++;s.log=[...s.log.slice(-59),{at:now,who,action:action==='AUTH'?'Authorization code validated':action,detail:action==='AUTH'?'':String(arg)}];return s;
+ reconcileObjective(s);if(!['SHOW OBJECTIVE','HIDE OBJECTIVE','SHOW BLOOD OVERLAY','HIDE BLOOD OVERLAY'].includes(action))s.notice=note;s.revision++;s.log=[...s.log.slice(-59),{at:now,who,action:action==='AUTH'?'Authorization code validated':action,detail:action==='AUTH'?'':String(arg)}];return s;
 }

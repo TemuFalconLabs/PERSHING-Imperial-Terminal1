@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {fresh,apply,scans,route,validSave} from '../engine.mjs';
+import {fresh,apply,scans,route,validSave,normalize} from '../engine.mjs';
 import {code,files} from '../content.mjs';
 for(const campaign of ['MEN','KIDS'])test(campaign+' approved station progression and disclosure',()=>{
  let s=fresh(campaign);
@@ -16,4 +16,9 @@ for(const campaign of ['MEN','KIDS'])test(campaign+' approved station progressio
  assert(files(s)['Specimen Transfer Ledger'].includes(campaign==='MEN'?'1,000':'Kai'));assert(!Object.values(files(s)).join().includes('Moff Gideon'));assert.throws(()=>p('PLAY',7));assert.equal(s.step,16);
  d('ROOM','Director');assert.throws(()=>p('PLAY',7));d('DIRECTOR CYLINDER');assert.throws(()=>p('PLAY',7));assert.throws(()=>p('CLOSE'));d('DOOR','Director office door|OBSTRUCTED');assert.throws(()=>p('PLAY',7));d('DOOR','Director office door|CLOSED');assert.equal(s.doors['Plant hatch'],'OPEN');assert(validSave(s));
  play(7);assert.equal(s.notice,"BIOHAZARD ALERT\nAIRBORNE CONTAMINANT DETECTED\n\nEnvironmental relays: ONLINE\nAir circulation: ACTIVE\nBiological containment: FAILED\n\nEMERGENCY CONTAINMENT PROTOCOL INITIATED\n\nAll personnel are reminded that containment takes precedence over personal safety.\n\nNo evacuation has been authorized.\n\nThe Empire recognizes your service and, should it become necessary, your sacrifice.\n\nLONG LIVE THE EMPIRE.");assert.throws(()=>p('PLAY',7));d('hold');assert.throws(()=>d('BEGIN CRISIS'));d('hold');d('BEGIN CRISIS');assert.equal(s.step,18);assert.throws(()=>d('BEGIN CRISIS'));assert.equal(route[s.step],undefined)
+});
+
+for(const campaign of ['MEN','KIDS'])test(campaign+' final crisis art lifecycle',()=>{
+ let s=fresh(campaign);assert.equal(s.finalBloodOverlayVisible,false);assert.throws(()=>apply(s,'DM','SHOW BLOOD OVERLAY'));assert.throws(()=>apply(s,'DM','HIDE BLOOD OVERLAY'));
+ s={...s,step:17};const notice=s.notice;assert.throws(()=>apply(s,'PLAYER','SHOW BLOOD OVERLAY'));s=apply(s,'DM','SHOW BLOOD OVERLAY');assert.equal(s.step,17);assert.equal(s.notice,notice);assert.equal(s.finalBloodOverlayVisible,true);assert.throws(()=>apply(s,'DM','SHOW BLOOD OVERLAY'));assert.throws(()=>apply(s,'PLAYER','HIDE BLOOD OVERLAY'));assert.throws(()=>apply(s,'PLAYER','BLUE'));assert.throws(()=>apply(s,'PLAYER','DECK','Primary'));s=normalize(JSON.parse(JSON.stringify(s)));assert.equal(s.finalBloodOverlayVisible,true);s=apply(s,'DM','BEGIN CRISIS');assert.equal(s.step,18);assert.equal(s.finalBloodOverlayVisible,true);s=apply(s,'DM','HIDE BLOOD OVERLAY');assert.equal(s.finalBloodOverlayVisible,false);assert.equal(s.step,18);assert.throws(()=>apply(s,'DM','HIDE BLOOD OVERLAY'));assert.equal(normalize({...s,step:16,finalBloodOverlayVisible:true}).finalBloodOverlayVisible,false);assert.equal(normalize({...s,finalBloodOverlayVisible:'true'}).finalBloodOverlayVisible,false);assert.equal(normalize({...fresh(campaign),step:17}).finalBloodOverlayVisible,false);
 });

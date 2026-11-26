@@ -104,3 +104,7 @@ After a recording completes, the next sequential REC identifier is displayed in 
 ## Authorization confirmation
 
 At the REC-004 gate, correct code 471938 validates even if the physical card has not been separately registered. Player sees AUTHORIZATION CODE ACCEPTED and the brilliant DM prompt until the DM clicks Confirm successful entry & advance. DM confirms physical card recovery and unlocks REC-005 in one action. Wrong/premature code rejected; player cannot advance this gate. Force next gate remains an emergency override only.
+
+## Final crisis visual
+
+After the final biohazard alert, ideally wait about 20 seconds and click **Show blood handprint** in the crisis panel. The approved terminal image fills Player view, suspending player commands, and persists through the crisis cue and refresh. Use **Hide blood handprint** to remove it without changing the encounter; **Undo last action** also reverses the reveal when it is the latest available action. In offline phone rehearsal, use the image's **Operator view** button to return to the controls. Live player seats have no operator return control. The effect is manual, does not start combat or change escape routes, and is not available before the final alert.

@@ -1,4 +1,5 @@
 import {findEgg,eggReply,newEggHistory} from './easter-eggs.mjs';
+import {crisisArtwork} from './crisis-art.mjs';
 import {files,tapes,code,media,recordings} from './content.mjs';
 import {route,rooms,stages,recordingAt,physical,scans,validSave,canPlay,objective,visibleObjective,currentObjectiveId,objectiveGroup,biohazardAlert} from './engine.mjs';
 import {localSession,networkSession,newCode,cacheKey} from './session.mjs';
@@ -6,6 +7,7 @@ const $=id=>document.getElementById(id), params=new URLSearchParams(location.sea
 let host,s,net,localPlayer=false,page='Home',selected='',query='',lastActivity=Date.now(),busy=false,renderTicket=0,mediaKey='',audioCtx,muted=false;
 let eggHistory=newEggHistory();
 const player=()=>!dm||localPlayer;
+const bloodVisible=()=>!!(s&&player()&&s.step>=17&&s.step<=18&&s.finalBloodOverlayVisible);
 const el=(tag,txt='',parent)=>{const n=document.createElement(tag);n.textContent=txt;if(parent)parent.append(n);return n};
 function button(node,label,fn,shortcut=''){const b=el('button',label,node);b.type='button';if(shortcut)b.dataset.command=shortcut;b.onclick=()=>{if(player()&&(busy||commandPending))return;Promise.resolve().then(()=>shortcut?autoCommand(shortcut,fn):fn()).catch(report)};return b}
 // Local presentation only: each shortcut invokes its existing guarded action once.
@@ -14,9 +16,9 @@ function echoCommand(value){$('commandEcho').hidden=false;$('commandEchoText').t
 function displayCommand(value){const v=value.trim();return /^(?:AUTH\s+)?\d{6}$/i.test(v)?'AUTH ******':v.toUpperCase()}
 function commandTypingPlan(value,instant){return instant?{step:value.length||1,delay:0}:{step:Math.max(1,Math.ceil(value.length/23)),delay:44}}
 async function autoCommand(value,fn){
- if(commandPending||busy||!s||!player()||s.playing)return;
+ if(commandPending||busy||!s||!player()||s.playing||bloodVisible())return;
  commandPending=true;const revision=s.revision,deck=s.deck,session=net.code,input=$('command'),draft=input.value,previousReadonly=input.readOnly;
- const valid=()=>player()&&s.revision===revision&&s.deck===deck&&net.code===session&&!s.playing;
+ const valid=()=>player()&&s.revision===revision&&s.deck===deck&&net.code===session&&!s.playing&&!bloodVisible();
  input.readOnly=true;input.value='';echoCommand('');$('error').textContent='';
  const plan=commandTypingPlan(value,s.fast||reduced);
  try{
@@ -199,7 +201,7 @@ function wake(e){if(!$('saver').hidden){e?.preventDefault();e?.stopImmediateProp
 // A touch click is the reliable mobile activation; do not consume it on pointerdown.
 document.addEventListener('pointerdown',()=>activity(),true);
 document.addEventListener('keydown',e=>{activity();if(wake(e))return;if((busy||commandPending)&&player()){e.preventDefault();e.stopImmediatePropagation();return}if(e.key==='Enter'&&e.target.id==='command')gestureCue('tap');else gestureCue(null)},true);
-document.addEventListener('click',e=>{activity();if(wake(e))return;const button=e.target.closest?.('button');if((busy||commandPending)&&player()&&button?.id!=='soundToggle'&&button?.id!=='soundTest'){e.preventDefault();e.stopImmediatePropagation();return}if(button&&!button.disabled&&button.id!=='soundTest'&&button.id!=='soundToggle'&&!button.dataset.command)gestureCue('tap');else gestureCue(null)},true);
+document.addEventListener('click',e=>{activity();if(wake(e))return;const button=e.target.closest?.('button');if((busy||commandPending)&&player()&&button?.id!=='soundToggle'&&button?.id!=='soundTest'&&button?.id!=='bloodOperator'){e.preventDefault();e.stopImmediatePropagation();return}if(button&&!button.disabled&&button.id!=='soundTest'&&button.id!=='soundToggle'&&!button.dataset.command)gestureCue('tap');else gestureCue(null)},true);
 document.addEventListener('input',e=>{if(['command','codeInput'].includes(e.target.id))gestureCue('key')},true);
 $('soundToggle').onclick=()=>{muted=!muted;if(muted)cancelAnnouncement();syncAudio();if(!muted)gestureCue('approval')};
 $('soundTest').onclick=()=>gestureCue('test');
@@ -283,8 +285,11 @@ $('create').onclick=()=>connect(true).catch(report);$('local').onclick=()=>conne
 if(standalone){$('join').hidden=true;$('create').hidden=true;$('setupTitle').textContent='Local watch · select campaign';$('local').textContent='Open offline station'}
 if(dm){const last=localStorage.getItem('pershing.lastDM');if(last&&localStorage.getItem(cacheKey(last)))button($('recover'),'Continue offline from '+last,()=>connect(false,true,last))}
 if(params.has('session'))connect().catch(report);
+$('bloodOperator').onclick=()=>{if(localPlayer)toggleView()};
 function draw(){
  if(!s)return;document.body.classList.toggle('emergency',s.step>=17);
+ const blood=bloodVisible(),overlay=$('bloodOverlay');overlay.hidden=!blood;document.querySelector('main').inert=blood;$('bloodOperator').hidden=!localPlayer;
+ if(blood){++renderTicket;busy=false;$('saver').hidden=true;const art=$('bloodArtwork');if(!art.getAttribute('src'))art.src=crisisArtwork;syncAudio();return;}
  $('top').textContent=(player()?s.deck.toUpperCase()+' STATION':'WATCH CONTROL · '+s.campaign)+'   /   '+net.code;
  $('board').hidden=player();$('monitor').hidden=!player();syncAudio();
  if(!player()){dashboard();return}
@@ -382,6 +387,7 @@ function dashboard(){
  if(s.danger){const clock=el('p','',main);clock.id='dangerClock';clock.dataset.time=s.danger;updateClock()}
  if(s.step===7&&s.authVerified){el('p','Confirm that the party recovered the physical authorization card, then unlock Recording 005.',main);op(main,'Confirm successful entry & advance','CONFIRM AUTH')}if(s.step>=5&&s.step<8&&!s.card&&!s.authVerified)op(main,'Confirm authorization card recovered','CARD');if(s.step>=12&&s.deck==='Director'&&!s.directorCylinder)op(main,'Confirm Director’s cylinder inserted','DIRECTOR CYLINDER');
  if(s.step>=10)op(main,s.hold?'Release crisis hold':'Hold crisis','hold');
+ if(s.step>=17&&s.step<=18){el('p','Final crisis visual · manual cue, ideally ~20 seconds after the biohazard alert.',main);op(main,s.finalBloodOverlayVisible?'Hide blood handprint':'Show blood handprint',s.finalBloodOverlayVisible?'HIDE BLOOD OVERLAY':'SHOW BLOOD OVERLAY');}
  const session=card('Session');el('p',net.code+' · '+(net.local?'Local rehearsal':net.peer?'Player connected':'Awaiting player'),session);
  if(net.local)button(session,'Player view',toggleView);
  else {let link=new URL(location.href);link.searchParams.delete('dm');let a=el('a','Player link',session);a.href=link.href;a.style.color='var(--mint)';button(session,'Continue on this laptop offline',()=>{if(confirm('Start an independent offline copy of this checkpoint?')){location.href='?dm&offline='+net.code}})}
@@ -415,6 +421,7 @@ function showEggProgram(p){
 function freestyle(raw){if(!raw)return;const reply=eggReply(raw,eggHistory);if(reply.program)showEggProgram(reply.program);else {if(reply.unknown)playCue('denied');textOut(reply.text,true,reply.unknown?'warning':responseTone(reply.text))}}
 function recordSearchMatches(raw){const q=raw.toLowerCase().trim();return !!q&&Object.entries(files(s)).some(([name,body])=>(name+' '+body).toLowerCase().includes(q))}
 async function command(value){
+ if(bloodVisible())return;
  let raw=value.trim().replace(/\s+/g,' '),v=raw.toUpperCase();
  if(s.playing){if(v==='PAUSE')pausePlayback();return}
  if(s.deck==='Archive'&&s.step<14){if(v==='LAB')return act('DECK','Lab');return}
@@ -440,5 +447,5 @@ async function command(value){
  if(v.startsWith('SCAN ')&&s.deck==='Lab'&&s.repaired){let key=Object.keys(scans(s)).find(k=>k.toUpperCase()===v.slice(5).replace(/^TODD$/,'T0DD'));if(key)return scan(key)}
  return freestyle(raw)
 }
-$('commandForm').onsubmit=e=>{e.preventDefault();if(busy||commandPending)return;let value=$('command').value;$('command').value='';$('error').textContent='';echoCommand(displayCommand(value));commandPending=true;command(value).catch(report).finally(()=>{commandPending=false})};
+$('commandForm').onsubmit=e=>{e.preventDefault();if(busy||commandPending||bloodVisible())return;let value=$('command').value;$('command').value='';$('error').textContent='';echoCommand(displayCommand(value));commandPending=true;command(value).catch(report).finally(()=>{commandPending=false})};
 if('serviceWorker' in navigator&&!params.has('emulator'))navigator.serviceWorker.register('./sw.js').catch(()=>{});

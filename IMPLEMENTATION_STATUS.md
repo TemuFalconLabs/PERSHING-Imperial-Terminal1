@@ -88,3 +88,7 @@ Google Doc updated and verified first. Added sequential locked recording row, no
 ## Authorization acknowledgment and DM confirmation
 
 Google Doc updated and verified before implementation. Correct code at step 7 validates independently of separate card registration; persisted authVerified flag exposes success to player and enables DM-only confirmation, which confirms physical card and advances existing gate. Wrong/premature codes and player confirmation rejected. Existing unlock notice retained. 116 regression assertions and 50 targeted authorization lifecycle checks passed; offline syntax parsed. Browser rehearsal updated but not run. Production unchanged.
+
+## Version 14 — manual final-crisis blood handprint
+
+Screenplay amended and verified before implementation. Owner-only SHOW/HIDE BLOOD OVERLAY during steps 17–18; shared state persists through checkpoints, refresh and crisis progression, with normal immediate undo and dedicated hide. Player commands rejected while shown; offline operator return remains available. Approved JPEG artwork embedded locally, preserving the original alert and unchanged Firebase rules. 188 adapted source assertions across 8 test groups passed (existing progression/objectives plus targeted final visual and session recovery); source syntax parsed. Actual browser visual rendering, live Firebase and two-laptop rehearsal remain unverified. Production root not changed by this development update.
