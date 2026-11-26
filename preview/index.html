@@ -6,11 +6,25 @@
 #audioTools{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:.4rem 0}#audioTools button{font-size:.82rem;margin:0}#audioStatus{flex-basis:100%;font-size:.74rem;opacity:.82}
 
 #commandEcho{font-size:.82rem;color:var(--mint);border-left:2px solid var(--edge);padding:.35rem .65rem;margin:.3rem 0 .75rem;overflow-wrap:anywhere;min-height:1.5em}#commandEchoText{letter-spacing:.045em}
+
+/* Approved phosphor hierarchy: keep navigation subdued, not the returned text. */
+:root{--response:#65ff91;--command-ink:#829b8b;--amber:#ffb454;--critical:#ff5555;--objective:#73d9ff}
+#screen,#notice{color:var(--response);font-weight:600;line-height:1.65;text-shadow:0 0 5px rgba(101,255,145,.15);overflow-wrap:anywhere}
+#screen[data-tone="warning"],#notice[data-tone="warning"],#error{color:var(--amber);font-weight:600;text-shadow:0 0 5px rgba(255,180,84,.13)}
+#screen[data-tone="critical"],#notice[data-tone="critical"],body.emergency #screen,body.emergency #notice{color:var(--critical);text-shadow:0 0 5px rgba(255,85,85,.16)}
+#screen button,#screen small,#screen h3{font-weight:400;text-shadow:none}
+#screen .chalk{font-weight:400;text-shadow:none;line-height:1.55}
+#commandEcho,#commandForm label,#crumb{color:var(--command-ink)}
+#commandForm input{color:var(--ink)}
+#objective{color:var(--objective);font:600 .95rem/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;border-top:1px solid var(--objective);padding-top:.65rem;text-shadow:0 0 5px rgba(115,217,255,.13)}
+.objectivePanel [data-status="current"],.shownObjective{color:var(--objective);font-weight:600}
+.objectivePanel [data-status="future"]{color:var(--dim)}
+.objectivePanel [data-status="completed"]{color:var(--mint)}
 </style></head>
 <body><main><header><div class="stamp">ISD<span>07</span></div><div><small>IMPERIAL SCIENCE DIVISION</small><h1 id="title">Duty station</h1></div><output id="link">STANDBY</output></header><div id="audioTools"><button id="soundToggle" type="button" aria-pressed="false">Mute sound</button><button id="soundTest" type="button">Test sound</button><small id="audioStatus" role="status">Tap Test sound to check output.</small></div>
 <section id="setup"><h2 id="setupTitle">Connect to duty station</h2><form id="join"><label>Session code <input id="codeInput" maxlength="8" autocapitalize="characters" autocomplete="off" required></label><button>Connect</button></form>
 <div id="dmSetup" hidden><label>Campaign <select id="camp"><option>MEN</option><option>KIDS</option></select></label><button id="create">Create live session</button><button id="local">Local rehearsal</button><div id="recover"></div></div></section>
-<section id="work" hidden><div id="top" class="rail"></div><div id="board"></div><div id="monitor"><nav id="crumb"></nav><h2 id="heading"></h2><div id="commandEcho" hidden>COMMAND &gt; <span id="commandEchoText"></span></div><div id="screen"></div><pre id="objective" aria-live="polite" style="white-space:pre-wrap;border-top:1px solid currentColor;padding-top:.65rem"></pre><p id="dmReminder" hidden style="color:#c5a0ed;font-weight:bold">*** DM BACKEND INPUT REQUIRED UPON SUCCESS ***</p><div id="choices" class="actions"></div><form id="commandForm"><label for="command">COMMAND &gt;</label><input id="command" autocomplete="off" autocapitalize="characters" spellcheck="false"><button>Enter</button></form></div><div id="notice" role="status"></div></section>
+<section id="work" hidden><div id="top" class="rail"></div><div id="board"></div><div id="monitor"><nav id="crumb"></nav><h2 id="heading"></h2><div id="commandEcho" hidden>COMMAND &gt; <span id="commandEchoText"></span></div><div id="screen"></div><pre id="objective" hidden aria-live="polite"></pre><p id="dmReminder" hidden style="color:#c5a0ed;font-weight:bold">*** DM BACKEND INPUT REQUIRED UPON SUCCESS ***</p><div id="choices" class="actions"></div><form id="commandForm"><label for="command">COMMAND &gt;</label><input id="command" autocomplete="off" autocapitalize="characters" spellcheck="false"><button>Enter</button></form></div><div id="notice" role="status"></div></section>
 <p id="error" role="alert"></p><section id="saver" tabindex="0" hidden aria-label="Wake duty station"><div id="insignia" aria-hidden="true">✺</div><small>TOUCH OR PRESS ANY KEY TO WAKE</small></section>
 <footer>ISD FIELD SYSTEMS <span>LOCAL PORT 07</span></footer></main><script type="module">const code = Object.freeze({ prefix: '47', board: '1938' });
 // Leave media paths empty for built-in captions. URLs are relative to this station.
@@ -181,14 +195,44 @@ const clues=[
  ['Review the classified records, then explore the Research Director’s office beyond the laboratory.','Recover her security cylinder and insert it into her terminal.','Close the office door and deliberately play the available transmission.'],
  ['Wait for the watch officer.','Emergency signal acknowledged.','DM releases the crisis cue when the table is ready.']
 ];
-function fresh(campaign='MEN'){return {version:2,campaign,step:0,revision:0,room:'Reception',doors:{Vestibule:'OPEN','Service passage':'CLOSED','Lab corridor':'OPEN','Analysis door':'CLOSED','Plant hatch':'OPEN','ISB office door':'OPEN','Vault door':'OPEN','Director office door':'OPEN'},deck:'Primary',seen:{},playing:0,retrieved:{},inserted:{},matches:{},card:false,directorCylinder:false,lastScan:'',parts:false,repaired:false,fast:false,mute:false,hold:false,equipment:false,legacy:false,boardAid:false,saved:{},hint:'',notice:'LOCAL DUTY STATION',danger:0,log:[]}}
-function normalize(s){return {...fresh(s.campaign),...s,doors:{...fresh().doors,...s.doors},log:Object.values(s.log||{}),retrieved:s.retrieved||{},inserted:s.inserted||{},matches:s.matches||{},seen:s.seen||{},saved:s.saved||{}}}
+function fresh(campaign='MEN'){return {version:2,campaign,step:0,revision:0,room:'Reception',doors:{Vestibule:'OPEN','Service passage':'CLOSED','Lab corridor':'OPEN','Analysis door':'CLOSED','Plant hatch':'OPEN','ISB office door':'OPEN','Vault door':'OPEN','Director office door':'OPEN'},deck:'Primary',seen:{},playing:0,retrieved:{},inserted:{},matches:{},card:false,directorCylinder:false,lastScan:'',parts:false,repaired:false,fast:false,mute:false,hold:false,equipment:false,legacy:false,boardAid:false,saved:{},hint:'',objectiveReveal:'',notice:'LOCAL DUTY STATION',danger:0,log:[]}}
+function normalize(s){const v={...fresh(s.campaign),...s,doors:{...fresh().doors,...s.doors},log:Object.values(s.log||{}),retrieved:s.retrieved||{},inserted:s.inserted||{},matches:s.matches||{},seen:s.seen||{},saved:s.saved||{}};return reconcileObjective(v)}
 function validSave(s){return s?.version===2&&['MEN','KIDS'].includes(s.campaign)&&Number.isInteger(s.step)&&s.step>=0&&s.step<=18&&Object.hasOwn(rooms,s.room)&&Object.keys(fresh().doors).every(k=>['OPEN','CLOSED','OBSTRUCTED'].includes(normalize(s).doors[k]))}
 const scans=s=>s.campaign==='MEN'?adultScans:kidScans;
 const locallyClosed=s=>rooms[s.room].every(d=>s.doors[d]==='CLOSED');
 const canPlay=(s,id)=>!!recordings[id]&&s.step>=recordingAt[id]&&(id<=5?s.deck==='Primary':id===6?s.deck==='Lab':s.deck==='Director'&&s.room==='Director'&&s.directorCylinder&&s.inserted?.['CLONE BATCH SIGMA']);
 const objectives=['Locate Recording 001 in Media Archive.','Retrieve the authorization cylinder from the security desk and insert it into the terminal reader.','Review Recording 002.','Locate the disconnected network cable beneath the service panel in the server room and reconnect it.','Review Recording 003.','Locate the ISB security credential and insert it into the reception terminal.','Review Recording 004.','Retrieve the authorization key from the safe in the ISB officer’s office and enter the six-digit code.','Review Recording 005.','Restore both environmental relays to resume ventilation and unlock the main laboratory.','Restore the remaining environmental relay in Decontamination.','Proceed to the main laboratory.','Review Recording 006 at the laboratory workstation.','Locate the research archive vault and restore power to its retrieval station.','Locate and retrieve the requested research tape: CLONE BATCH SIGMA.','Return to the ISB officer’s terminal and insert Clone Batch Sigma.','Review the classified records. When ready, explore the Research Director’s office beyond the cloning laboratory.','Emergency protocol initiated.','Emergency response.'];
 const objective=s=>s.step===16&&s.deck==='Director'?(s.directorCylinder?(s.doors['Director office door']==='CLOSED'?'Play the confidential transmission.':'Close the office door to authorize playback.'):'Recover and insert the Research Director’s security cylinder.'):objectives[s.step]||'';
+
+// Reveal IDs represent the exact existing objective wording, not a new progression gate.
+const directorObjectives={cylinder:'Recover and insert the Research Director’s security cylinder.',door:'Close the office door to authorize playback.',play:'Play the confidential transmission.'};
+function currentObjectiveId(s){
+ if(s.step>=17)return '';
+ if(s.step===16&&s.deck==='Director')return 'director:'+(s.directorCylinder?(s.doors['Director office door']==='CLOSED'?'play':'door'):'cylinder');
+ return 'step:'+s.step;
+}
+function objectiveTextFor(id){
+ if(typeof id!=='string')return '';
+ if(/^step:(?:[0-9]|1[0-6])$/.test(id))return objectives[Number(id.slice(5))]||'';
+ if(id.startsWith('director:')){const sub=id.slice(9);return Object.hasOwn(directorObjectives,sub)?directorObjectives[sub]:''}
+ return '';
+}
+function objectivePending(s,id){
+ if(!objectiveTextFor(id)||s.step>=17)return false;
+ if(id==='director:cylinder')return s.step===16&&!s.directorCylinder;
+ if(id==='director:door')return s.step===16&&s.doors['Director office door']!=='CLOSED';
+ if(id==='director:play')return s.step===16;
+ const n=Number(id.slice(5));
+ if(n===9)return s.step===9||s.step===10;
+ if(n===16)return s.step===16&&s.deck!=='Director';
+ return s.step===n;
+}
+function reconcileObjective(s){
+ if(!objectivePending(s,s.objectiveReveal))s.objectiveReveal='';
+ return s;
+}
+function visibleObjective(s){return objectivePending(s,s.objectiveReveal)?objectiveTextFor(s.objectiveReveal):''}
+function objectiveGroup(s){return s.step>=17?8:s.step>=16?7:s.step>=12?6:s.step>=8?5:s.step>=6?4:s.step>=4?3:s.step>=2?2:1}
 function apply(raw,who,action,arg='',now=Date.now()){
  const s=structuredClone(normalize(raw)),dm=who==='DM',next=route[s.step];
  const need=(ok,msg='Operation unavailable at this station.')=>{if(!ok)throw Error(msg)};
@@ -221,6 +265,8 @@ function apply(raw,who,action,arg='',now=Date.now()){
  }else if(action==='PARTS'){need(dm&&s.step>=8);s.parts=true;note='Instrument consignment received.';
  }else if(action==='REPAIR'){need(dm&&s.step>=12&&s.parts);s.repaired=true;note='Analysis bench calibrated. Sample reader ready.';
  }else if(action==='SCAN'||action==='SAVE SCAN'){need(s.deck==='Lab'&&s.repaired&&Object.hasOwn(scans(s),arg));if(action==='SCAN'){s.lastScan=arg;if(s.campaign==='MEN'&&['Glitch','Crosseye'].includes(arg))s.matches[arg]=true;note=arg+' · '+scans(s)[arg];}else{need(s.lastScan===arg,'Scan this specimen before saving.');s.saved[arg]=true;note='Sample filed in this session.';}
+ }else if(action==='SHOW OBJECTIVE'){need(dm&&s.step<17&&arg===currentObjectiveId(s)&&objectivePending(s,arg)&&(!s.objectiveReveal||s.objectiveReveal===arg),'Current objective unavailable. Review the operator panel.');s.objectiveReveal=arg;note='Objective displayed.';
+ }else if(action==='HIDE OBJECTIVE'){need(dm);s.objectiveReveal='';note='Objective withdrawn.';
  }else if(action==='HINT'){need(dm&&clues[s.step]&&[0,1,2].includes(+arg));s.hint=clues[s.step][+arg];note=s.hint;
  }else if(action==='BOARD AID'){need(dm&&s.step>=4);s.boardAid=true;note='Accessible board description enabled during frame playback.';
  }else if(['fast','mute','hold'].includes(action)){need(dm);s[action]=!s[action];note='Operator setting updated.';
@@ -228,7 +274,7 @@ function apply(raw,who,action,arg='',now=Date.now()){
  if(action==='FINISH'&&Number(arg)!==7)note=({1:'IMPERIAL SECURITY AUTHENTICATION · Authorization cylinder: NOT DETECTED · Research archive access: RESTRICTED',2:'NETWORK DIAGNOSTIC · Local terminal: OPERATIONAL · Server connection: OFFLINE · Remote research archive: UNAVAILABLE · Fault location: Server Room',3:'ISB SECURITY AUTHENTICATION REQUIRED · Registered duty location: ISB Officer’s Office',4:'MULTIFACTOR AUTHENTICATION · ISB security credentials: VERIFIED · Omega clearance: PENDING · Six-digit authorization key: REQUIRED',5:'ENVIRONMENTAL CONTROL SYSTEM · Ventilation relay 1 and 2: OFFLINE · Laboratory access: RESTRICTED',6:'CLASSIFIED RESEARCH ARCHIVE · Requested records: CLONE BATCH SIGMA · Storage medium: Physical data tape · Location: Imperial Research Archive Vault · Retrieval station: OFFLINE'})[Number(arg)]||note;
  if(action==='CONNECT SERVER')note='NETWORK CONNECTION RESTORED · Synchronization complete. RECORDING 003 AVAILABLE';if(action==='RELAY 2')note=relayTwoStatus;
  if(action==='POWER ARCHIVE')note='IMPERIAL RESEARCH ARCHIVE · Power supply: RESTORED · Mechanical systems: OPERATIONAL · Archive inventory: AVAILABLE · Outstanding maintenance ticket: Terminal broken again. Diagnostic findings: Terminal was unplugged. Corrective action: Connected power. Technical expertise required: NONE. Ticket automatically closed.';if(action==='RELAY 1')note=relayOneStatus;
- s.notice=note;s.revision++;s.log=[...s.log.slice(-59),{at:now,who,action:action==='AUTH'?'Authorization accepted':action,detail:action==='AUTH'?'':String(arg)}];return s;
+ reconcileObjective(s);if(!['SHOW OBJECTIVE','HIDE OBJECTIVE'].includes(action))s.notice=note;s.revision++;s.log=[...s.log.slice(-59),{at:now,who,action:action==='AUTH'?'Authorization accepted':action,detail:action==='AUTH'?'':String(arg)}];return s;
 }
 
 
@@ -848,18 +894,32 @@ function shouldShowSaver(state,isPlayer,isBusy,idleMs){return !!state&&isPlayer&
 setInterval(()=>{if($('saver').hidden&&shouldShowSaver(s,player(),busy||commandPending,Date.now()-lastActivity)){$('saver').hidden=false;syncAudio()}},250);
 async function act(a,arg=''){if(!host)throw Error('Connecting…');$('error').textContent='';await host.send(a,String(arg),player()?'PLAYER':'DM')}
 function nav(p,sel=''){if(mediaKey)cancelAnnouncement();page=p;selected=sel;mediaKey='';draw()}
-function textOut(str,animate=false){
- const ticket=++renderTicket,out=$('screen');busy=false;out.textContent=str;
+function responseTone(str){
+ const v=String(str||'');
+ if(/BIOHAZARD ALERT|AIRBORNE CONTAMINANT DETECTED|EMERGENCY CONTAINMENT PROTOCOL|SPECIMEN ACTIVITY/i.test(v))return 'critical';
+ if(/access(?:\s*:\s*|\s+)(?:denied|unavailable|restricted)|request denied|authorization(?:\s*:\s*|\s+)(?:denied|required|still denied)|operation unavailable|security (?:warning|notified)|obstruction detected|personnel file has been flagged|disciplinary proceedings|(?:^|\b)error (?:403|418):|authorization key: REQUIRED|containment: FAILED|credentials are required|EXECUTIVE AUTHENTICATION REQUIRED|PRIVACY PROTOCOL ACTIVE|CONFIDENTIAL PLAYBACK WITHHELD|warning: unstable/i.test(v))return 'warning';
+ return 'normal';
+}
+function paintObjective(){const n=$('objective'),v=visibleObjective(s);n.hidden=!v;n.textContent=v?'CURRENT OBJECTIVE\n'+v:''}
+function objectiveOnlyUpdate(before,after){
+ if(!before||before.objectiveReveal===after.objectiveReveal)return false;
+ const comparable=v=>Object.fromEntries(Object.entries(v).filter(([k])=>!['revision','objectiveReveal','log'].includes(k)));
+ // Stable field ordering even when Firebase returns maps with different key order.
+ const canonical=v=>v&&typeof v==='object'?Array.isArray(v)?v.map(canonical):Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v;
+ return JSON.stringify(canonical(comparable(before)))===JSON.stringify(canonical(comparable(after)));
+}
+function textOut(str,animate=false,tone=responseTone(str)){
+ const ticket=++renderTicket,out=$('screen');busy=false;out.dataset.tone=tone;out.textContent=str;
  if(!animate||s.fast||reduced||!str)return;
- busy=true;playCue('link');out.textContent='PROCESSING …';const start=performance.now()+750,ms=Math.min(3200,str.length*14);
- function tick(now){if(ticket!==renderTicket)return;if(now>=start){out.textContent=str.slice(0,Math.ceil(str.length*Math.min(1,(now-start)/ms)));if(now>=start+ms){busy=false;return}}requestAnimationFrame(tick)}requestAnimationFrame(tick)
+ busy=true;playCue('link');out.dataset.tone='normal';out.textContent='PROCESSING …';const start=performance.now()+750,ms=Math.min(3200,str.length*14);
+ function tick(now){if(ticket!==renderTicket)return;if(now>=start){out.dataset.tone=tone;out.textContent=str.slice(0,Math.ceil(str.length*Math.min(1,(now-start)/ms)));if(now>=start+ms){busy=false;return}}requestAnimationFrame(tick)}requestAnimationFrame(tick)
 }
 function selectPage(p,sel=''){nav(p,sel);if(!s.playing)textOut($('screen').textContent,true)}
 function receive(state,info){
- const before=s,first=!s,changed=s?.revision!==state.revision,alarm=s&&s.step<17&&state.step>=17;
+ const before=s,first=!s,changed=s?.revision!==state.revision,alarm=s&&s.step<17&&state.step>=17,objectiveOnly=changed&&objectiveOnlyUpdate(s,state);
  const moved=s?.deck!==state.deck;if(first||net?.code!==info.code||(before?.step>0&&state.step===0))eggHistory=newEggHistory();s=state;net=info;if(moved){page='Home';selected='';mediaKey=''}$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
- if(before&&(before.playing!==s.playing||before.step!==s.step||s.mute||s.fast))cancelAnnouncement();if(!s.playing)finalSilence=false;syncAudio();if(changed){$('notice').textContent=s.notice;if(!first)playCue(cueForState(before,s));activity()}
- if(first||changed){if(alarm||s.playing||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
+ if(!objectiveOnly&&before&&(before.playing!==s.playing||before.step!==s.step||s.mute||s.fast))cancelAnnouncement();if(!s.playing)finalSilence=false;syncAudio();if(changed&&!objectiveOnly){$('notice').textContent=s.notice;$('notice').dataset.tone=responseTone(s.notice);if(!first)playCue(cueForState(before,s));activity()}
+ if(objectiveOnly){if(player())paintObjective();else dashboard()}else if(first||changed){if(alarm||s.playing||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
  if(first&&player()&&!s.playing&&s.step<17)$('saver').hidden=false;syncAudio();
  if(!first&&alarm&&s.step===17)announce(biohazardAlert,1650);else if(!first&&before.step===10&&s.step===11)announce('Your safety is our priority.',400);
 }
@@ -882,7 +942,7 @@ function draw(){
  $('top').textContent=(player()?s.deck.toUpperCase()+' STATION':'WATCH CONTROL · '+s.campaign)+'   /   '+net.code;
  $('board').hidden=player();$('monitor').hidden=!player();syncAudio();
  if(!player()){dashboard();return}
- const out=$('choices');out.replaceChildren();$('objective').textContent=s.step<17?'CURRENT OBJECTIVE\n'+objective(s):'';$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
+ const out=$('choices');out.replaceChildren();paintObjective();$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
  if(s.playing){playback();return}
  mediaKey='';$('crumb').textContent=s.deck+' / '+page;$('heading').textContent=page;
  const btn=(label,fn,shortcut='')=>button(out,label,fn,shortcut), go=(p)=>btn(p,()=>selectPage(p),p==='Home'?'DIR':['Help','Status','Doors'].includes(p)?p.toUpperCase():'OPEN '+p.toUpperCase());
@@ -926,7 +986,7 @@ let pausePlayback=()=>{};
 function playback(){
  const id=s.playing,key=net.code+':'+id;if(mediaKey===key)return;cancelAnnouncement();mediaKey=key;busy=false;++renderTicket;
  $('crumb').textContent='Media Archive / Research Recordings';$('heading').textContent=rid(id)+' · '+recordings[id][0];
- const target=$('screen');target.replaceChildren();const [title,speaker,lines]=recordings[id];
+ const target=$('screen');target.dataset.tone='normal';target.replaceChildren();const [title,speaker,lines]=recordings[id];
  const transcript=el('p','',target),chalk=el('div','',target);chalk.className='chalk';chalk.hidden=true;
  const meter=el('progress','',target),status=el('small','',target),box=el('div','',target);meter.max=lines.length;
  let elapsed=0,paused=false,last=performance.now(),finishing=false,voiceIndex=-1,voiceWaiting=false,voiceAge=0,voiceFailed=false;
@@ -980,6 +1040,10 @@ function dashboard(){
  if(net.local)button(session,'Player view',toggleView);
  else {let link=new URL(location.href);link.searchParams.delete('dm');let a=el('a','Player link',session);a.href=link.href;a.style.color='var(--mint)';button(session,'Continue on this laptop offline',()=>{if(confirm('Start an independent offline copy of this checkpoint?')){location.href='?dm&offline='+net.code}})}
  op(session,s.fast?'Normal output':'Fast mode','fast');op(session,s.mute?'Enable station sound':'Mute station','mute');
+ const objectivePanel=card('Display current objective');objectivePanel.classList.add('objectivePanel');
+ const group=objectiveGroup(s);el('p',Object.keys(s.seen).filter(k=>s.seen[k]).length+'/7 recordings completed',objectivePanel);
+ for(let i=1;i<=7;i++){const status=i<group?'completed':i===group?'current':'future';const line=el('div','Objective '+i+' · '+rid(i)+' · '+status.toUpperCase(),objectivePanel);line.dataset.status=status}
+ if(s.step<17){const shown=visibleObjective(s),current=objective(s);el('p','Current: '+current,objectivePanel);if(shown){const shownLine=el('p','DISPLAYED: '+shown,objectivePanel);shownLine.className='shownObjective';op(objectivePanel,'Hide current objective','HIDE OBJECTIVE')}else op(objectivePanel,'Display current objective','SHOW OBJECTIVE',currentObjectiveId(s))}else el('p','All recording-linked objectives completed.',objectivePanel);
  const hints=card('Operator assistance');if(s.step<18)[1,2,3].forEach(i=>op(hints,'Hint '+i,'HINT',i-1));if(s.step>=4)op(hints,'Accessible board clue','BOARD AID');
  const sys=card('Facility');el('p','Server '+(s.step>=4?'online':'offline')+' · relays '+(s.step>=11?2:s.step>=10?1:0)+'/2 · bench '+(s.repaired?'ready':s.parts?'parts received':'offline'),sys);
  if(s.step>=8&&!s.parts)op(sys,'Register scanner parts','PARTS');if(s.parts&&s.step>=12&&!s.repaired)op(sys,'Calibrate repaired bench','REPAIR');
@@ -997,12 +1061,12 @@ function dashboard(){
 function updateClock(){let n=$('dangerClock');if(n)n.textContent='Circulation elapsed · '+Math.max(0,Math.floor((Date.now()-Number(n.dataset.time))/60000))+' min · manual cue'}setInterval(updateClock,3000);
 if(dm&&params.has('offline'))connect(false,true,params.get('offline')).catch(report);
 function showEggProgram(p){
- const out=$('screen');++renderTicket;busy=false;out.replaceChildren();
+ const out=$('screen');++renderTicket;busy=false;out.dataset.tone='normal';out.replaceChildren();
  el('h3',p.title,out);el('p',p.question,out);const choices=el('div','',out);choices.className='actions';
  for(const [label,response] of p.choices)button(choices,label,()=>{choices.replaceChildren();el('p','RESPONSE RECORDED: '+label.toUpperCase(),choices);el('p',response,choices);el('p',p.ending,choices);button(choices,p.reset,()=>showEggProgram(p));button(choices,'Return to terminal',()=>draw())});
  button(choices,'Return to terminal',()=>draw());
 }
-function freestyle(raw){if(!raw)return;const reply=eggReply(raw,eggHistory);if(reply.program)showEggProgram(reply.program);else {if(reply.unknown)playCue('denied');textOut(reply.text,true)}}
+function freestyle(raw){if(!raw)return;const reply=eggReply(raw,eggHistory);if(reply.program)showEggProgram(reply.program);else {if(reply.unknown)playCue('denied');textOut(reply.text,true,reply.unknown?'warning':responseTone(reply.text))}}
 function recordSearchMatches(raw){const q=raw.toLowerCase().trim();return !!q&&Object.entries(files(s)).some(([name,body])=>(name+' '+body).toLowerCase().includes(q))}
 async function command(value){
  let raw=value.trim().replace(/\s+/g,' '),v=raw.toUpperCase();
