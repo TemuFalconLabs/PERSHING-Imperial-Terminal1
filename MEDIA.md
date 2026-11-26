@@ -1,83 +1,107 @@
 # Recording and prop book · DM only
 
-Director cylinder first pair: **47**. Recording 003 board suffix: **1938**. Authorized entry: **471938**. The ID is a string.
+Provisional damaged card **4719??**, blackboard **1938**, full code **471938**. Three cylinders: duty, partially damaged ISB, Research Director. REC-001–005 reception; REC-006 lab; REC-007 Director only after Sigma and closed office door.
 
 ## REC-001 · Shift handover
 
-Duty officer · approximately 16 seconds · future file: media/rec-001.mp4 or .mp3
+Duty officer
 
-Empty duty desk; a grey coat hangs behind the speaker. Introduce the cylinder desk.
+Duty handover: identify MEDIA drawer, insertion and return.
 
-> If this is your first watch, leave the board exactly as you find it. The relief officer keeps the station copy in the drawer marked MEDIA.
+> Routine security handover. For those recently assigned to this facility, the Research Division requires that all personnel authenticate their credentials before accessing the internal archive.
 
-> I counted eleven coats on twelve hooks this morning. Personnel says that is within tolerance. The owner of the grey one may disagree. Sign the book when you take over.
+> A duty authorization cylinder has been provided at the security desk. You'll find it in the drawer marked MEDIA. Insert it into the terminal reader to establish your credentials.
 
-## REC-002 · Bench copy
+> And please return it when you're finished. The last officer who misplaced one spent three weeks completing the paperwork necessary to report it missing.
 
-Engineering clerk · approximately 16 seconds · future file: media/rec-002.mp4 or .mp3
+## REC-002 · Engineering report
 
-Gloved hand taps a splice in a return lead diagram. Identify the server fault.
+Engineering clerk
 
-> The night shift sent me a reel with the middle missing. Same break on every copy. When I pulled the patch at the server floor box the splice disappeared.
+Engineering report: identify disconnected server cable.
 
-> I left the return lead loose for inspection. Somebody please seat it. The next shift needs the original image, edges and all.
+> Engineering report. The reception terminal has lost its connection to the facility's main server. The terminal itself is functional, but most of the Research Division's records are currently inaccessible.
 
-## REC-003 · Framing check
+> I've traced the problem to a disconnected network cable beneath the service panel in the server room. I've submitted two maintenance requests, neither of which has been acknowledged.
 
-Research technician · approximately 16 seconds · future file: media/rec-003.mp4 or .mp3
+> If you're taking over the engineering shift, reconnect the cable and verify that the research archives are accessible from reception. The Director has made it abundantly clear that interruptions to her research will not be tolerated.
 
-Frame a chalkboard behind the technician. At one-third duration hold the full board showing 1938. End on the brass-front locker. Keep digits out of spoken captions.
+## REC-003 · Research briefing
 
-> Keep the full width this time. When you crop the board out I lose the rack marks along the left edge.
+Research scientist
 
-> There. Hold that frame. The Director keeps the other copy in the brass-front locker in her office. If she asks, we have only been checking alignment.
+Frame the board with 1938; no spoken digits.
 
-## REC-004 · Personal dictation
+> Research log. The latest series of trials has concluded. As anticipated, the mortality rate among the experimental clone specimens was exceptionally high. However, the results were not entirely without merit.
 
-Facility Research Director · approximately 16 seconds · future file: media/rec-004.mp4 or .mp3
+> A small number of clones demonstrated remarkable biological resilience, surviving procedures that proved fatal to the remainder of their cohort. Interestingly, blood analysis has also revealed slightly elevated M-counts among the surviving specimens.
 
-Director speaks into the cylinder; a packed bag sits beside the locker. Give the first two digits.
+> Dr. Pershing believes these characteristics may prove particularly valuable to his ongoing research. At his request, I have authorized the transfer of the surviving specimens to another research facility for more extensive examination.
 
-> For the relief director taking custody of my cylinder. The first pair on the authorization register is 4, 7. The remainder is on the board in the bench copy.
+> We have spent considerable resources investigating why so many specimens have failed. Perhaps we have been asking the wrong question.
 
-> Please take the bag by the locker when you leave. My daughter put a note in the pocket. I should like to keep that.
+> What makes these particular specimens so difficult to kill?
 
-## REC-005 · Occupancy certificate
+## REC-004 · ISB security authorization
 
-Facilities supervisor · approximately 16 seconds · future file: media/rec-005.mp4 or .mp3
+ISB security officer
 
-Two blank signature boxes on an occupancy permit. Make the repairs look routine.
+ISB officer's personal log. Physical card in trapped ISB safe; no spoken digits.
 
-> There are two signatures on the occupancy certificate. One belongs to Engineering. The other belongs to Decontamination. I have accepted neither by proxy.
+> ISB security officer’s personal log. Given the sensitive nature of our work, our benefactors have mandated multifactor authentication for access to restricted research materials and facility controls.
 
-> Bring each relay back on its own circuit. When both indicators settle, the laboratory door will release. Whoever takes the watch after mine can sign for the air.
+> An ISB security credential must first be authenticated at the reception terminal. Once those credentials have been verified, my six-digit authorization key will grant the necessary Omega clearance. A physical copy of the key is secured in the safe in my office.
 
-## REC-006 · Inventory adjustment
+> I consider these additional security procedures an unnecessary administrative burden. Nevertheless, our benefactors have made it quite clear that discretion is not a matter of personal preference.
 
-Laboratory researcher · approximately 16 seconds · future file: media/rec-006.mp4 or .mp3
+## REC-005 · Ventilation interlock
 
-Track empty slide racks, then hold on a surviving label and the vault direction marker. Lead to physical storage.
+Facilities supervisor
 
-> I was told to clear the empty racks. I began with the names. That was an error. The names are the only part of the inventory the Director wants kept.
+Routine occupational safety report; both relays.
 
-> I have moved the intact record to mechanized storage. Use the archive station beyond this room. Request the tape under its batch designation, then bring it back to the primary reader. Please leave the empty labels where they are.
+> Facilities engineering report. Following several complaints from the research staff regarding air quality within the main laboratory, the Director has authorized maintenance of the facility's environmental control systems.
 
-## REC-007 · Duty transmission
+> Imperial occupational safety regulations prohibit access to the laboratory while its ventilation systems are offline. Both environmental relays must be restored before the entrance will release.
 
-Facility commander · approximately 37 seconds · future file: media/rec-007.mp4 or .mp3
+> The first relay is located in Engineering. The second is in the Decontamination section. Once both are operational, normal air circulation and laboratory access will resume automatically.
 
-Heavy breathing. At 8s hear movement; at 16s metal strikes; at 23s the commander names the air. At 32s footsteps approach. Cut the last word mid-syllable, hold silence, then alarm.
+> Remember, personnel safety is the responsibility of every Imperial employee.
 
-> This is the facility commander. We have suffered a catastrophic containment failure. All personnel are ordered to evacuate immediately.
+## REC-006 · Experimental procedures
 
-> The specimens… they’re moving. They were dead. Every single one of them was dead.
+Laboratory researcher
 
-> Security! Seal that corridor! Stop them! STOP THEM!
+Lab workstation; memory suppression and archive designation.
 
-> The biological agent is airborne. Engineering has shut down the ventilation, but it’s already too late for us.
+> Supplemental research log. One of the more persistent complications associated with repeated experimentation has been the psychological deterioration of the specimens. Those surviving an initial procedure frequently exhibit considerable resistance to subsequent testing.
 
-> If anyone finds this recording, whatever you do, do not restart the air circula—
+> To address this complication, we have adapted the inhibitor chip technology originally developed for the Republic's clone army. Unlike their predecessors, these implants are not intended to enforce obedience or behavioral directives.
 
-## Adding your performance
+> Their purpose is to prevent the formation of long-term memories. A specimen may remain fully conscious throughout an experimental procedure without retaining any recollection of the experience afterward.
 
-Place the finished file under media/ and set its relative path in the media entry for that recording in content.mjs, for example media[3].video = "media/rec-003.mp4". Set the audio field for an audio-only performance. Leave unused fields empty. The built-in transcript and timed visual clue remain available. Play, pause, replay and completion use the same progression gates. Check the board at laptop viewing distance before release. Run node build-guide.mjs and node build-offline.mjs after changes. The offline file works with its built-in text even without a media folder.
+> The results have been encouraging. Several specimens have now undergone repeated procedures without exhibiting any recognition of the researchers responsible for their treatment.
+
+> Dr. Pershing has requested the complete experimental histories of the surviving specimens. Given the sensitive nature of these records, the original documentation has been transferred to the secured research archive under the designation Clone Batch Sigma.
+
+> The specimens may have no memory of what we have done to them, but it is imperative that we maintain a complete record of every procedure and its outcome.
+
+## REC-007 · Confidential commander transmission
+
+Facility commander
+
+Commander distressed, distant blaster fire; impact after they didn't stay dead; fire intensifies after seal it; cutoff, three seconds silence, alarm.
+
+> This is the facility commander. We have suffered a catastrophic containment failure. I am ordering the immediate evacuation of all surviving personnel.
+
+> We initially believed the experimental agent had failed. The specimens were pronounced dead and preparations were underway for their disposal.
+
+> They weren't dead. Or at least… they didn't stay dead.
+
+> Security! Seal that corridor! I said seal it!
+
+> Engineering has confirmed that the biological agent is airborne. We've shut down the ventilation systems in an attempt to contain it, but it's already too late for most of us.
+
+> If anyone receives this transmission, do not enter the laboratory. Do not attempt to recover the specimens. And whatever you do, DO NOT RESTART THE AIR CIRCULA—
+
+Actual audio/video media still pending; built-in captions and the visual blackboard are available. Run npm run guides after edits.

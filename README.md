@@ -13,3 +13,5 @@ Project `pershing-imperial-terminal`. Open Firebase Console → Realtime Databas
 With Node 22+ and Java 21, run `npm install`, `npx playwright install chromium`, `npm test` and `npm run test:rehearsal`. Two real browser contexts use separate storage and anonymous identities. The rehearsal writes to emulators. Set CHROMIUM_PATH for a locally installed Chromium. SDK_FIXTURES may point to unmodified firebase-app.js, firebase-auth.js and firebase-database.js from the version pinned in sdk.mjs for offline testing. Run `npm run guides` after changing content or UI to regenerate the single-file station and scripts.
 
 The prior cartridge-based station is preserved at legacy.html. See IMPLEMENTATION_STATUS.md for release and recovery information.
+
+**Current candidate:** use a fresh version 2 session. The updated terminal route is on the feature branch; do not assume Pages production has been updated before release verification.

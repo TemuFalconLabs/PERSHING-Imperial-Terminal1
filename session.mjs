@@ -3,7 +3,7 @@ const config={apiKey:'AIzaSyCoeR3eJ_2kQsRfXi_c2c4MTS4GSpl2STg',authDomain:'persh
 const allowed=new Set(['PLAY','FINISH','AUTH','CLOSE','DECK','INSERT','RETRIEVE','EQUIPMENT','BLUE','SCAN','SAVE SCAN']);
 const letters='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 export const newCode=()=>Array.from(crypto.getRandomValues(new Uint8Array(8)),n=>letters[n%letters.length]).join('');
-export const cacheKey=(code)=>'pershing.v1.dm.'+code;
+export const cacheKey=(code)=>'pershing.v2.dm.'+code;
 export const publicView=s=>{const {log,danger,hold,...view}=s;return view};
 function save(code,s){localStorage.setItem(cacheKey(code),JSON.stringify(s))}
 function change(session,role,action,arg,now){
@@ -31,7 +31,7 @@ function change(session,role,action,arg,now){
 export function localSession(campaign,source,update){
  let id=source?'LOCAL-'+source:'LOCAL-'+campaign;
  let restored=JSON.parse(localStorage.getItem(cacheKey(source||id))||'null');
- if(restored&&!validSave(restored))throw Error('Invalid saved checkpoint.');
+ if(restored&&!validSave(restored))throw Error('Incompatible older checkpoint. Start a fresh revised watch or import a version 2 checkpoint.');
  let data={state:normalize(restored||fresh(campaign))};
  const refresh=()=>{save(id,data.state);if(data.checkpoints)localStorage.setItem(cacheKey(id)+'.checkpoints',JSON.stringify(data.checkpoints));update(data.state,{code:id,local:true,connected:true,peer:false})};
  data.checkpoints=JSON.parse(localStorage.getItem(cacheKey(source||id)+'.checkpoints')||'{}');
@@ -59,7 +59,7 @@ export async function networkSession({dm,code,campaign,create,emulate,update,err
    try{await f.onDisconnect(presence).set(false);await f.set(presence,true)}catch(e){error(e.message)}
  });
  f.onValue(at(dm?'playerOnline':'hostOnline'),snap=>{peer=snap.val()===true;show()},e=>error(e.message));
- f.onValue(at(dm?'state':'view'),snap=>{state=snap.val();if(state&&dm)save(code,normalize(state));show()},e=>error(e.message));
+ f.onValue(at(dm?'state':'view'),snap=>{state=snap.val();if(state?.version!==2){state=null;error('This session uses an older checkpoint. Create a new revised session.');return}if(state&&dm)save(code,normalize(state));show()},e=>error(e.message));
  if(dm)f.onValue(at('checkpoints'),snap=>{localStorage.setItem(cacheKey(code)+'.checkpoints',JSON.stringify(snap.val()||{}));show()},e=>error(e.message));
  async function transact(fn){
    // Prime the SDK cache; a first transaction callback can otherwise receive null.

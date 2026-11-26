@@ -145,3 +145,8 @@ Status: findings recorded; implementation pending. Reviewed against the [Master 
 5. Run engine regressions, independent player walkthrough, mobile/desktop and two-browser synchronization, checkpoint/undo/reset/recovery; verify actual production Firebase/Pages separately before release. Test ordinary player navigation for spoilers; public client source is not intended to be cheat-proof. Actual audio/video, hardware, room acoustics and prop rehearsal remain outstanding.
 
 Audit limitations: source inspection, not fresh runtime verification; exact room geometry, specimen IDs, unresolved matches and some dialogue are undecided. Existing test scripts prove a known sequence can be executed, not that a new player can discover it. The preview still contains old writing and lacks persistent objectives at time of audit. No application code or deployed preview changed by saving this register.
+
+
+## 25 November approved walkthrough implementation checkpoint
+
+Core approved recordings, six tape records, distinct stations, per-subject dossier unlocks, Omega card gate and Director's own cylinder/office-door gate implemented on the feature branch. The original proposals above are historical and superseded where inconsistent. Remaining: actual media and portraits, exact map/trap and prop labels, final player comprehension review, browser/emulator and production smoke tests, preview and Pages release. Some interface polish items remain unverified; do not mark all IMP entries complete.

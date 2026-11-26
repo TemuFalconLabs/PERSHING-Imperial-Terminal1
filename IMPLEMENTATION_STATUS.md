@@ -1,3 +1,11 @@
+# Current release gate — 25 November 2026
+
+Candidate branch `feature/pershing-live-session`, PR #1. Revised application core commit 1873f496be208ac9b2bc00889520d4effa500691. The follow-up synchronizes test cases, guide, checkpoint version and UI. Do not merge until live browser rehearsal and production smoke pass.
+
+Verified in a JS harness: full MEN and KIDS route; wrong/early codes; card recovery; two relays; independent per-specimen scans; optional ORDER 66 persistence and duplicate rejection; incorrect reader rejection; Sigma disclosure; Director's cylinder and closed/obstructed door gate; other doors ignored; single crisis. Syntax parsed for combined offline modules. The Node tests and Chromium rehearsal have been updated but not executed in their actual runtimes in this session. Firebase rules unchanged; no new production verification. Actual portraits and AV assets, physical map geometry, trap mechanics and prop labels remain pending. Use a fresh version 2 session; version 1 checkpoints are not compatible. Declining to save a scan does not remove access to the pre-existing matched dossier (implementation decision pending DM review).
+
+## Previous verification (historical only; does not establish current release readiness)
+
 # December 11 station release
 
 Branch: feature/pershing-live-session. Previous Pages release: 8eaf2b6cc5209fa64ab308a4ee47d70aa4603ce7.

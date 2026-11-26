@@ -50,7 +50,7 @@ function draw(){
  $('top').textContent=(player()?s.deck.toUpperCase()+' STATION':'WATCH CONTROL · '+s.campaign)+'   /   '+net.code;
  $('board').hidden=player();$('monitor').hidden=!player();
  if(!player()){dashboard();return}
- const out=$('choices');out.replaceChildren();$('objective').textContent=s.step<17?'CURRENT OBJECTIVE\n'+objective(s):'';$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
+ const out=$('choices');out.replaceChildren();$('objective').textContent=s.step<17?'CURRENT OBJECTIVE\n'+objective(s):'';$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
  if(s.playing){playback();return}
  mediaKey='';$('crumb').textContent=s.deck+' / '+page;$('heading').textContent=page;
  const btn=(label,fn)=>button(out,label,fn), go=(p)=>btn(p,()=>selectPage(p));
@@ -62,21 +62,23 @@ function draw(){
  }else if(s.deck==='Director'){
    $('heading').textContent='Research Director’s terminal';textOut(!s.directorCylinder?'EXECUTIVE AUTHENTICATION REQUIRED\nInsert the Research Director’s security cylinder.':!s.inserted['CLONE BATCH SIGMA']?'Executive credentials verified. Classified archive authorization pending.':s.doors['Director office door']!=='CLOSED'?'Security cylinder detected...\nExecutive credentials verified.\nCONFIDENTIAL TRANSMISSION AVAILABLE\nPRIVACY PROTOCOL ACTIVE\nClose the office door to authorize playback.':'PRIVACY CHECK COMPLETE\nCONFIDENTIAL PLAYBACK AVAILABLE');if(canPlay(s,7)&&s.doors['Director office door']==='CLOSED')btn('Play REC-007',()=>act('PLAY',7));
  }else if(page==='Home'){
-   textOut(s.deck==='ISB'?(s.inserted['CLONE BATCH SIGMA']?'CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.':'ISB OFFICER’S READER\nInsert retrieved archive tape to decrypt.'):'Local directories available. Select a directory or enter HELP.');if(s.deck!=='ISB')go('Media Archive');go('Records');go('Doors');go('Status');
+   textOut(s.deck==='ISB'?(s.inserted['CLONE BATCH SIGMA']?'CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.':'ISB OFFICER’S READER\nInsert retrieved archive tape to decrypt.'):'Local directories available. Select a directory or enter HELP.');if(s.deck!=='ISB')go('Media Archive');if(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA'])go('Clone Batch Sigma');go('Records');go('Doors');go('Status');
  }else if(page==='Media Archive'){textOut('One local index mounted.');go('Research Recordings')}
  else if(page==='Research Recordings'){textOut('Select a recording to play.');for(let i=1;i<recordings.length;i++)if(canPlay(s,i))btn('Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i))}
+ else if(page==='Clone Batch Sigma'&&s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']){textOut('CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.');const names=s.campaign==='MEN'?['Specimen Transfer Ledger','Drellis Minor Recovery Operation','Crime Lord Morgan','Research Oversight Authorization']:['Specimen Transfer Ledger','Transfer receipt'];for(const name of names)if(files(s)[name])btn(name,()=>selectPage('Read',name));}
  else if(page==='Records'||page==='Search'){const names=Object.keys(files(s)).filter(x=>page!=='Search'||(x+' '+files(s)[x]).toLowerCase().includes(query.toLowerCase()));textOut(names.length?'Available records':'No local records match.');names.forEach(x=>btn(x,()=>selectPage('Read',x)))}
  else if(page==='Read'){const body=files(s)[selected];$('heading').textContent=body?selected:'Record unavailable';textOut(body||'Access unavailable.')}
  else if(page==='Doors'){textOut('Current room · '+s.room+'\n'+rooms[s.room].map(d=>d+' · '+s.doors[d]).join('\n')+'\nSecurity Equipment Room · '+(s.equipment?'RELEASED':'SEALED'));if(s.step>=8){btn('Close current room',closeDoors);btn('Release equipment room',()=>act('EQUIPMENT'))}}
- else if(page==='Analysis'&&s.repaired&&s.deck==='Lab'){textOut('Select a subject for local analysis.');Object.keys(scans(s)).forEach(name=>btn('Scan '+name,()=>scan(name)))}
+ else if(page==='Analysis'&&s.repaired&&s.deck==='Lab'){textOut('Select a subject for local analysis.');Object.keys(scans(s)).forEach(name=>btn('Scan '+name,()=>scan(name)));go('Saved results');for(const name of Object.keys(s.matches))if(s.matches[name])btn('Individual specimen record — '+name,()=>selectPage('Read','Individual specimen record — '+name))}
+ else if(page==='Saved results'&&s.deck==='Lab'&&s.repaired){const names=Object.keys(s.saved).filter(n=>s.saved[n]);textOut(names.length?names.map(n=>n+' · '+scans(s)[n]).join('\n\n'):'No saved specimens.');go('Analysis')}
  else if(page==='Sample'&&s.repaired&&s.deck==='Lab'&&s.lastScan===selected){textOut(selected+' · '+scans(s)[selected]+'\nSAVE SPECIMEN TO RESEARCH DATABASE?');if(s.matches[selected])btn('View individual specimen record',()=>selectPage('Read','Individual specimen record — '+selected));btn('Yes — save locally',async()=>{await act('SAVE SCAN',selected);nav('Analysis')});btn('No — discard',()=>nav('Analysis'));go('Analysis')}
  else if(page==='Status'){textOut(s.notice+(s.hint?'\n'+s.hint:''))}
  else {textOut('DIR · OPEN <directory or file> · SEARCH <text> · PLAY <record> · STATUS · DOORS'+(s.step>=6?' · AUTH <code>':'')+(s.repaired?' · SCAN <subject>':''))}
  if(s.deck!=='Archive'&&s.deck!=='Director'){
    if(s.deck==='Primary'&&s.step===7&&s.card)btn('Enter authorization code',()=>{const v=prompt('Six-digit facility authorization');if(v)return act('AUTH',v.trim())});
-   if(s.step>=13)btn('Use archive station',()=>act('DECK','Archive'));
-   if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>btn('Insert '+x,async()=>{await act('INSERT',x);nav('Records')}));
-   if(s.deck==='Lab'&&s.repaired&&page!=='Analysis')go('Analysis');if(s.deck==='Lab'&&canPlay(s,6)&&!s.seen[6])btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6));if(page!=='Home')go('Home');
+   if(s.step>=13)btn('Use archive station',()=>act('DECK','Archive'));if(s.step>=12&&s.deck!=='Lab')btn('Return to laboratory workstation',()=>act('DECK','Lab'));if(s.step>=14&&s.deck!=='ISB')btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'));
+   if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>btn('Insert '+x,async()=>{await act('INSERT',x);nav(x==='CLONE BATCH SIGMA'?'Clone Batch Sigma':'Read',x)}));
+   if(s.deck==='Lab'&&s.repaired&&page!=='Analysis')go('Analysis');if(s.deck==='Lab'&&canPlay(s,6)&&!s.seen[6]&&page!=='Research Recordings')btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6));if(page!=='Home')go('Home');
  }
  btn(muted?'Enable sound':'Mute sound',()=>{muted=!muted;draw()});if(localPlayer)btn('Operator view',toggleView);
 }
@@ -93,7 +95,7 @@ function playback(){
  const transcript=el('p','',target),chalk=el('div','',target);chalk.className='chalk';chalk.hidden=true;
  const meter=el('progress','',target),box=el('div','',target);meter.max=lines.length;
  let elapsed=0,paused=false,last=performance.now(),finishing=false;
- const duration=lines.reduce((n,l)=>n+Math.max(4500,l.length*58),0);
+ const lineTimes=lines.map(l=>Math.max(4500,l.length*58));const duration=lineTimes.reduce((n,v)=>n+v,0);
  let av=null;const paths=media[id];
  if(paths.video||paths.audio){av=el(paths.video?'video':'audio','',target);av.src=paths.video||paths.audio;av.muted=muted||s.mute;av.onended=()=>{elapsed=duration};av.onerror=()=>{av?.remove();av=null;last=performance.now()};av.play().catch(()=>{if(av){av.remove();av=null}})}
  const pause=button(box,'Pause',()=>{paused=!paused;pause.textContent=paused?'Resume':'Pause';if(av){if(paused)av.pause();else av.play().catch(report)}});
@@ -103,8 +105,8 @@ function playback(){
  async function frame(now){
    if(mediaKey!==key||s.playing!==id||!player())return;
    if(!paused){elapsed+=Math.min(1000,now-last)*(s.fast?12:1);if(av&&Number.isFinite(av.duration))elapsed=duration*av.currentTime/av.duration}
-   last=now;const frac=Math.min(1,elapsed/duration),i=Math.min(lines.length-1,Math.floor(frac*lines.length));
-   transcript.textContent=speaker+'  /  '+lines[i];meter.value=frac*lines.length;
+   last=now;const frac=Math.min(1,elapsed/duration),i=Math.max(0,lineTimes.findIndex((_,i)=>elapsed<lineTimes.slice(0,i+1).reduce((n,v)=>n+v,0)));
+   transcript.textContent=speaker+'  /  '+lines[frac===1?lines.length-1:i];meter.value=frac*lines.length;
    chalk.hidden=!(id===3&&frac>=.32);if(!chalk.hidden){chalk.textContent='rack Ⅲ     '+code.board+'     Δ';if(s.boardAid)chalk.setAttribute('aria-label','Frame description: blackboard reads '+code.board);else chalk.setAttribute('aria-hidden','true');if(s.boardAid)chalk.removeAttribute('aria-hidden')}
    if(frac===1&&!finishing){finishing=true;try{if(id===7){transcript.textContent='';chalk.hidden=true;await new Promise(r=>setTimeout(r,s.fast?100:3000));}await act('FINISH',id)}catch(e){report(e);button(box,'Confirm playback completion',()=>act('FINISH',id))}return}
    requestAnimationFrame(frame)
@@ -118,7 +120,7 @@ function dashboard(){
  const op=(n,label,a,arg='')=>button(n,label,()=>act(a,arg));
  if(physical.includes(route[s.step]))button(main,route[s.step],()=>{if(route[s.step]!=='BEGIN CRISIS'||confirm('Cue the reanimations now?'))return act(route[s.step])});
  if(s.danger){const clock=el('p','',main);clock.id='dangerClock';clock.dataset.time=s.danger;updateClock()}
- if(s.step===7&&!s.card)op(main,'Confirm authorization card recovered','CARD');if(s.step>=12&&s.deck==='Director'&&!s.directorCylinder)op(main,'Confirm Director’s cylinder inserted','DIRECTOR CYLINDER');
+ if(s.step>=5&&s.step<8&&!s.card)op(main,'Confirm authorization card recovered','CARD');if(s.step>=12&&s.deck==='Director'&&!s.directorCylinder)op(main,'Confirm Director’s cylinder inserted','DIRECTOR CYLINDER');
  if(s.step>=10)op(main,s.hold?'Release crisis hold':'Hold crisis','hold');
  const session=card('Session');el('p',net.code+' · '+(net.local?'Local rehearsal':net.peer?'Player connected':'Awaiting player'),session);
  if(net.local)button(session,'Player view',toggleView);
@@ -156,12 +158,12 @@ async function command(value){
  if(v==='UNLOCK SECURITY EQUIPMENT ROOM')return act('EQUIPMENT');
  if(v.startsWith('SEARCH ')){query=raw.slice(7);selectPage('Search');return}
  if(v.startsWith('OPEN ')){const path=v.slice(5);
-   const options=['Media Archive','Research Recordings','Doors','Records','Status',...(s.repaired?['Analysis']:[])];
+   const options=['Media Archive','Research Recordings','Doors','Records','Status',...(s.deck==='Lab'&&s.repaired?['Analysis','Saved results']:[]),...(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']?['Clone Batch Sigma']:[])];
    const name=options.find(k=>k.toUpperCase()===path);if(name==='Research Recordings'&&!s.seen[1]&&page!=='Media Archive')throw Error('Select the parent media directory first.');if(name)return selectPage(name);
    const doc=Object.keys(files(s)).find(k=>k.toUpperCase()===path);if(doc)return selectPage('Read',doc);
  }
  const m=v.match(/^(?:PLAY|REPLAY) (?:REC-)?0*([1-7])$/);if(m){if(+m[1]===1&&!s.seen[1]&&page!=='Research Recordings')throw Error('Select the local recording directory first.');return act('PLAY',m[1])}
- if(v==='ARCHIVE')return act('DECK','Archive');if(v==='ISB')return act('DECK','ISB');if(v.startsWith('INSERT '))return act('INSERT',v.slice(7));
+ if(v==='ARCHIVE')return act('DECK','Archive');if(v==='ISB')return act('DECK','ISB');if(v==='LAB')return act('DECK','Lab');if(v.startsWith('INSERT '))return act('INSERT',v.slice(7));
  if(v.startsWith('SCAN ')&&s.deck==='Lab'&&s.repaired){let key=Object.keys(scans(s)).find(k=>k.toUpperCase()===v.slice(5).replace(/^TODD$/,'T0DD'));if(key)return scan(key)}
  if(['WHOAMI','PLEASE','ADMIN'].includes(v))return textOut({WHOAMI:'Unregistered duty operator.',PLEASE:'Magic word accepted. Authorization still denied.',ADMIN:'Nice try.'}[v],true);
  throw Error('Entry unavailable. Use DIR to browse or HELP for commands.')

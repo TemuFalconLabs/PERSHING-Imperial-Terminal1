@@ -135,5 +135,5 @@ export function files(s){
   }
   if(s.deck==='Lab'&&s.campaign==='MEN')for(const [name,body] of Object.entries(dossiers))if(s.matches?.[name])rows.push([12,'Individual specimen record — '+name,body]);
   const minimum={3:2,5:4,9:10,11:12,13:14,15:16};
-  return Object.fromEntries(rows.filter(([n])=>s.step>=(minimum[n]??n)).map(([,a,b])=>[a,b]));
+  return Object.fromEntries(rows.filter(([n,name])=>s.step>=(name==='ISB credential requirement'?5:(minimum[n]??n))).map(([,a,b])=>[a,b]));
 }

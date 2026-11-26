@@ -8,25 +8,25 @@ export const clues=[
  ['Inspect the menu.','Find Media Archive.','Open Research Recordings and play 001.'],
  ['The relief officer signed for a cylinder.','Look at the security desk.','Open the evidence drawer marked MEDIA.'],
  ['The archive index changed.','Inspect recovered media.','Play recording 002.'],
- ['A carrier has lost its return signal.','Trace the server-room floor box.','Seat the loose lead under the scuffed flap.'],
- ['The remote bench is back online.','Look beyond the researcher.','Pause the alignment reel and inspect the board.'],
+ ['The network connection is offline.','Locate the server room service panel.','Reconnect the disconnected network cable.'],
+ ['The research archive is back online.','Review Recording 003.','Pause the research briefing and inspect the blackboard.'],
  ['ISB security credentials are required.','Locate the ISB officer’s office.','Recover the partially damaged cylinder from the officer and insert it at reception.'],
  ['ISB authorization is verified.','Open Research Recordings.','Play 004 for the authorization procedure.'],
  ['Locate the ISB officer’s safe.','Recover the damaged authorization key card.','Compare the card with the visual evidence in the research briefing.'],
- ['A certificate is now available.','Find the occupancy certificate.','Play recording 005.'],
+ ['Omega authorization accepted.','Open Research Recordings.','Play Recording 005.'],
  ['The interlock awaits two returns.','Start with Engineering.','Seat the first relay behind the open panel.'],
  ['One branch is certified.','Follow the map to Decontamination.','Open the stuck pressure door and restore relay 2.'],
  ['The occupancy light is steady.','The main lab is accessible.','Enter the lab; register the party’s arrival.'],
- ['A local reel survived.','Check the lab recording.','Play 006 for vault directions.'],
+ ['The laboratory workstation is available.','Open local Research Recordings.','Play Recording 006 for vault directions.'],
  ['The lift panel is completely dark.','Inspect its power lead.','Plug the archive terminal in.'],
  ['The arm can fetch physical media.','Look for the cloning project.','Retrieve the Clone Batch Sigma tape.'],
  ['The vault retrieves tapes but cannot decrypt them.','Return to the ISB officer’s office.','Insert Clone Batch Sigma in the ISB terminal.'],
  ['Review the classified records, then explore the Research Director’s office beyond the laboratory.','Recover her security cylinder and insert it into her terminal.','Close the office door and deliberately play the available transmission.'],
  ['Wait for the watch officer.','Emergency signal acknowledged.','DM releases the crisis cue when the table is ready.']
 ];
-export function fresh(campaign='MEN'){return {version:1,campaign,step:0,revision:0,room:'Reception',doors:{Vestibule:'OPEN','Service passage':'CLOSED','Lab corridor':'OPEN','Analysis door':'CLOSED','Plant hatch':'OPEN','ISB office door':'OPEN','Vault door':'OPEN','Director office door':'OPEN'},deck:'Primary',seen:{},playing:0,retrieved:{},inserted:{},matches:{},card:false,directorCylinder:false,lastScan:'',parts:false,repaired:false,fast:false,mute:false,hold:false,equipment:false,legacy:false,boardAid:false,saved:{},hint:'',notice:'LOCAL DUTY STATION',danger:0,log:[]}}
+export function fresh(campaign='MEN'){return {version:2,campaign,step:0,revision:0,room:'Reception',doors:{Vestibule:'OPEN','Service passage':'CLOSED','Lab corridor':'OPEN','Analysis door':'CLOSED','Plant hatch':'OPEN','ISB office door':'OPEN','Vault door':'OPEN','Director office door':'OPEN'},deck:'Primary',seen:{},playing:0,retrieved:{},inserted:{},matches:{},card:false,directorCylinder:false,lastScan:'',parts:false,repaired:false,fast:false,mute:false,hold:false,equipment:false,legacy:false,boardAid:false,saved:{},hint:'',notice:'LOCAL DUTY STATION',danger:0,log:[]}}
 export function normalize(s){return {...fresh(s.campaign),...s,doors:{...fresh().doors,...s.doors},log:Object.values(s.log||{}),retrieved:s.retrieved||{},inserted:s.inserted||{},matches:s.matches||{},seen:s.seen||{},saved:s.saved||{}}}
-export function validSave(s){return s?.version===1&&['MEN','KIDS'].includes(s.campaign)&&Number.isInteger(s.step)&&s.step>=0&&s.step<=18&&Object.hasOwn(rooms,s.room)&&Object.keys(fresh().doors).every(k=>['OPEN','CLOSED','OBSTRUCTED'].includes(normalize(s).doors[k]))}
+export function validSave(s){return s?.version===2&&['MEN','KIDS'].includes(s.campaign)&&Number.isInteger(s.step)&&s.step>=0&&s.step<=18&&Object.hasOwn(rooms,s.room)&&Object.keys(fresh().doors).every(k=>['OPEN','CLOSED','OBSTRUCTED'].includes(normalize(s).doors[k]))}
 export const scans=s=>s.campaign==='MEN'?adultScans:kidScans;
 export const locallyClosed=s=>rooms[s.room].every(d=>s.doors[d]==='CLOSED');
 export const canPlay=(s,id)=>!!recordings[id]&&s.step>=recordingAt[id]&&(id<=5?s.deck==='Primary':id===6?s.deck==='Lab':s.deck==='Director'&&s.room==='Director'&&s.directorCylinder&&s.inserted?.['CLONE BATCH SIGMA']);
@@ -38,7 +38,7 @@ export function apply(raw,who,action,arg='',now=Date.now()){
  const advance=()=>{s.step++;s.hint=''};
  let note='';
  if(action==='PLAY'){
-   const id=Number(arg);need(canPlay(s,id),id===7?'Confidential playback unavailable at this station.':'Recording unavailable at this station.');
+   const id=Number(arg);need(s.step<17&&canPlay(s,id),id===7?'Confidential playback unavailable at this station.':'Recording unavailable at this station.');
    if(id===7)need(s.doors['Director office door']==='CLOSED','Confidential playback withheld. Close the Research Director’s office door.');
    need(!s.playing||s.playing===id,'A recording is in progress.');s.playing=id;note='Playback · '+recordings[id][0];
  }else if(action==='FINISH'){
@@ -51,15 +51,15 @@ export function apply(raw,who,action,arg='',now=Date.now()){
    need(dm&&next===action);if(action==='BEGIN CRISIS')need(!s.hold,'Release the crisis hold first.');
    advance();note=({'MOUNT CYLINDER':'Cylinder mounted. Recovered recording available.','CONNECT SERVER':'Server link restored. Remote index synchronized.','MOUNT ISB':'ISB SECURITY CREDENTIAL VERIFIED. RECORDING 004 AVAILABLE.','RELAY 1':'Environmental relay 1 online. Interlock 1 of 2.','RELAY 2':'Occupational safety check complete. Your safety is our priority.','ENTER LAB':'Local laboratory archive detected.','POWER ARCHIVE':'Retrieval station online. External power restored. No technical fault detected.','BEGIN CRISIS':'SPECIMEN ACTIVITY · Fall back to the exit junction. Surface and cave routes available.'})[action];
    if(action==='RELAY 2')s.danger=now;if(action==='ENTER LAB'){s.deck='Lab';s.room='Laboratory'}if(action==='POWER ARCHIVE'){s.deck='Archive';s.room='Archive'}
- }else if(action==='CARD'){need(dm&&s.step>=7);s.card=true;note='Authorization key card recovered.';
+ }else if(action==='CARD'){need(dm&&s.step>=5&&s.step<8);s.card=true;note='Authorization key card recovered.';
  }else if(action==='DIRECTOR CYLINDER'){need(dm&&s.step>=12&&s.room==='Director'&&s.deck==='Director');s.directorCylinder=true;note='Executive credentials verified.';
  }else if(action==='DECK'){need(s.step>=12&&!s.playing&&['Lab','ISB','Archive','Primary'].includes(arg));need(arg!=='Archive'||s.step>=13);need(arg!=='ISB'||s.step>=14);s.deck=arg;s.room={Lab:'Laboratory',ISB:'ISB',Archive:'Archive',Primary:'Reception'}[arg];note=arg+' station selected.';
  }else if(action==='RETRIEVE'){need(s.step>=14&&s.deck==='Archive'&&Object.hasOwn(tapes,arg)&&!s.retrieved[arg]&&!s.inserted[arg],'Tape unavailable or already retrieved.');s.retrieved[arg]=true;if(next==='RETRIEVE '+arg)advance();note='Lift aligned. Carrier delivered: '+arg+'. Take physical tape.';
  }else if(action==='INSERT'){need(s.deck==='ISB'&&s.retrieved[arg]&&!s.inserted[arg]&&Object.hasOwn(tapes,arg),'Archive tape decryption is available only at the ISB officer’s terminal. Tape must be in possession and not already inserted.');s.inserted[arg]=true;delete s.retrieved[arg];if(next==='INSERT '+arg)advance();note='TAPE AUTHENTICATED · '+arg+' · Record saved to Research Archives.';
  }else if(action==='CLOSE'){need(s.step>=8);if(s.room==='Director')need(dm,'Close the office door physically; the DM will confirm closure.');for(const d of rooms[s.room])if(s.doors[d]!=='OBSTRUCTED')s.doors[d]='CLOSED';note=locallyClosed(s)?'Current room closed. Doors remain unlocked.':'Obstruction detected. Check current-room door list.';
  }else if(action==='DOOR'){const [d,v]=arg.split('|');need(dm&&Object.hasOwn(s.doors,d)&&['OPEN','CLOSED','OBSTRUCTED'].includes(v));s.doors[d]=v;note=d+' · '+v;
- }else if(action==='ROOM'){need(dm&&Object.hasOwn(rooms,arg));need(!s.playing);if(arg==='Director')need(s.step>=12,'Laboratory access required.');if(arg==='ISB'&&s.step<14){s.room=arg;note='ISB office selected; reception reader required for authorization.';}else{s.room=arg;const deck={Reception:'Primary',Laboratory:'Lab',Archive:'Archive',ISB:'ISB',Director:'Director'}[arg];if(deck)s.deck=deck;note='Local interface moved to '+arg;}
- }else if(action==='BLUE'){s.legacy=true;note='THIS IS AN OLDER CODE, BUT IT CHECKS OUT. Legacy duty circular available.';
+ }else if(action==='ROOM'){need(dm&&Object.hasOwn(rooms,arg));need(!s.playing);if(['Director','Laboratory'].includes(arg))need(s.step>=12,'Laboratory access required.');if(arg==='Archive')need(s.step>=13,'Archive access required.');if(arg==='ISB'&&s.step<14){s.room=arg;note='ISB office selected; reception reader required for authorization.';}else{s.room=arg;const deck={Reception:'Primary',Laboratory:'Lab',Archive:'Archive',ISB:'ISB',Director:'Director'}[arg];if(deck)s.deck=deck;note='Local interface moved to '+arg;}
+ }else if(action==='BLUE'){s.legacy=true;note='CODE CLEARANCE BLUE RECEIVED. LEGACY IMPERIAL AUTHENTICATION. THIS IS AN OLDER CODE, BUT IT CHECKS OUT. GENERAL ACCESS GRANTED. OMEGA RESEARCH ACCESS REMAINS RESTRICTED.';
  }else if(action==='EQUIPMENT'){need(s.step>=8);s.equipment=true;note='Security Equipment Room released.';
  }else if(action==='PARTS'){need(dm&&s.step>=8);s.parts=true;note='Instrument consignment received.';
  }else if(action==='REPAIR'){need(dm&&s.step>=12&&s.parts);s.repaired=true;note='Analysis bench calibrated. Sample reader ready.';
@@ -70,5 +70,6 @@ export function apply(raw,who,action,arg='',now=Date.now()){
  }else throw Error('Unknown operation.');
  if(action==='FINISH'&&Number(arg)!==7)note=({1:'IMPERIAL SECURITY AUTHENTICATION · Authorization cylinder: NOT DETECTED · Research archive access: RESTRICTED',2:'NETWORK DIAGNOSTIC · Local terminal: OPERATIONAL · Server connection: OFFLINE · Remote research archive: UNAVAILABLE · Fault location: Server Room',3:'ISB SECURITY AUTHENTICATION REQUIRED · Registered duty location: ISB Officer’s Office',4:'MULTIFACTOR AUTHENTICATION · ISB security credentials: VERIFIED · Omega clearance: PENDING · Six-digit authorization key: REQUIRED',5:'ENVIRONMENTAL CONTROL SYSTEM · Ventilation relay 1 and 2: OFFLINE · Laboratory access: RESTRICTED',6:'CLASSIFIED RESEARCH ARCHIVE · Requested records: CLONE BATCH SIGMA · Storage medium: Physical data tape · Location: Imperial Research Archive Vault · Retrieval station: OFFLINE'})[Number(arg)]||note;
  if(action==='CONNECT SERVER')note='NETWORK CONNECTION RESTORED · Synchronization complete. RECORDING 003 AVAILABLE';if(action==='RELAY 2')note='ENVIRONMENTAL RELAYS: 2 OF 2 ONLINE · LABORATORY ACCESS GRANTED · YOUR SAFETY IS OUR PRIORITY.';
+ if(action==='POWER ARCHIVE')note='IMPERIAL RESEARCH ARCHIVE · Power supply: RESTORED · Mechanical systems: OPERATIONAL · Archive inventory: AVAILABLE · Outstanding maintenance ticket: Terminal broken again. Diagnostic findings: Terminal was unplugged. Corrective action: Connected power. Technical expertise required: NONE. Ticket automatically closed.';if(action==='RELAY 1')note='ENVIRONMENTAL RELAY 1: ONLINE · ENVIRONMENTAL RELAY 2: OFFLINE · Verification: 1 of 2 · Laboratory access: RESTRICTED';
  s.notice=note;s.revision++;s.log=[...s.log.slice(-59),{at:now,who,action:action==='AUTH'?'Authorization accepted':action,detail:action==='AUTH'?'':String(arg)}];return s;
 }
