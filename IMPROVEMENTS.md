@@ -191,3 +191,7 @@ IMP-009/025: supersede the old final-alert wording with the approved containment
 ## Final development usability pass — 25 November 2026
 
 IMP-020: redraw six-spoke Imperial cog with segmented geometry, 60-second non-destructive idle overlay, suppress overlay on playback and crisis, count pointer movement while awake. IMP-010/021/023/024: visible HELP from ordinary home, return from dark archive and early Director station, return to reception for replay. No new puzzle or changes to approved writing, prerequisites or final alarm. Source-based first-time walkthrough completed; actual first-time human/browser and live two-laptop rehearsal remain pending. Added browser test coverage for idle/wake and early-room navigation; unexecuted. Offline regenerated; cache namespace advanced. No production changes.
+
+## Phone rehearsal audio amendment
+
+Original synthesized terminal feedback added at DM request; distinct non-looping sounds, volume envelopes and mute controls, including final containment klaxon after approved silence. No narrative, progression, rules or recording dialogue changes. Actual phone audio audition pending.

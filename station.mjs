@@ -6,11 +6,80 @@ let host,s,net,localPlayer=false,page='Home',selected='',query='',lastActivity=D
 const player=()=>!dm||localPlayer;
 const el=(tag,txt='',parent)=>{const n=document.createElement(tag);n.textContent=txt;if(parent)parent.append(n);return n};
 function button(node,label,fn){const b=el('button',label,node);b.type='button';b.onclick=()=>{if(!player()||!busy)Promise.resolve().then(fn).catch(report)};return b}
-function report(e){$('error').textContent=e?.message||String(e)}
-function beep(alarm=false){if(s?.mute||muted||reduced||!audioCtx||audioCtx.state!=='running')return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.frequency.value=alarm?196:520;g.gain.value=.035;g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+(alarm?.55:.08));o.start();o.stop(audioCtx.currentTime+(alarm?.6:.1))}
+// Original, synthesized Imperial-style UI effects. No files, network or speech synthesis.
+const cuePatterns={
+ tap:[[0,.045,420,250,'triangle',.035]],
+ key:[[0,.025,780,520,'square',.009]],
+ wake:[[0,.11,180,310,'triangle',.045],[.11,.12,460,690,'sine',.045],[.24,.14,820,920,'triangle',.025]],
+ denied:[[0,.15,175,105,'sawtooth',.035],[.19,.19,145,85,'square',.022]],
+ approval:[[0,.09,440,560,'triangle',.045],[.11,.10,650,810,'triangle',.04]],
+ unlock:[[0,.09,320,420,'triangle',.045],[.11,.10,520,660,'triangle',.04],[.23,.16,780,1040,'sine',.045]],
+ link:[[0,.07,210,370,'square',.014],[.09,.07,450,680,'square',.014],[.19,.14,680,940,'triangle',.04]],
+ relay:[[0,.15,95,58,'triangle',.05],[.08,.13,260,190,'sawtooth',.018],[.24,.12,450,660,'triangle',.035]],
+ archive:[[0,.23,145,65,'triangle',.04],[.21,.08,250,180,'square',.015],[.33,.09,660,810,'triangle',.035]],
+ scan:[[0,.19,360,930,'sine',.035],[.21,.16,930,460,'sine',.027]],
+ match:[[0,.11,440,550,'triangle',.035],[.13,.11,660,800,'triangle',.035],[.27,.19,960,1120,'sine',.04]],
+ playback:[[0,.07,350,480,'triangle',.03],[.08,.09,680,820,'sine',.025]],
+ complete:[[0,.08,720,540,'sine',.03],[.10,.11,460,330,'triangle',.03]],
+ door:[[0,.13,130,65,'triangle',.05],[.14,.07,420,270,'triangle',.025]],
+ alarm:[[0,.42,180,330,'sawtooth',.055],[.53,.42,180,330,'sawtooth',.055],[1.06,.42,180,330,'sawtooth',.055]],
+ crisis:[[0,.19,220,125,'triangle',.045],[.23,.19,220,125,'triangle',.045]]
+};
+function cueForState(before,after){
+ if(!before||!after)return null;
+ if(before.step<17&&after.step===17)return 'alarm';
+ if(before.step<18&&after.step===18)return 'crisis';
+ if(after.step>=17)return null;
+ if(after.playing&&after.playing!==before.playing)return 'playback';
+ if(before.playing&&!after.playing)return 'complete';
+ const n=after.notice||'';
+ if(after.playing)return null;
+ if(/Authorization accepted|EXECUTIVE|Executive credentials|ISB SECURITY CREDENTIAL VERIFIED|CODE CLEARANCE BLUE|Sample filed/.test(n))return 'approval';
+ if(/Obstruction detected| · OBSTRUCTED/.test(n))return 'denied';
+ if(/NETWORK CONNECTION RESTORED/.test(n))return 'link';
+ if(/ENVIRONMENTAL RELAY/.test(n))return 'relay';
+ if(/Carrier delivered|IMPERIAL RESEARCH ARCHIVE · Power supply/.test(n))return 'archive';
+ if(/TAPE AUTHENTICATED|Cylinder mounted|Equipment Room released|Analysis bench calibrated/.test(n))return 'unlock';
+ if(after.lastScan&&n.startsWith(after.lastScan+' · '))return after.matches?.[after.lastScan]?'match':'scan';
+ if(/Current room closed| · CLOSED$| · OPEN$/.test(n))return 'door';
+ if(after.step>before.step)return 'unlock';
+ return null;
+}
+let audioBus,queuedCue='',finalSilence=false,lastShortCue=0;
+function soundAllowed(){return !muted&&!s?.mute&&!finalSilence&&(player()||standalone||net?.local)}
+function syncAudio(){
+ if(audioBus)audioBus.gain.setValueAtTime(soundAllowed()?1:0,audioCtx.currentTime);
+ const b=$('soundToggle');if(b){b.textContent=s?.mute?'Sound muted by operator':muted?'Enable sound':'Mute sound';b.disabled=!!s?.mute;b.setAttribute('aria-pressed',String(!!(muted||s?.mute)))}
+ const av=$('screen').querySelector('video,audio');if(av)av.muted=!!(muted||s?.mute);
+}
+function playCue(name){
+ if(!name||!soundAllowed()||audioCtx?.state!=='running'||!audioBus||!cuePatterns[name])return;
+ if(name==='key'||name==='tap'){const now=Date.now();if(now-lastShortCue<32)return;lastShortCue=now}
+ const t=audioCtx.currentTime+.004;
+ for(const [delay,duration,start,end,type,level] of cuePatterns[name]){
+   const o=audioCtx.createOscillator(),g=audioCtx.createGain(),at=t+delay;
+   o.type=type;o.frequency.setValueAtTime(start,at);o.frequency.exponentialRampToValueAtTime(end,at+duration);
+   g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(level,at+.008);g.gain.exponentialRampToValueAtTime(.0001,at+duration);
+   o.connect(g);g.connect(audioBus);o.onended=()=>{o.disconnect();g.disconnect()};o.start(at);o.stop(at+duration+.005);
+ }
+}
+function gestureCue(name){
+ if(!soundAllowed())return;
+ try{
+   if(!audioCtx){const AudioCtor=window.AudioContext||window.webkitAudioContext;if(!AudioCtor)return;audioCtx=new AudioCtor();audioBus=audioCtx.createGain();audioBus.connect(audioCtx.destination);syncAudio()}
+   if(audioCtx.state==='running'){queuedCue='';playCue(name);return}
+   if(name)queuedCue=name;
+   audioCtx.resume().then(()=>{const pending=queuedCue;queuedCue='';playCue(pending)}).catch(()=>{});
+ }catch{} // Sound is optional; unsupported audio must not interrupt the station.
+}
+function report(e){$('error').textContent=e?.message||String(e);playCue('denied')}
 function activity(){lastActivity=Date.now()}
-function wake(e){if(!$('saver').hidden){e?.preventDefault();e?.stopImmediatePropagation();$('saver').hidden=true;activity();$('command').focus();try{audioCtx||=new AudioContext();audioCtx.resume().catch(()=>{})}catch{};return true}}
-for(const event of ['keydown','pointerdown'])document.addEventListener(event,e=>{activity();if(wake(e))return;if(busy&&player()){e.preventDefault();e.stopImmediatePropagation()}},true);
+function wake(e){if(!$('saver').hidden){e?.preventDefault();e?.stopImmediatePropagation();$('saver').hidden=true;activity();$('command').focus();gestureCue('wake');return true}}
+for(const event of ['keydown','pointerdown'])document.addEventListener(event,e=>{activity();if(wake(e))return;if(busy&&player()){e.preventDefault();e.stopImmediatePropagation();return}const button=e.target.closest?.('button');if(event==='pointerdown')gestureCue(button&&!button.disabled?'tap':null);else if((button&&(e.key==='Enter'||e.key===' '))||e.key==='Enter')gestureCue('tap');else gestureCue(null)},true);
+// Touch browsers may only grant audio activation at pointer-up/click.
+for(const event of ['pointerup','click','touchend'])document.addEventListener(event,()=>{if(audioCtx?.state!=='running'&&queuedCue)gestureCue(null)},true);
+document.addEventListener('input',e=>{if(['command','codeInput'].includes(e.target.id))gestureCue('key')},true);
+$('soundToggle').onclick=()=>{muted=!muted;syncAudio();if(!muted)gestureCue('approval')};
 $('saver').onclick=wake;
 document.addEventListener('pointermove',()=>{if($('saver').hidden)activity()},{passive:true});
 // Six-spoke Imperial cog, redrawn from the Galactic Empire crest reference.
@@ -31,9 +100,9 @@ function textOut(str,animate=false){
 }
 function selectPage(p,sel=''){nav(p,sel);if(!s.playing)textOut($('screen').textContent,true)}
 function receive(state,info){
- const first=!s,changed=s?.revision!==state.revision,alarm=s&&s.step<17&&state.step>=17;
+ const before=s,first=!s,changed=s?.revision!==state.revision,alarm=s&&s.step<17&&state.step>=17;
  const moved=s?.deck!==state.deck;s=state;net=info;if(moved){page='Home';selected='';mediaKey=''}$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
- if(changed){$('notice').textContent=s.notice;if(!first)beep(alarm);activity()}
+ if(!s.playing)finalSilence=false;syncAudio();if(changed){$('notice').textContent=s.notice;if(!first)playCue(cueForState(before,s));activity()}
  if(first||changed){if(alarm||s.playing||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
  if(first&&player()&&!s.playing&&s.step<17)$('saver').hidden=false;
 }
@@ -54,7 +123,7 @@ if(params.has('session'))connect().catch(report);
 function draw(){
  if(!s)return;document.body.classList.toggle('emergency',s.step>=17);
  $('top').textContent=(player()?s.deck.toUpperCase()+' STATION':'WATCH CONTROL · '+s.campaign)+'   /   '+net.code;
- $('board').hidden=player();$('monitor').hidden=!player();
+ $('board').hidden=player();$('monitor').hidden=!player();syncAudio();
  if(!player()){dashboard();return}
  const out=$('choices');out.replaceChildren();$('objective').textContent=s.step<17?'CURRENT OBJECTIVE\n'+objective(s):'';$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
  if(s.playing){playback();return}
@@ -87,7 +156,7 @@ function draw(){
    if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>btn('Insert '+x,async()=>{await act('INSERT',x);nav(x==='CLONE BATCH SIGMA'?'Clone Batch Sigma':'Read',x)}));
    if(s.deck==='Lab'&&s.repaired&&page!=='Analysis')go('Analysis');if(s.deck==='Lab'&&canPlay(s,6)&&!s.seen[6]&&page!=='Research Recordings')btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6));if(page!=='Home')go('Home');
  }
- btn(muted?'Enable sound':'Mute sound',()=>{muted=!muted;draw()});if(localPlayer)btn('Operator view',toggleView);
+ if(localPlayer)btn('Operator view',toggleView);
 }
 function rid(i){return 'REC-'+String(i).padStart(3,'0')}
 function closeDoors(){if(confirm('Close the doors serving '+s.room+'?'))return act('CLOSE')}
@@ -115,7 +184,7 @@ function playback(){
    last=now;const frac=Math.min(1,elapsed/duration),i=Math.max(0,lineTimes.findIndex((_,i)=>elapsed<lineTimes.slice(0,i+1).reduce((n,v)=>n+v,0)));
    transcript.textContent=speaker+'  /  '+lines[frac===1?lines.length-1:i];meter.value=frac*lines.length;
    chalk.hidden=!(id===3&&frac>=.32);if(!chalk.hidden){chalk.textContent='rack Ⅲ     '+code.board+'     Δ';if(s.boardAid)chalk.setAttribute('aria-label','Frame description: blackboard reads '+code.board);else chalk.setAttribute('aria-hidden','true');if(s.boardAid)chalk.removeAttribute('aria-hidden')}
-   if(frac===1&&!finishing){finishing=true;try{if(id===7){transcript.textContent='';chalk.hidden=true;await new Promise(r=>setTimeout(r,s.fast?100:3000));}await act('FINISH',id)}catch(e){report(e);button(box,'Confirm playback completion',()=>act('FINISH',id))}return}
+   if(frac===1&&!finishing){finishing=true;try{if(id===7){transcript.textContent='';chalk.hidden=true;finalSilence=true;syncAudio();await new Promise(r=>setTimeout(r,s.fast?100:3000));}await act('FINISH',id)}catch(e){finalSilence=false;syncAudio();report(e);button(box,'Confirm playback completion',()=>act('FINISH',id))}return}
    requestAnimationFrame(frame)
  }requestAnimationFrame(frame)
 }

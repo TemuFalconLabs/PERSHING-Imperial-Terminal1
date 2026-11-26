@@ -70,3 +70,7 @@ The purple DM reminder remains visible. Do not actually lock doors, prohibit esc
 ## Final development usability pass
 
 Player terminal displays a six-spoke Imperial cog after 60 seconds of inactivity. Tap or press any key to wake; the overlay does not mutate session state, current objective, unlocked records or selected page. Playback, active processing and crisis screens are excluded. The archive and Director's terminal provide a return to the lab; entry to the Director's terminal still requires DM room selection. Ordinary unlocked stations provide a return to reception for earlier recording replays. HELP is visible from ordinary home directories. Follow the physical map and confirm actual discoveries; switching display does not replace table movement.
+
+## Synthesized station audio
+
+Original electronic effects are generated on-device using Web Audio: keys/taps, wake, errors, approval/unlock, network restoration, relays, archive transport, scan/match, playback/completion, door, containment klaxon and crisis. Tap to enable audio if the browser requires interaction. Player Mute sound remains accessible during recording and emergency screens; DM Mute station overrides local sound. Live DM controls remain silent; standalone rehearsal can play cues in either view. The post-REC-007 silence is preserved before the finite containment klaxon. Actual recorded voices remain separate future media. Test speaker volume and phone browser audio during rehearsal.
