@@ -1,47 +1,106 @@
 <!doctype html>
-<html data-offline lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111713"><title>Duty station · Imperial Science Division</title><style>:root{color-scheme:dark;--bg:#101613;--panel:#17221c;--edge:#415347;--ink:#dcf0d9;--mint:#abedaa;--dim:#a2b3a3;--amber:#f5cd83;font:16px/1.55 ui-monospace,Consolas,monospace}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 45% 0,#29362b,var(--bg) 65%);min-height:100vh;color:var(--ink)}main{max-width:1100px;margin:auto;padding:clamp(12px,3vw,38px)}header,.rail,footer{display:flex;align-items:center;gap:16px}header{border-bottom:3px double var(--edge);padding:12px 0 24px}.stamp{border:1px solid var(--mint);color:var(--mint);padding:4px 9px;text-align:center;font-weight:bold;line-height:1.2}.stamp span{display:block;border-top:1px solid}.rail,footer{justify-content:space-between;flex-wrap:wrap}small,footer,nav,.rail{font-size:.78rem;color:var(--dim);letter-spacing:.07em}h1,h2,h3,p{margin:0 0 .6rem}h1{margin:0;font:600 clamp(25px,4vw,42px)/1.1 system-ui}h2{font-size:1.35rem}h3{font-size:1rem;color:var(--amber)}output{margin-left:auto;color:var(--mint);font-size:.8rem}section#setup,#monitor,.card{background:var(--panel);border:1px solid var(--edge);padding:clamp(15px,3vw,28px);margin:15px 0}#setup{max-width:650px}button,input,select{font:inherit;color:var(--ink);border:1px solid var(--edge);border-radius:3px;background:#101a14;padding:8px 12px}input{min-width:0;max-width:100%}button{cursor:pointer;text-align:left}button:hover,button:focus-visible{border-color:var(--mint);background:#283f2d}button:disabled{opacity:.5}label{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap}form,.actions,#dmSetup,.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}#commandForm{border-top:1px solid var(--edge);padding-top:12px}#command{flex:1}#screen{white-space:pre-line;min-height:85px}#top{padding:12px 0}#notice{color:var(--mint);min-height:2em}#error{color:var(--amber);white-space:pre-wrap}footer{border-top:1px solid var(--edge);padding-top:12px;margin-top:20px}#board{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:10px}.card{margin:0;padding:15px;min-width:0}.card button{font-size:.86rem}.card li{font-size:.85rem}details{margin:8px 0}summary{cursor:pointer}.chalk{margin:12px 0;padding:15px;border:5px solid #75614c;background:#344a42;color:#eee9d6;font:italic 1.5rem Georgia,serif;transform:rotate(-1deg)}progress{width:min(100%,450px);accent-color:var(--mint)}video{width:min(100%,580px)}[hidden]{display:none!important}#saver{position:fixed;inset:0;background:#080e0b;overflow:hidden;z-index:3;cursor:pointer}#insignia{position:absolute;color:#95ad9b;width:76px;height:76px}#insignia svg{width:100%;height:100%}#saver small{position:absolute;bottom:6%;left:0;width:100%;text-align:center}body.emergency{--panel:#342221;--edge:#8a534b;--mint:#ffb7a4}.retrieving{animation:slide .8s alternate infinite}@keyframes slide{to{letter-spacing:.2em}}@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+<html data-offline lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111713"><title>Duty station · Imperial Science Division</title><style>:root{color-scheme:dark;--bg:#101613;--panel:#17221c;--edge:#415347;--ink:#dcf0d9;--mint:#abedaa;--dim:#a2b3a3;--amber:#f5cd83;font:16px/1.55 ui-monospace,Consolas,monospace}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 45% 0,#29362b,var(--bg) 65%);min-height:100vh;color:var(--ink)}main{max-width:1100px;margin:auto;padding:clamp(12px,3vw,38px)}header,.rail,footer{display:flex;align-items:center;gap:16px}header{border-bottom:3px double var(--edge);padding:12px 0 24px}.stamp{border:1px solid var(--mint);color:var(--mint);padding:4px 9px;text-align:center;font-weight:bold;line-height:1.2}.stamp span{display:block;border-top:1px solid}.rail,footer{justify-content:space-between;flex-wrap:wrap}small,footer,nav,.rail{font-size:.78rem;color:var(--dim);letter-spacing:.07em}h1,h2,h3,p{margin:0 0 .6rem}h1{margin:0;font:600 clamp(25px,4vw,42px)/1.1 system-ui}h2{font-size:1.35rem}h3{font-size:1rem;color:var(--amber)}output{margin-left:auto;color:var(--mint);font-size:.8rem}section#setup,#monitor,.card{background:var(--panel);border:1px solid var(--edge);padding:clamp(15px,3vw,28px);margin:15px 0}#setup{max-width:650px}button,input,select{font:inherit;color:var(--ink);border:1px solid var(--edge);border-radius:3px;background:#101a14;padding:8px 12px}input{min-width:0;max-width:100%}button{cursor:pointer;text-align:left}button:hover,button:focus-visible{border-color:var(--mint);background:#283f2d}button:disabled{opacity:.5}label{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap}form,.actions,#dmSetup,.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}#commandForm{border-top:1px solid var(--edge);padding-top:12px}#command{flex:1}#screen{white-space:pre-line;min-height:85px}#top{padding:12px 0}#notice{color:var(--mint);min-height:2em;white-space:pre-line}#error{color:var(--amber);white-space:pre-wrap}footer{border-top:1px solid var(--edge);padding-top:12px;margin-top:20px}#board{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:10px}.card{margin:0;padding:15px;min-width:0}.card button{font-size:.86rem}.card li{font-size:.85rem}details{margin:8px 0}summary{cursor:pointer}.chalk{margin:12px 0;padding:15px;border:5px solid #75614c;background:#344a42;color:#eee9d6;font:italic 1.5rem Georgia,serif;transform:rotate(-1deg)}progress{width:min(100%,450px);accent-color:var(--mint)}video{width:min(100%,580px)}[hidden]{display:none!important}#saver{position:fixed;inset:0;background:#080e0b;overflow:hidden;z-index:3;cursor:pointer}#insignia{position:absolute;color:#95ad9b;width:76px;height:76px}#insignia svg{width:100%;height:100%}#saver small{position:absolute;bottom:6%;left:0;width:100%;text-align:center}body.emergency{--panel:#342221;--edge:#8a534b;--mint:#ffb7a4}.retrieving{animation:slide .8s alternate infinite}@keyframes slide{to{letter-spacing:.2em}}@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
 </style></head>
 <body><main><header><div class="stamp">ISD<span>07</span></div><div><small>IMPERIAL SCIENCE DIVISION</small><h1 id="title">Duty station</h1></div><output id="link">STANDBY</output></header>
 <section id="setup"><h2 id="setupTitle">Connect to duty station</h2><form id="join"><label>Session code <input id="codeInput" maxlength="8" autocapitalize="characters" autocomplete="off" required></label><button>Connect</button></form>
 <div id="dmSetup" hidden><label>Campaign <select id="camp"><option>MEN</option><option>KIDS</option></select></label><button id="create">Create live session</button><button id="local">Local rehearsal</button><div id="recover"></div></div></section>
-<section id="work" hidden><div id="top" class="rail"></div><div id="board"></div><div id="monitor"><nav id="crumb"></nav><h2 id="heading"></h2><div id="screen"></div><div id="choices" class="actions"></div><form id="commandForm"><label for="command">COMMAND &gt;</label><input id="command" autocomplete="off" autocapitalize="characters" spellcheck="false"><button>Enter</button></form></div><div id="notice" role="status"></div></section>
+<section id="work" hidden><div id="top" class="rail"></div><div id="board"></div><div id="monitor"><nav id="crumb"></nav><h2 id="heading"></h2><div id="screen"></div><pre id="objective" aria-live="polite" style="white-space:pre-wrap;border-top:1px solid currentColor;padding-top:.65rem"></pre><p id="dmReminder" hidden style="color:#c5a0ed;font-weight:bold">*** DM BACKEND INPUT REQUIRED UPON SUCCESS ***</p><div id="choices" class="actions"></div><form id="commandForm"><label for="command">COMMAND &gt;</label><input id="command" autocomplete="off" autocapitalize="characters" spellcheck="false"><button>Enter</button></form></div><div id="notice" role="status"></div></section>
 <p id="error" role="alert"></p><section id="saver" tabindex="0" hidden aria-label="Wake duty station"><div id="insignia" aria-hidden="true">✺</div><small>TOUCH OR PRESS ANY KEY TO WAKE</small></section>
 <footer>ISD FIELD SYSTEMS <span>LOCAL PORT 07</span></footer></main><script type="module">const code = Object.freeze({ prefix: '47', board: '1938' });
 // Leave media paths empty for built-in captions. URLs are relative to this station.
 const media = Object.fromEntries(Array.from({length:7}, (_,i)=>[i+1,{video:'',audio:''}]));
 const recordings = [
   null,
-  ['Shift handover','Duty officer',[
-    'If this is your first watch, leave the board exactly as you find it. The relief officer keeps the station copy in the drawer marked MEDIA.',
-    'I counted eleven coats on twelve hooks this morning. Personnel says that is within tolerance. The owner of the grey one may disagree. Sign the book when you take over.']],
-  ['Bench copy','Engineering clerk',[
-    'The night shift sent me a reel with the middle missing. Same break on every copy. When I pulled the patch at the server floor box the splice disappeared.',
-    'I left the return lead loose for inspection. Somebody please seat it. The next shift needs the original image, edges and all.']],
-  ['Framing check','Research technician',[
-    'Keep the full width this time. When you crop the board out I lose the rack marks along the left edge.',
-    'There. Hold that frame. The Director keeps the other copy in the brass-front locker in her office. If she asks, we have only been checking alignment.']],
-  ['Personal dictation','Facility Research Director',[
-    'For the relief director taking custody of my cylinder. The first pair on the authorization register is '+code.prefix.split('').join(', ')+'. The remainder is on the board in the bench copy.',
-    'Please take the bag by the locker when you leave. My daughter put a note in the pocket. I should like to keep that.']],
-  ['Occupancy certificate','Facilities supervisor',[
-    'There are two signatures on the occupancy certificate. One belongs to Engineering. The other belongs to Decontamination. I have accepted neither by proxy.',
-    'Bring each relay back on its own circuit. When both indicators settle, the laboratory door will release. Whoever takes the watch after mine can sign for the air.']],
-  ['Inventory adjustment','Laboratory researcher',[
-    'I was told to clear the empty racks. I began with the names. That was an error. The names are the only part of the inventory the Director wants kept.',
-    'I have moved the intact record to mechanized storage. Use the archive station beyond this room. Request the tape under its batch designation, then bring it back to the primary reader. Please leave the empty labels where they are.']],
-  ['Duty transmission','Facility commander',[
-    'This is the facility commander. We have suffered a catastrophic containment failure. All personnel are ordered to evacuate immediately.',
-    'The specimens… they’re moving. They were dead. Every single one of them was dead.',
-    'Security! Seal that corridor! Stop them! STOP THEM!',
-    'The biological agent is airborne. Engineering has shut down the ventilation, but it’s already too late for us.',
-    'If anyone finds this recording, whatever you do, do not restart the air circula—']]
+  [
+    "Shift handover",
+    "Duty officer",
+    [
+      "Routine security handover. For those recently assigned to this facility, the Research Division requires that all personnel authenticate their credentials before accessing the internal archive.",
+      "A duty authorization cylinder has been provided at the security desk. You'll find it in the drawer marked MEDIA. Insert it into the terminal reader to establish your credentials.",
+      "And please return it when you're finished. The last officer who misplaced one spent three weeks completing the paperwork necessary to report it missing."
+    ]
+  ],
+  [
+    "Engineering report",
+    "Engineering clerk",
+    [
+      "Engineering report. The reception terminal has lost its connection to the facility's main server. The terminal itself is functional, but most of the Research Division's records are currently inaccessible.",
+      "I've traced the problem to a disconnected network cable beneath the service panel in the server room. I've submitted two maintenance requests, neither of which has been acknowledged.",
+      "If you're taking over the engineering shift, reconnect the cable and verify that the research archives are accessible from reception. The Director has made it abundantly clear that interruptions to her research will not be tolerated."
+    ]
+  ],
+  [
+    "Research briefing",
+    "Research scientist",
+    [
+      "Research log. The latest series of trials has concluded. As anticipated, the mortality rate among the experimental clone specimens was exceptionally high. However, the results were not entirely without merit.",
+      "A small number of clones demonstrated remarkable biological resilience, surviving procedures that proved fatal to the remainder of their cohort. Interestingly, blood analysis has also revealed slightly elevated M-counts among the surviving specimens.",
+      "Dr. Pershing believes these characteristics may prove particularly valuable to his ongoing research. At his request, I have authorized the transfer of the surviving specimens to another research facility for more extensive examination.",
+      "We have spent considerable resources investigating why so many specimens have failed. Perhaps we have been asking the wrong question.",
+      "What makes these particular specimens so difficult to kill?"
+    ]
+  ],
+  [
+    "ISB security authorization",
+    "ISB security officer",
+    [
+      "ISB security officer’s personal log. Given the sensitive nature of our work, our benefactors have mandated multifactor authentication for access to restricted research materials and facility controls.",
+      "An ISB security credential must first be authenticated at the reception terminal. Once those credentials have been verified, my six-digit authorization key will grant the necessary Omega clearance. A physical copy of the key is secured in the safe in my office.",
+      "I consider these additional security procedures an unnecessary administrative burden. Nevertheless, our benefactors have made it quite clear that discretion is not a matter of personal preference."
+    ]
+  ],
+  [
+    "Ventilation interlock",
+    "Facilities supervisor",
+    [
+      "Facilities engineering report. Following several complaints from the research staff regarding air quality within the main laboratory, the Director has authorized maintenance of the facility's environmental control systems.",
+      "Imperial occupational safety regulations prohibit access to the laboratory while its ventilation systems are offline. Both environmental relays must be restored before the entrance will release.",
+      "The first relay is located in Engineering. The second is in the Decontamination section. Once both are operational, normal air circulation and laboratory access will resume automatically.",
+      "Remember, personnel safety is the responsibility of every Imperial employee."
+    ]
+  ],
+  [
+    "Experimental procedures",
+    "Laboratory researcher",
+    [
+      "Supplemental research log. One of the more persistent complications associated with repeated experimentation has been the psychological deterioration of the specimens. Those surviving an initial procedure frequently exhibit considerable resistance to subsequent testing.",
+      "To address this complication, we have adapted the inhibitor chip technology originally developed for the Republic's clone army. Unlike their predecessors, these implants are not intended to enforce obedience or behavioral directives.",
+      "Their purpose is to prevent the formation of long-term memories. A specimen may remain fully conscious throughout an experimental procedure without retaining any recollection of the experience afterward.",
+      "The results have been encouraging. Several specimens have now undergone repeated procedures without exhibiting any recognition of the researchers responsible for their treatment.",
+      "Dr. Pershing has requested the complete experimental histories of the surviving specimens. Given the sensitive nature of these records, the original documentation has been transferred to the secured research archive under the designation Clone Batch Sigma.",
+      "The specimens may have no memory of what we have done to them, but it is imperative that we maintain a complete record of every procedure and its outcome."
+    ]
+  ],
+  [
+    "Confidential commander transmission",
+    "Facility commander",
+    [
+      "This is the facility commander. We have suffered a catastrophic containment failure. I am ordering the immediate evacuation of all surviving personnel.",
+      "We initially believed the experimental agent had failed. The specimens were pronounced dead and preparations were underway for their disposal.",
+      "They weren't dead. Or at least… they didn't stay dead.",
+      "Security! Seal that corridor! I said seal it!",
+      "Engineering has confirmed that the biological agent is airborne. We've shut down the ventilation systems in an attempt to contain it, but it's already too late for most of us.",
+      "If anyone receives this transmission, do not enter the laboratory. Do not attempt to recover the specimens. And whatever you do, DO NOT RESTART THE AIR CIRCULA—"
+    ]
+  ]
 ];
 const tapes = {
-  STARDUST:'Optical alignment plates. Oversize carrier returned empty. Technical drawings retained by the originating office.',
-  NECROMANCER:'Interdepartmental routing sheet. Three requisitions share a stamp. Subject and destination redacted in the local copy.',
-  CINDER:'Sentinel courier docket. Contingency activated upon confirmation of the Emperor’s death. Target annex withdrawn. No facility tasking attached.',
-  'CLONE BATCH SIGMA':'Specimen transfer ledger. Full index requires primary reader.',
-  'LIFT INSPECTION':'Four load tests passed. Fifth load discovered to be the inspector standing on the platform.'
+  "STARDUST": "PROJECT STARDUST\n\nIMPERIAL CLASSIFIED RESEARCH ARCHIVE\n\nClassification: TOP SECRET\n\nProject oversight: Director Orson Krennic\n\nLead research scientist: Dr. Galen Erso\n\nResearch installation: Eadu\n\nProject status: TERMINATED\n\nPROJECT SUMMARY\n\nOriginally presented as an advanced energy research initiative, Project Stardust successfully developed a method of amplifying and concentrating energy through the use of kyber crystals.\n\nThe resulting technology was incorporated into the primary weapons system of the Empire's DS-1 orbital battle station, commonly known as the Death Star.\n\nPOST-INCIDENT SECURITY REVIEW\n\nFollowing the destruction of the battle station at Yavin, an internal investigation determined that deliberate sabotage by research personnel contributed to its loss.\n\nEffective immediately, all personnel assigned to classified Imperial research initiatives shall be subject to enhanced surveillance, compartmentalized access and independent verification of experimental results.\n\nPERSONNEL COMPLIANCE NOTICE\n\nScientific expertise does not exempt an individual from suspicion of treason.\n\nEND OF RECORD",
+  "NECROMANCER": "PROJECT NECROMANCER\n\nIMPERIAL ADVANCED SCIENCE DIVISION\n\nClassification: TOP SECRET\n\nOriginal research director: Dr. Royce Hemlock\n\nOriginal research installation: Mount Tantiss, Wayland\n\nCurrent research installations: CLASSIFIED\n\nPrimary beneficiary: RESTRICTED\n\nPROJECT SUMMARY\n\nProject Necromancer was established to overcome the biological limitations of conventional cloning technology, with particular emphasis on the successful replication and preservation of elevated M-counts.\n\nEarly experiments demonstrated that genetically viable clones did not necessarily retain the biological characteristics of their donors. Attempts to introduce these characteristics artificially resulted in exceptionally high specimen mortality.\n\nRESEARCH CONTINUITY DIRECTIVE\n\nDespite the loss of the Mount Tantiss research installation, the objectives of Project Necromancer remain a matter of the highest Imperial priority.\n\nSurviving research materials have been distributed among classified installations. All viable specimens demonstrating resistance to experimental procedures or elevated M-counts are to be preserved for further examination.\n\nSPECIAL AUTHORIZATION\n\nThe ultimate purpose of Project Necromancer is restricted to executive-level personnel. Research staff are reminded that successful execution of their assigned duties does not require knowledge of the project's final objective.\n\nEND OF RECORD",
+  "CINDER": "OPERATION CINDER\n\nIMPERIAL EXECUTIVE CONTINGENCY DIRECTIVE\n\nClassification: TOP SECRET\n\nIssuing authority: Emperor Palpatine\n\nActivation criteria: Confirmed death of the Emperor\n\nDelivery method: Sentinel messenger droids\n\nOperational status: ACTIVATED\n\nOPERATIONAL SUMMARY\n\nFollowing confirmation of the Emperor's death at Endor, designated Imperial commanders received instructions to commence punitive operations against selected inhabited worlds.\n\nThe authorized deployment of climate disruption arrays and Imperial naval forces was intended to render targeted population centers uninhabitable.\n\nREGISTERED TARGETS\n\nNaboo\n\nVardos\n\nBurnin Konn\n\nNacronis\n\nAdditional targets: CLASSIFIED\n\nEXECUTIVE CLARIFICATION\n\nA world's demonstrated loyalty to the Empire does not constitute grounds for exemption.\n\nImperial commanders are reminded that the Emperor's final orders supersede all previous commitments to the protection of Imperial citizens and military personnel.\n\nCOMPLIANCE DIRECTIVE\n\nThe death of the Emperor does not absolve his servants of their obligation to obey him.\n\nEND OF RECORD",
+  "ORDER 66": "ORDER 66\n\nIMPERIAL SECURITY BUREAU — HISTORICAL REVIEW\n\nClassification: TOP SECRET\n\nIssuing authority: Supreme Chancellor Palpatine\n\nOriginal installation: Kamino\n\nProgram: Clone behavioral modification\n\nDirective status: EXECUTED\n\nPROGRAM OVERVIEW\n\nDuring the development of the Grand Army of the Republic, Kaminoan scientists implanted biological inhibitor chips within the developing clone specimens.\n\nAlthough the Jedi were informed that these implants were intended to regulate aggressive behavior, their actual purpose was to ensure unconditional compliance with certain classified executive directives.\n\nDIRECTIVE EXECUTION\n\nUpon activation of Order 66, clone personnel were compelled to regard their Jedi commanders as enemies of the Republic, overriding established personal relationships, loyalties and independent judgment.\n\nRESEARCH FINDINGS\n\nWhile the program was overwhelmingly successful, isolated instances of noncompliance were documented. Genetic abnormalities, implant defects and unauthorized surgical removal were identified as potential contributing factors.\n\nIMPERIAL RESEARCH APPLICATIONS\n\nThe success of the inhibitor chip program demonstrated that biological implants could be utilized to modify complex neurological functions.\n\nFurther research into alternative applications of this technology has been authorized by the Imperial Advanced Science Division.\n\nFINAL ASSESSMENT\n\nLoyalty is considerably more reliable when it is not left to the discretion of the individual.\n\nEND OF RECORD",
+  "CLONE BATCH SIGMA": "CLONE BATCH SIGMA — general classified records",
+  "LIFT INSPECTION": "ARCHIVE LIFT INSPECTION\n\nIMPERIAL DEPARTMENT OF OCCUPATIONAL SAFETY\n\nClassification: ADMINISTRATIVE\n\nInspection type: Routine mechanical safety\n\nEquipment: Archive retrieval lift\n\nInspection result: PASSED WITH EXCEPTIONS\n\nINSPECTION FINDINGS\n\nDuring routine load testing, the archive retrieval lift consistently reported an unexplained excess weight of 87 kilograms.\n\nEngineering conducted an extensive diagnostic examination of the lift's sensors, mechanical components and calibration software. No deficiencies were identified.\n\nROOT CAUSE ANALYSIS\n\nThe inspecting officer was standing on the lift.\n\nCORRECTIVE ACTION\n\nThe inspecting officer was instructed to step off the lift. Subsequent readings were within acceptable tolerances.\n\nADMINISTRATIVE FOLLOW-UP\n\nThe inspecting officer has formally disputed the findings, citing concerns regarding the accuracy of his recorded body weight.\n\nThe matter has been referred to Personnel for further investigation.\n\nEquipment status: OPERATIONAL\n\nPersonnel grievance: PENDING\n\nEND OF RECORD"
+};
+const sigmaRecords = {
+  "Specimen Transfer Ledger": "CLONE BATCH SIGMA\n\nCLASSIFIED SPECIMEN TRANSFER LEDGER\n\nOriginal specimens: 1,000\n\nDid not survive: 994\n\nKnown survivors: 6\n\nRecorded survival rate: 0.6%\n\nEXPERIMENTAL ASSESSMENT\n\nDespite the exceptionally high mortality rate, six specimens demonstrated sufficient biological resilience to warrant continued experimentation. Blood analysis confirmed elevated M-counts among the surviving specimens.\n\nTRANSFER AUTHORIZATION\n\nAll six surviving specimens were designated priority research assets and authorized for transfer to another classified Imperial research installation.\n\nSUBSEQUENT DISPOSITION\n\nReceiving facility confirmation was never obtained. Subsequent attempts to establish the whereabouts of the surviving specimens have yielded only limited intelligence.\n\nSpecimens with subsequent intelligence records: 2\n\nSpecimens without subsequent intelligence records: 4\n\nRESEARCH ASSET RECOVERY DIRECTIVE\n\nAll surviving specimens are considered irreplaceable research assets. Recovery alive remains a priority.\n\nASSOCIATED CLASSIFIED RECORDS\n\nIndividual specimen records available upon biological specimen scan.\n\n[Recovery Dispatch]\n\n[Research Oversight Authorization]\n\n[Crime Lord Morgan]",
+  "Drellis Minor Recovery Operation": "DRELLIS MINOR\n\nIMPERIAL SECURITY BUREAU — COVERT RECOVERY OPERATION\n\nClassification: TOP SECRET\n\nAssigned personnel: Commander Varrick and Rane\n\nPrimary objective: Recovery of biological research assets\n\nOperational status: ONGOING\n\nINTELLIGENCE ASSESSMENT\n\nRecent intelligence has confirmed the presence of two surviving Clone Batch Sigma test subjects on Drellis Minor. Commander Varrick and Rane have been dispatched to apprehend both subjects and arrange their transfer to a classified research installation.\n\nOPERATIONAL DISCRETION\n\nGiven the sensitive nature of the research program, direct Imperial involvement is to remain concealed from the local population.\n\nThe utilization of local criminal organizations, including the gang commonly referred to as the Ridiculous Six, has proven useful in disguising Imperial recovery efforts as ordinary criminal activity.\n\nEngineered Sand Razorbacks, specifically modified to detect the scent associated with elevated M-counts, will be utilized to track and locate the surviving specimens.\n\nLocal assets are not to be informed of the identity or scientific significance of the individuals being pursued.\n\nLATEST FIELD TRANSMISSION\n\nBoth assets are alive. Extraction unsuccessful. The Doctor will adjust.\n\nSTANDING DIRECTIVE\n\nRecovery of both specimens remains a priority. The preservation of local criminal assets does not.\n\nEND OF RECORD",
+  "Crime Lord Morgan": "MORGAN\n\nIMPERIAL SECURITY BUREAU — PERSON OF INTEREST\n\nClassification: TOP SECRET\n\nArea of influence: Drellis Minor\n\nDesignation: Criminal organization leader\n\nOperational value: HIGH\n\nSecurity risk: HIGH\n\nINTELLIGENCE ASSESSMENT\n\nMorgan possesses considerable resources, extensive criminal connections and substantial influence throughout Drellis Minor. Her reach extends well beyond the capabilities of the smaller criminal organizations operating within the region.\n\nHer resources and influence may prove invaluable to ongoing Imperial operations. However, her ambition, intelligence and considerable appetite for power make her a potentially dangerous liability.\n\nOPERATIONAL RESTRICTIONS\n\nMorgan is not to be informed of the true nature of our research or the scientific significance of the individuals being pursued.\n\nAny cooperation with her organization must be conducted through intermediaries whenever possible.\n\nCONTINGENCY DIRECTIVE\n\nShould Morgan acquire sufficient knowledge to compromise Imperial interests, she is to be eliminated.\n\nHer usefulness does not supersede the security of this operation.\n\nEND OF RECORD",
+  "Research Oversight Authorization": "RESEARCH OVERSIGHT AUTHORIZATION\n\nACCESS RESTRICTED\n\nOmega clearance: INSUFFICIENT\n\nAuthorizing personnel: CLASSIFIED\n\nExecutive oversight: CLASSIFIED\n\nEXECUTIVE SECURITY DIRECTIVE\n\nNo electronic or hard-copy records concerning the identity of the executive research authority or the ultimate objectives of this program are to be maintained at this installation.\n\nAll communications concerning these matters shall be conducted directly with authorized personnel.\n\nUnauthorized inquiries will be reported to the Imperial Security Bureau.\n\nNO FURTHER RECORDS AVAILABLE"
+};
+const dossiers = {
+  "Glitch": "IMPERIAL SPECIMEN DATABASE\n\nBIOLOGICAL REGISTRY MATCH CONFIRMED\n\nSPECIMEN MG-1842\n\nExperimental cohort: SIGMA\n\nM-count: ELEVATED\n\nBiological viability: CONFIRMED\n\nRecovery status: OUTSTANDING\n\nEXPERIMENTAL OBSERVATIONS\n\nSpecimen demonstrated exceptional cognitive aptitude and retained advanced technical problem-solving capabilities despite repeated experimental procedures, with particular proficiency in computer systems, advanced electronics and technological manipulation.\n\nModified inhibitor chip successfully prevented the formation of long-term memories without significantly impairing existing technical knowledge or learned skills.\n\nRESEARCH RECOMMENDATION\n\nPreserve specimen for continued examination. Further neurological assessment may provide valuable insight into the relationship between elevated M-counts, cognitive function and biological resilience.\n\nRECOVERY INSTRUCTIONS\n\nSpecimen may be unaware of its experimental history or assigned research designation. Recovery alive is mandatory.\n\nEND OF SPECIMEN RECORD",
+  "Crosseye": "IMPERIAL SPECIMEN DATABASE\n\nBIOLOGICAL REGISTRY MATCH CONFIRMED\n\nSPECIMEN MG-6931\n\nExperimental cohort: SIGMA\n\nM-count: ELEVATED\n\nBiological viability: CONFIRMED\n\nRecovery status: OUTSTANDING\n\nEXPERIMENTAL OBSERVATIONS\n\nSpecimen demonstrated exceptional visual acuity, hand-eye coordination and spatial awareness, with particular proficiency in long-range marksmanship and precision weapons systems.\n\nSpecimen also demonstrated exceptional proficiency in covert movement, infiltration and concealment, consistently evading detection during simulated security exercises.\n\nDespite repeated experimental procedures, the specimen retained remarkable motor control and the ability to maintain concentration under considerable physical and psychological stress.\n\nModified inhibitor chip successfully prevented the formation of long-term memories without significantly impairing previously acquired combat skills.\n\nRESEARCH RECOMMENDATION\n\nPreserve specimen for continued examination. Further testing may establish a correlation between elevated M-counts, sensory perception and neurological response times.\n\nRECOVERY INSTRUCTIONS\n\nSpecimen possesses advanced combat capabilities. Recovery personnel should exercise appropriate caution. Recovery alive is mandatory.\n\nEND OF SPECIMEN RECORD"
 };
 const adultScans = {
   Glitch:'ELEVATED · specimen match MG-1842.', Crosseye:'ELEVATED · specimen match MG-6931.',
@@ -59,94 +118,110 @@ function files(s){
     [0,'Property office','Lost authorization cylinders must be reported using an authorization cylinder. Equipment requests marked URGENT will be processed in the order received.'],
     [0,'Refreshments','Six cups of recycled caf were issued on night shift. Seven complaints were received. Stores requests the return of the extra cup.'],
     [0,'Droid port','Self-test complete. Maintenance staff may borrow the diagnostic lead. Organic personnel must stop using it as a belt.'],
-    [3,'Patch ticket','Floor junction SR-2. Return lead loose behind service flap. Do not disturb the other three carriers.'],
+    [3,'Patch ticket','Network connection failure. Disconnected cable beneath service panel in Server Room. Reconnect the cable.'],
     [5,'Security abstract','An escort reported a missing receipt. The incident office retained the envelope, filed the report and requested the receipt as supporting evidence.'],
-    [5,'Locker release','Power restored to the Director’s office. Personal locker uses a brass front plate.'],
+    [5,'ISB credential requirement','ISB security authentication required. Registered duty location: ISB Officer’s Office. Recover the security cylinder and insert it at reception.'],
     [8,'Scanner diagnostic','Bench offline. Replace keyed sensor assembly S-4 and regulator P-2. Matching packing class: instrument, regulated. Calibration requires local access in Analysis.'],
     [8,'Shipping manifest','TECHNICAL STORES • Crate B17: regulated instruments, S-4 + P-2. B71: general lighting, P-2 only. Two similar labels; compare contents before signing.'],
     [9,'Engineering work order','Relay 1 service crew retained the cage key. Parts docket B17. Branch pressure readings disagree by one division. Instrument service deferred.'],
     [11,'Laboratory inventory','Slide frames returned: all. Staff effects returned: none. A researcher has written a forwarding address inside the cover, then rubbed it away.'],
-    [11,'Archive directions','Beyond the main laboratory: mechanized tape vault. The local arm can deliver a carrier. The primary station holds the reader.'],
+    [11,'Archive directions','Beyond the main laboratory: mechanized tape vault. The local arm can deliver a carrier. Only the ISB officer’s terminal can decrypt the tapes.'],
     [13,'Previous service ticket','The archive terminal is broken again. Resolution: Connected power.']
   ];
   if(s.legacy) rows.push([0,'Legacy duty circular','ISSUING OFFICER: NO LONGER EMPLOYED. PLEASE DIRECT COMPLAINTS TO YOUR SURVIVING SUPERVISOR.']);
   if(s.campaign==='MEN') rows.push(
     [5,'Traffic receipt','A transmission without an acknowledgement is entered as disposition unknown. A clerk has crossed out both DELIVERED and LOST.'],
     [11,'Approach docket','SKELD. Flight complement: droid billets throughout. Freight, passengers and contents inspection require separate forms. Neither inspection nor an acknowledgement is attached.'],
-    [15,'Specimen ledger','CLONE BATCH SIGMA. Intake 1,000. Surviving transfers 6. Two matched field dossiers. Four subsequent locations unaccounted for. A blank destination is not a death record.'],
-    [15,'Optical comparison','Scope reticle: align the notches along the left edge. Crosseye, MG-6931, has the same nick across both field plates. Glitch, MG-1842, appears on the companion plate. Recognition requires no scanner.'],
-    [15,'Recovery dispatch','Commander Varrik / Rayne. Drellis Minor: both assets sought alive. Extraction unsuccessful. A bartender was shown the two faces. This copy lacks his reply. The receiving escort never countersigned.'],
-    [15,'Research authority','Scientific lead: Dr. Penn Pershing. Authority: Moff Gideon. Transfer requested for further study of surviving subjects and midi-chlorian harvesting. Subsequent disposition annex absent.']);
-  else rows.push([11,'Archive shelf slip','A small handprint on the transfer sleeve cuts through two layers of dust. The clerk has kept the sleeve.'],[15,'Specimen ledger','CLONE BATCH SIGMA. Dr. Penn Pershing, late Imperial register. James and Kai appear on separate specimen cards bearing the same project stamp. The purpose column has been removed from both cards.'],[15,'Transfer receipt','Two impressions on the transfer copy match the shelf slip. The archive contains no later disposition.']);
+    );
+  else rows.push([11,'Archive shelf slip','A small handprint on the transfer sleeve cuts through two layers of dust. The clerk has kept the sleeve.'] );
+  if(s.deck==='ISB'){
+    for(const [name,body] of Object.entries(tapes))if(name!=='CLONE BATCH SIGMA'&&s.inserted?.[name])rows.push([14,name,body]);
+    if(s.inserted?.['CLONE BATCH SIGMA']){
+      if(s.campaign==='MEN')for(const [name,body] of Object.entries(sigmaRecords))rows.push([16,name,body]);
+      else rows.push([16,'Specimen Transfer Ledger','CLONE BATCH SIGMA. Dr. Penn Pershing, late Imperial register. James and Kai appear on separate specimen cards bearing the same project stamp. The purpose column has been removed from both cards.'],[16,'Transfer receipt','Two impressions on the transfer copy match the shelf slip. The archive contains no later disposition.']);
+    }
+  }
+  if(s.deck==='Lab'&&s.campaign==='MEN')for(const [name,body] of Object.entries(dossiers))if(s.matches?.[name])rows.push([12,'Individual specimen record — '+name,body]);
   const minimum={3:2,5:4,9:10,11:12,13:14,15:16};
-  return Object.fromEntries(rows.filter(([n])=>s.step>=(minimum[n]??n)).map(([,a,b])=>[a,b]));
+  return Object.fromEntries(rows.filter(([n,name])=>s.step>=(name==='ISB credential requirement'?5:(minimum[n]??n))).map(([,a,b])=>[a,b]));
 }
 
 
-const route=['PLAY 1','MOUNT CYLINDER','PLAY 2','CONNECT SERVER','PLAY 3','MOUNT DIRECTOR','PLAY 4','AUTH','PLAY 5','RELAY 1','RELAY 2','ENTER LAB','PLAY 6','POWER ARCHIVE','RETRIEVE CLONE BATCH SIGMA','INSERT CLONE BATCH SIGMA','PLAY 7','BEGIN CRISIS'];
+const biohazardAlert="BIOHAZARD ALERT\nAIRBORNE CONTAMINANT DETECTED\n\nEnvironmental relays: ONLINE\nAir circulation: ACTIVE\nBiological containment: FAILED\n\nEMERGENCY CONTAINMENT PROTOCOL INITIATED\n\nAll personnel are reminded that containment takes precedence over personal safety.\n\nNo evacuation has been authorized.\n\nThe Empire recognizes your service and, should it become necessary, your sacrifice.\n\nLONG LIVE THE EMPIRE.";
+const relayOneStatus="ENVIRONMENTAL RELAY 1: ONLINE\nENVIRONMENTAL RELAY 2: OFFLINE\n\nSafety interlock verification: 1 of 2\nLaboratory access: RESTRICTED";
+const relayTwoStatus="ENVIRONMENTAL RELAYS: 2 OF 2 ONLINE\n\nResuming normal air circulation...\nOccupational safety check: COMPLETE\n\nLABORATORY ACCESS GRANTED\nYOUR SAFETY IS OUR PRIORITY.";
+const route=['PLAY 1','MOUNT CYLINDER','PLAY 2','CONNECT SERVER','PLAY 3','MOUNT ISB','PLAY 4','AUTH','PLAY 5','RELAY 1','RELAY 2','ENTER LAB','PLAY 6','POWER ARCHIVE','RETRIEVE CLONE BATCH SIGMA','INSERT CLONE BATCH SIGMA','PLAY 7','BEGIN CRISIS'];
 const recordingAt=[0,0,2,4,6,8,12,16];
-const rooms={Reception:['Vestibule','Service passage'],Laboratory:['Lab corridor','Analysis door'],Engineering:['Plant hatch']};
-const physical=['MOUNT CYLINDER','CONNECT SERVER','MOUNT DIRECTOR','RELAY 1','RELAY 2','ENTER LAB','POWER ARCHIVE','BEGIN CRISIS'];
-const stages=['Duty station','Duty station','Cylinder interface','Server link','Network archive','Director’s office','Personal cylinder','Authorization','Research index','Engineering','Decontamination','Laboratory access','Laboratory','Archive vault','Tape elevator','Primary reader','Classified archive','Emergency signal','Emergency response'];
+const rooms={Reception:['Vestibule','Service passage'],Laboratory:['Lab corridor','Analysis door'],Engineering:['Plant hatch'],ISB:['ISB office door'],Archive:['Vault door'],Director:['Director office door']};
+const physical=['MOUNT CYLINDER','CONNECT SERVER','MOUNT ISB','RELAY 1','RELAY 2','ENTER LAB','POWER ARCHIVE','BEGIN CRISIS'];
+const stages=['Duty station','Duty station','Cylinder interface','Server link','Network archive','ISB officer’s office','ISB cylinder','Authorization','Research index','Engineering','Decontamination','Laboratory access','Laboratory','Archive vault','Tape elevator','ISB reader','Director’s terminal','Emergency signal','Emergency response'];
 const clues=[
  ['Inspect the menu.','Find Media Archive.','Open Research Recordings and play 001.'],
  ['The relief officer signed for a cylinder.','Look at the security desk.','Open the evidence drawer marked MEDIA.'],
  ['The archive index changed.','Inspect recovered media.','Play recording 002.'],
- ['A carrier has lost its return signal.','Trace the server-room floor box.','Seat the loose lead under the scuffed flap.'],
- ['The remote bench is back online.','Look beyond the researcher.','Pause the alignment reel and inspect the board.'],
- ['A locker controller has power.','Match the brass locker in the Director’s office.','Open it and bring the Omega cylinder to reception.'],
- ['There is personal dictation on the cylinder.','Open recovered recordings.','Play 004 and listen to the first pair.'],
- ['The register has six spaces.','The personal cylinder identifies the beginning.','Enter the spoken pair followed by the four board digits.'],
- ['A certificate is now available.','Find the occupancy certificate.','Play recording 005.'],
+ ['The network connection is offline.','Locate the server room service panel.','Reconnect the disconnected network cable.'],
+ ['The research archive is back online.','Review Recording 003.','Pause the research briefing and inspect the blackboard.'],
+ ['ISB security credentials are required.','Locate the ISB officer’s office.','Recover the partially damaged cylinder from the officer and insert it at reception.'],
+ ['ISB authorization is verified.','Open Research Recordings.','Play 004 for the authorization procedure.'],
+ ['Locate the ISB officer’s safe.','Recover the damaged authorization key card.','Compare the card with the visual evidence in the research briefing.'],
+ ['Omega authorization accepted.','Open Research Recordings.','Play Recording 005.'],
  ['The interlock awaits two returns.','Start with Engineering.','Seat the first relay behind the open panel.'],
  ['One branch is certified.','Follow the map to Decontamination.','Open the stuck pressure door and restore relay 2.'],
  ['The occupancy light is steady.','The main lab is accessible.','Enter the lab; register the party’s arrival.'],
- ['A local reel survived.','Check the lab recording.','Play 006 for vault directions.'],
+ ['The laboratory workstation is available.','Open local Research Recordings.','Play Recording 006 for vault directions.'],
  ['The lift panel is completely dark.','Inspect its power lead.','Plug the archive terminal in.'],
  ['The arm can fetch physical media.','Look for the cloning project.','Retrieve the Clone Batch Sigma tape.'],
- ['Retrieval and reading use different heads.','Return to reception with the tape.','Use the primary reader and insert Clone Batch Sigma.'],
- ['A confidential message remains.','Check the doors on this room.','Clear obstructions, close this room, then choose PLAY.'],
+ ['The vault retrieves tapes but cannot decrypt them.','Return to the ISB officer’s office.','Insert Clone Batch Sigma in the ISB terminal.'],
+ ['Review the classified records, then explore the Research Director’s office beyond the laboratory.','Recover her security cylinder and insert it into her terminal.','Close the office door and deliberately play the available transmission.'],
  ['Wait for the watch officer.','Emergency signal acknowledged.','DM releases the crisis cue when the table is ready.']
 ];
-function fresh(campaign='MEN'){return {version:1,campaign,step:0,revision:0,room:'Reception',doors:{Vestibule:'OPEN','Service passage':'CLOSED','Lab corridor':'OPEN','Analysis door':'CLOSED','Plant hatch':'OPEN'},deck:'Primary',seen:{},playing:0,retrieved:{},parts:false,repaired:false,fast:false,mute:false,hold:false,equipment:false,legacy:false,boardAid:false,saved:{},hint:'',notice:'LOCAL DUTY STATION',danger:0,log:[]}}
-function normalize(s){return {...fresh(s.campaign),...s,log:Object.values(s.log||{}),retrieved:s.retrieved||{},seen:s.seen||{},saved:s.saved||{}}}
-function validSave(s){return s?.version===1&&['MEN','KIDS'].includes(s.campaign)&&Number.isInteger(s.step)&&s.step>=0&&s.step<=18&&Object.hasOwn(rooms,s.room)&&Object.keys(fresh().doors).every(k=>['OPEN','CLOSED','OBSTRUCTED'].includes(s.doors?.[k]))}
+function fresh(campaign='MEN'){return {version:2,campaign,step:0,revision:0,room:'Reception',doors:{Vestibule:'OPEN','Service passage':'CLOSED','Lab corridor':'OPEN','Analysis door':'CLOSED','Plant hatch':'OPEN','ISB office door':'OPEN','Vault door':'OPEN','Director office door':'OPEN'},deck:'Primary',seen:{},playing:0,retrieved:{},inserted:{},matches:{},card:false,directorCylinder:false,lastScan:'',parts:false,repaired:false,fast:false,mute:false,hold:false,equipment:false,legacy:false,boardAid:false,saved:{},hint:'',notice:'LOCAL DUTY STATION',danger:0,log:[]}}
+function normalize(s){return {...fresh(s.campaign),...s,doors:{...fresh().doors,...s.doors},log:Object.values(s.log||{}),retrieved:s.retrieved||{},inserted:s.inserted||{},matches:s.matches||{},seen:s.seen||{},saved:s.saved||{}}}
+function validSave(s){return s?.version===2&&['MEN','KIDS'].includes(s.campaign)&&Number.isInteger(s.step)&&s.step>=0&&s.step<=18&&Object.hasOwn(rooms,s.room)&&Object.keys(fresh().doors).every(k=>['OPEN','CLOSED','OBSTRUCTED'].includes(normalize(s).doors[k]))}
 const scans=s=>s.campaign==='MEN'?adultScans:kidScans;
 const locallyClosed=s=>rooms[s.room].every(d=>s.doors[d]==='CLOSED');
+const canPlay=(s,id)=>!!recordings[id]&&s.step>=recordingAt[id]&&(id<=5?s.deck==='Primary':id===6?s.deck==='Lab':s.deck==='Director'&&s.room==='Director'&&s.directorCylinder&&s.inserted?.['CLONE BATCH SIGMA']);
+const objectives=['Locate Recording 001 in Media Archive.','Retrieve the authorization cylinder from the security desk and insert it into the terminal reader.','Review Recording 002.','Locate the disconnected network cable beneath the service panel in the server room and reconnect it.','Review Recording 003.','Locate the ISB security credential and insert it into the reception terminal.','Review Recording 004.','Retrieve the authorization key from the safe in the ISB officer’s office and enter the six-digit code.','Review Recording 005.','Restore both environmental relays to resume ventilation and unlock the main laboratory.','Restore the remaining environmental relay in Decontamination.','Proceed to the main laboratory.','Review Recording 006 at the laboratory workstation.','Locate the research archive vault and restore power to its retrieval station.','Locate and retrieve the requested research tape: CLONE BATCH SIGMA.','Return to the ISB officer’s terminal and insert Clone Batch Sigma.','Review the classified records. When ready, explore the Research Director’s office beyond the cloning laboratory.','Emergency protocol initiated.','Emergency response.'];
+const objective=s=>s.step===16&&s.deck==='Director'?(s.directorCylinder?(s.doors['Director office door']==='CLOSED'?'Play the confidential transmission.':'Close the office door to authorize playback.'):'Recover and insert the Research Director’s security cylinder.'):objectives[s.step]||'';
 function apply(raw,who,action,arg='',now=Date.now()){
  const s=structuredClone(normalize(raw)),dm=who==='DM',next=route[s.step];
  const need=(ok,msg='Operation unavailable at this station.')=>{if(!ok)throw Error(msg)};
  const advance=()=>{s.step++;s.hint=''};
  let note='';
  if(action==='PLAY'){
-   const id=Number(arg);need(s.deck==='Primary'&&recordings[id]&&s.step>=recordingAt[id]);
-   if(id===7)need(locallyClosed(s),'Confidential playback withheld. Inspect DOORS.');
+   const id=Number(arg);need(s.step<17&&canPlay(s,id),id===7?'Confidential playback unavailable at this station.':'Recording unavailable at this station.');
+   if(id===7)need(s.doors['Director office door']==='CLOSED','Confidential playback withheld. Close the Research Director’s office door.');
    need(!s.playing||s.playing===id,'A recording is in progress.');s.playing=id;note='Playback · '+recordings[id][0];
  }else if(action==='FINISH'){
    const id=Number(arg);need(id&&id===s.playing);s.seen[id]=true;s.playing=0;
-   if(next==='PLAY '+id)advance();note=id===7?'BIOHAZARD ALERT · Airborne contaminant detected. Stand by.':'Playback complete. Archive index synchronized.';
+   if(next==='PLAY '+id)advance();note=id===7?biohazardAlert:'Playback complete. Archive index synchronized.';
  }else if(action==='AUTH'){
-   need(next==='AUTH'&&arg===code.prefix+code.board,'Authorization denied. Review registered media.');
+   need(s.deck==='Primary'&&next==='AUTH'&&s.card&&arg===code.prefix+code.board,'Authorization denied. Review registered media.');
    advance();note='Authorization accepted. Research index expanded. Laboratory safety interlock active.';
  }else if(physical.includes(action)){
    need(dm&&next===action);if(action==='BEGIN CRISIS')need(!s.hold,'Release the crisis hold first.');
-   advance();note=({'MOUNT CYLINDER':'Cylinder mounted. Recovered recording available.','CONNECT SERVER':'Server link restored. Remote index synchronized.','MOUNT DIRECTOR':'Omega media mounted. Personal recording recovered.','RELAY 1':'Environmental relay 1 online. Interlock 1 of 2.','RELAY 2':'Occupational safety check complete. Your safety is our priority.','ENTER LAB':'Local laboratory archive detected.','POWER ARCHIVE':'Retrieval station online. External power restored. No technical fault detected.','BEGIN CRISIS':'SPECIMEN ACTIVITY · Fall back to the exit junction. Surface and cave routes available.'})[action];
-   if(action==='RELAY 2')s.danger=now;if(action==='POWER ARCHIVE')s.deck='Archive';
- }else if(action==='DECK'){need(s.step>=13&&['Archive','Primary'].includes(arg)&&!s.playing);s.deck=arg;note=arg==='Archive'&&s.step<14?'No carrier. Display dark.':arg+' station selected.';
- }else if(action==='RETRIEVE'){need(s.step>=14&&s.deck==='Archive'&&Object.hasOwn(tapes,arg));s.retrieved[arg]=true;if(next==='RETRIEVE '+arg)advance();note='Lift aligned. Carrier delivered: '+arg+'. Take physical tape.';
- }else if(action==='INSERT'){need(s.deck==='Primary'&&s.retrieved[arg]&&Object.hasOwn(tapes,arg));if(next==='INSERT '+arg)advance();note=arg==='CLONE BATCH SIGMA'?'Tape authenticated. Specimen records decrypted.':tapes[arg];
- }else if(action==='CLOSE'){need(s.step>=8);for(const d of rooms[s.room])if(s.doors[d]!=='OBSTRUCTED')s.doors[d]='CLOSED';note=locallyClosed(s)?'Current room closed. Doors remain unlocked.':'Obstruction detected. Check current-room door list.';
+   advance();note=({'MOUNT CYLINDER':'Cylinder mounted. Recovered recording available.','CONNECT SERVER':'Server link restored. Remote index synchronized.','MOUNT ISB':'ISB SECURITY CREDENTIAL VERIFIED. RECORDING 004 AVAILABLE.','RELAY 1':'Environmental relay 1 online. Interlock 1 of 2.','RELAY 2':'Occupational safety check complete. Your safety is our priority.','ENTER LAB':'Local laboratory archive detected.','POWER ARCHIVE':'Retrieval station online. External power restored. No technical fault detected.','BEGIN CRISIS':'SPECIMEN ACTIVITY · Fall back to the exit junction. Surface and cave routes available.'})[action];
+   if(action==='RELAY 2')s.danger=now;if(action==='ENTER LAB'){s.deck='Lab';s.room='Laboratory'}if(action==='POWER ARCHIVE'){s.deck='Archive';s.room='Archive'}
+ }else if(action==='CARD'){need(dm&&s.step>=5&&s.step<8);s.card=true;note='Authorization key card recovered.';
+ }else if(action==='DIRECTOR CYLINDER'){need(dm&&s.step>=12&&s.room==='Director'&&s.deck==='Director');s.directorCylinder=true;note='Executive credentials verified.';
+ }else if(action==='DECK'){need(s.step>=12&&!s.playing&&['Lab','ISB','Archive','Primary'].includes(arg));need(arg!=='Archive'||s.step>=13);need(arg!=='ISB'||s.step>=14);s.deck=arg;s.room={Lab:'Laboratory',ISB:'ISB',Archive:'Archive',Primary:'Reception'}[arg];note=arg+' station selected.';
+ }else if(action==='RETRIEVE'){need(s.step>=14&&s.deck==='Archive'&&Object.hasOwn(tapes,arg)&&!s.retrieved[arg]&&!s.inserted[arg],'Tape unavailable or already retrieved.');s.retrieved[arg]=true;if(next==='RETRIEVE '+arg)advance();note='Lift aligned. Carrier delivered: '+arg+'. Take physical tape.';
+ }else if(action==='INSERT'){need(s.deck==='ISB'&&s.retrieved[arg]&&!s.inserted[arg]&&Object.hasOwn(tapes,arg),'Archive tape decryption is available only at the ISB officer’s terminal. Tape must be in possession and not already inserted.');s.inserted[arg]=true;delete s.retrieved[arg];if(next==='INSERT '+arg)advance();note='TAPE AUTHENTICATED · '+arg+' · Record saved to Research Archives.';
+ }else if(action==='CLOSE'){need(s.step>=8);if(s.room==='Director')need(dm,'Close the office door physically; the DM will confirm closure.');for(const d of rooms[s.room])if(s.doors[d]!=='OBSTRUCTED')s.doors[d]='CLOSED';note=locallyClosed(s)?'Current room closed. Doors remain unlocked.':'Obstruction detected. Check current-room door list.';
  }else if(action==='DOOR'){const [d,v]=arg.split('|');need(dm&&Object.hasOwn(s.doors,d)&&['OPEN','CLOSED','OBSTRUCTED'].includes(v));s.doors[d]=v;note=d+' · '+v;
- }else if(action==='ROOM'){need(dm&&Object.hasOwn(rooms,arg));s.room=arg;note='Local interface moved to '+arg;
- }else if(action==='BLUE'){s.legacy=true;note='THIS IS AN OLDER CODE, BUT IT CHECKS OUT. Legacy duty circular available.';
+ }else if(action==='ROOM'){need(dm&&Object.hasOwn(rooms,arg));need(!s.playing);if(['Director','Laboratory'].includes(arg))need(s.step>=12,'Laboratory access required.');if(arg==='Archive')need(s.step>=13,'Archive access required.');if(arg==='ISB'&&s.step<14){s.room=arg;note='ISB office selected; reception reader required for authorization.';}else{s.room=arg;const deck={Reception:'Primary',Laboratory:'Lab',Archive:'Archive',ISB:'ISB',Director:'Director'}[arg];if(deck)s.deck=deck;note='Local interface moved to '+arg;}
+ }else if(action==='BLUE'){s.legacy=true;note='CODE CLEARANCE BLUE RECEIVED. LEGACY IMPERIAL AUTHENTICATION. THIS IS AN OLDER CODE, BUT IT CHECKS OUT. GENERAL ACCESS GRANTED. OMEGA RESEARCH ACCESS REMAINS RESTRICTED.';
  }else if(action==='EQUIPMENT'){need(s.step>=8);s.equipment=true;note='Security Equipment Room released.';
  }else if(action==='PARTS'){need(dm&&s.step>=8);s.parts=true;note='Instrument consignment received.';
  }else if(action==='REPAIR'){need(dm&&s.step>=12&&s.parts);s.repaired=true;note='Analysis bench calibrated. Sample reader ready.';
- }else if(action==='SCAN'||action==='SAVE SCAN'){need(s.repaired&&Object.hasOwn(scans(s),arg));if(action==='SAVE SCAN')s.saved[arg]=true;note=action==='SCAN'?arg+' · '+scans(s)[arg]:'Sample filed in this session.';
+ }else if(action==='SCAN'||action==='SAVE SCAN'){need(s.deck==='Lab'&&s.repaired&&Object.hasOwn(scans(s),arg));if(action==='SCAN'){s.lastScan=arg;if(s.campaign==='MEN'&&['Glitch','Crosseye'].includes(arg))s.matches[arg]=true;note=arg+' · '+scans(s)[arg];}else{need(s.lastScan===arg,'Scan this specimen before saving.');s.saved[arg]=true;note='Sample filed in this session.';}
  }else if(action==='HINT'){need(dm&&clues[s.step]&&[0,1,2].includes(+arg));s.hint=clues[s.step][+arg];note=s.hint;
  }else if(action==='BOARD AID'){need(dm&&s.step>=4);s.boardAid=true;note='Accessible board description enabled during frame playback.';
  }else if(['fast','mute','hold'].includes(action)){need(dm);s[action]=!s[action];note='Operator setting updated.';
  }else throw Error('Unknown operation.');
+ if(action==='FINISH'&&Number(arg)!==7)note=({1:'IMPERIAL SECURITY AUTHENTICATION · Authorization cylinder: NOT DETECTED · Research archive access: RESTRICTED',2:'NETWORK DIAGNOSTIC · Local terminal: OPERATIONAL · Server connection: OFFLINE · Remote research archive: UNAVAILABLE · Fault location: Server Room',3:'ISB SECURITY AUTHENTICATION REQUIRED · Registered duty location: ISB Officer’s Office',4:'MULTIFACTOR AUTHENTICATION · ISB security credentials: VERIFIED · Omega clearance: PENDING · Six-digit authorization key: REQUIRED',5:'ENVIRONMENTAL CONTROL SYSTEM · Ventilation relay 1 and 2: OFFLINE · Laboratory access: RESTRICTED',6:'CLASSIFIED RESEARCH ARCHIVE · Requested records: CLONE BATCH SIGMA · Storage medium: Physical data tape · Location: Imperial Research Archive Vault · Retrieval station: OFFLINE'})[Number(arg)]||note;
+ if(action==='CONNECT SERVER')note='NETWORK CONNECTION RESTORED · Synchronization complete. RECORDING 003 AVAILABLE';if(action==='RELAY 2')note=relayTwoStatus;
+ if(action==='POWER ARCHIVE')note='IMPERIAL RESEARCH ARCHIVE · Power supply: RESTORED · Mechanical systems: OPERATIONAL · Archive inventory: AVAILABLE · Outstanding maintenance ticket: Terminal broken again. Diagnostic findings: Terminal was unplugged. Corrective action: Connected power. Technical expertise required: NONE. Ticket automatically closed.';if(action==='RELAY 1')note=relayOneStatus;
  s.notice=note;s.revision++;s.log=[...s.log.slice(-59),{at:now,who,action:action==='AUTH'?'Authorization accepted':action,detail:action==='AUTH'?'':String(arg)}];return s;
 }
 
@@ -155,7 +230,7 @@ const config={apiKey:'AIzaSyCoeR3eJ_2kQsRfXi_c2c4MTS4GSpl2STg',authDomain:'persh
 const allowed=new Set(['PLAY','FINISH','AUTH','CLOSE','DECK','INSERT','RETRIEVE','EQUIPMENT','BLUE','SCAN','SAVE SCAN']);
 const letters='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const newCode=()=>Array.from(crypto.getRandomValues(new Uint8Array(8)),n=>letters[n%letters.length]).join('');
-const cacheKey=(code)=>'pershing.v1.dm.'+code;
+const cacheKey=(code)=>'pershing.v2.dm.'+code;
 const publicView=s=>{const {log,danger,hold,...view}=s;return view};
 function save(code,s){localStorage.setItem(cacheKey(code),JSON.stringify(s))}
 function change(session,role,action,arg,now){
@@ -168,8 +243,8 @@ function change(session,role,action,arg,now){
    if(action==='ADVANCE'){
      if(old.step>=17)throw Error('Use crisis controls.');
      s={...old,step:old.step+1,playing:0,hint:''};
-     if(s.step===11)s.danger=now;
-     if(s.step===14)s.deck='Archive';
+     if(s.step===11)s.danger=now;if(s.step===8)s.card=true;if(s.step===17){s.directorCylinder=true;s.deck='Director';s.room='Director';s.doors={...s.doors,'Director office door':'CLOSED'};}
+     if(s.step===12){s.deck='Lab';s.room='Laboratory'}if(s.step===14){s.deck='Archive';s.room='Archive'}if(s.step===16){s.deck='ISB';s.room='ISB';s.inserted={...s.inserted,'CLONE BATCH SIGMA':true};delete s.retrieved['CLONE BATCH SIGMA'];}
    }
    if(!validSave(s)||s.campaign!==old.campaign)throw Error('Checkpoint unavailable or belongs to a different campaign.');
    s=normalize(s);s.revision=old.revision+1;s.notice='Station checkpoint synchronized.';
@@ -183,7 +258,7 @@ function change(session,role,action,arg,now){
 function localSession(campaign,source,update){
  let id=source?'LOCAL-'+source:'LOCAL-'+campaign;
  let restored=JSON.parse(localStorage.getItem(cacheKey(source||id))||'null');
- if(restored&&!validSave(restored))throw Error('Invalid saved checkpoint.');
+ if(restored&&!validSave(restored))throw Error('Incompatible older checkpoint. Start a fresh revised watch or import a version 2 checkpoint.');
  let data={state:normalize(restored||fresh(campaign))};
  const refresh=()=>{save(id,data.state);if(data.checkpoints)localStorage.setItem(cacheKey(id)+'.checkpoints',JSON.stringify(data.checkpoints));update(data.state,{code:id,local:true,connected:true,peer:false})};
  data.checkpoints=JSON.parse(localStorage.getItem(cacheKey(source||id)+'.checkpoints')||'{}');
@@ -211,7 +286,7 @@ async function networkSession({dm,code,campaign,create,emulate,update,error}){
    try{await f.onDisconnect(presence).set(false);await f.set(presence,true)}catch(e){error(e.message)}
  });
  f.onValue(at(dm?'playerOnline':'hostOnline'),snap=>{peer=snap.val()===true;show()},e=>error(e.message));
- f.onValue(at(dm?'state':'view'),snap=>{state=snap.val();if(state&&dm)save(code,normalize(state));show()},e=>error(e.message));
+ f.onValue(at(dm?'state':'view'),snap=>{state=snap.val();if(state?.version!==2){state=null;error('This session uses an older checkpoint. Create a new revised session.');return}if(state&&dm)save(code,normalize(state));show()},e=>error(e.message));
  if(dm)f.onValue(at('checkpoints'),snap=>{localStorage.setItem(cacheKey(code)+'.checkpoints',JSON.stringify(snap.val()||{}));show()},e=>error(e.message));
  async function transact(fn){
    // Prime the SDK cache; a first transaction callback can otherwise receive null.
@@ -256,9 +331,15 @@ function activity(){lastActivity=Date.now()}
 function wake(e){if(!$('saver').hidden){e?.preventDefault();e?.stopImmediatePropagation();$('saver').hidden=true;activity();$('command').focus();try{audioCtx||=new AudioContext();audioCtx.resume().catch(()=>{})}catch{};return true}}
 for(const event of ['keydown','pointerdown'])document.addEventListener(event,e=>{activity();if(wake(e))return;if(busy&&player()){e.preventDefault();e.stopImmediatePropagation()}},true);
 $('saver').onclick=wake;
-$('insignia').innerHTML='<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="50" cy="50" r="32" fill="none" stroke="currentColor" stroke-width="8"/>'+Array.from({length:6},(_,i)=>'<path d="M45 8h10v21l5 5-7 10h-6l-7-10 5-5z" transform="rotate('+i*60+' 50 50)"/>').join('')+'<circle cx="50" cy="50" r="9"/></svg>';
+document.addEventListener('pointermove',()=>{if($('saver').hidden)activity()},{passive:true});
+// Six-spoke Imperial cog, redrawn from the Galactic Empire crest reference.
+// https://www.starwars.com/news/5-symbols-in-the-star-wars-universe
+// https://commons.wikimedia.org/wiki/File:Emblem_of_the_First_Galactic_Empire.svg
+$('insignia').innerHTML='<svg viewBox="0 0 100 100" aria-hidden="true" fill="currentColor"><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="50" cy="50" r="21"/>'+Array.from({length:6},(_,i)=>'<g transform="rotate('+i*60+' 50 50)"><path d="M30 16 A39.45 39.45 0 0 1 70 16 L64 26 L56 22 L56 35 L44 35 L44 22 L36 26 Z"/><path d="M44 27 H56 V50 H44 Z"/></g>').join('')+'</svg>';
 function bounce(t){if(!$('saver').hidden){const pos=(size,rate)=>{let m=Math.max(1,size-76),d=(t*rate)%(2*m);return reduced?m/2:Math.min(d,2*m-d)};$('insignia').style.transform='translate('+pos(innerWidth,.049)+'px,'+pos(innerHeight,.037)+'px)'}requestAnimationFrame(bounce)}requestAnimationFrame(bounce);
-setInterval(()=>{if(s&&player()&&!busy&&!s.playing&&s.step<17&&Date.now()-lastActivity>90000)$('saver').hidden=false},2000);
+const SAVER_IDLE_MS=60000;
+function shouldShowSaver(state,isPlayer,isBusy,idleMs){return !!state&&isPlayer&&!isBusy&&!state.playing&&state.step<17&&idleMs>=SAVER_IDLE_MS}
+setInterval(()=>{if(shouldShowSaver(s,player(),busy,Date.now()-lastActivity))$('saver').hidden=false},250);
 async function act(a,arg=''){if(!host)throw Error('Connecting…');$('error').textContent='';await host.send(a,String(arg),player()?'PLAYER':'DM')}
 function nav(p,sel=''){page=p;selected=sel;mediaKey='';draw()}
 function textOut(str,animate=false){
@@ -270,9 +351,9 @@ function textOut(str,animate=false){
 function selectPage(p,sel=''){nav(p,sel);if(!s.playing)textOut($('screen').textContent,true)}
 function receive(state,info){
  const first=!s,changed=s?.revision!==state.revision,alarm=s&&s.step<17&&state.step>=17;
- s=state;net=info;$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
+ const moved=s?.deck!==state.deck;s=state;net=info;if(moved){page='Home';selected='';mediaKey=''}$('setup').hidden=true;$('work').hidden=false;$('link').textContent=info.local?'LOCAL':(!info.connected?'RECONNECTING':info.peer?'CONNECTED · BOTH STATIONS':'CONNECTED · PEER AWAY');
  if(changed){$('notice').textContent=s.notice;if(!first)beep(alarm);activity()}
- if(first||changed){if(alarm||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
+ if(first||changed){if(alarm||s.playing||s.step>=17)$('saver').hidden=true;draw()}else if(dm&&!localPlayer)dashboard();
  if(first&&player()&&!s.playing&&s.step<17)$('saver').hidden=false;
 }
 async function connect(create=false,local=false,source=''){
@@ -294,31 +375,36 @@ function draw(){
  $('top').textContent=(player()?s.deck.toUpperCase()+' STATION':'WATCH CONTROL · '+s.campaign)+'   /   '+net.code;
  $('board').hidden=player();$('monitor').hidden=!player();
  if(!player()){dashboard();return}
- const out=$('choices');out.replaceChildren();$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
+ const out=$('choices');out.replaceChildren();$('objective').textContent=s.step<17?'CURRENT OBJECTIVE\n'+objective(s):'';$('dmReminder').hidden=![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=!!s.playing||(s.deck==='Archive'&&s.step<14);
  if(s.playing){playback();return}
  mediaKey='';$('crumb').textContent=s.deck+' / '+page;$('heading').textContent=page;
  const btn=(label,fn)=>button(out,label,fn), go=(p)=>btn(p,()=>selectPage(p));
- if(s.step>=17){$('heading').textContent=s.step===18?'Unexpected specimen activity':'Biohazard alert';textOut(s.step===18?'Emergency routes: return via the entrance or follow the cave exit. Movement reported in the laboratory.':'Airborne contaminant detected. Emergency channel open.');if(localPlayer)btn('Operator view',toggleView);return}
+ if(s.step>=17){$('heading').textContent=s.step===18?'Unexpected specimen activity':'Biohazard alert';textOut(s.step===18?'Emergency routes: return via the entrance or follow the cave exit. Movement reported in the laboratory.':biohazardAlert);if(localPlayer)btn('Operator view',toggleView);return}
  if(s.deck==='Archive'){
-   $('heading').textContent=s.step>=14?'Tape elevator':'Retrieval station';textOut(s.step>=14?'Select a carrier for mechanical delivery. Decryption requires the primary reader.':'Display dark.');
-   if(s.step>=14)Object.keys(tapes).filter(x=>page!=='Search'||x.includes(query.toUpperCase())).forEach(x=>btn('Retrieve '+x,()=>retrieve(x)));
-   btn('Return to primary station',()=>act('DECK','Primary'));
+   $('heading').textContent=s.step>=14?'Tape elevator':'Retrieval station';textOut(s.step>=14?'Select a carrier for mechanical delivery. Decryption requires the ISB officer’s terminal.':'Display dark.');
+   if(s.step>=14)Object.keys(tapes).filter(x=>!s.retrieved[x]&&!s.inserted[x]&&(page!=='Search'||x.includes(query.toUpperCase()))).forEach(x=>btn('Retrieve '+x,()=>retrieve(x)));
+   if(s.step>=14)btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'));
+   btn('Return to laboratory workstation',()=>act('DECK','Lab'));
+ }else if(s.deck==='Director'){
+   $('heading').textContent='Research Director’s terminal';textOut(!s.directorCylinder?'EXECUTIVE AUTHENTICATION REQUIRED\nInsert the Research Director’s security cylinder.':!s.inserted['CLONE BATCH SIGMA']?'Executive credentials verified. Classified archive authorization pending.':s.doors['Director office door']!=='CLOSED'?'Security cylinder detected...\nExecutive credentials verified.\nCONFIDENTIAL TRANSMISSION AVAILABLE\nPRIVACY PROTOCOL ACTIVE\nClose the office door to authorize playback.':'PRIVACY CHECK COMPLETE\nCONFIDENTIAL PLAYBACK AVAILABLE');if(canPlay(s,7)&&s.doors['Director office door']==='CLOSED')btn('Play REC-007',()=>act('PLAY',7));btn('Return to laboratory workstation',()=>act('DECK','Lab'));
  }else if(page==='Home'){
-   textOut('Local directories available. Select a directory or enter HELP.');go('Media Archive');go('Records');go('Doors');go('Status');
+   textOut(s.deck==='ISB'?(s.inserted['CLONE BATCH SIGMA']?'CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.':'ISB OFFICER’S READER\nInsert retrieved archive tape to decrypt.'):'Local directories available. Select a directory or enter HELP.');if(s.deck!=='ISB')go('Media Archive');if(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA'])go('Clone Batch Sigma');go('Records');go('Doors');go('Status');go('Help');
  }else if(page==='Media Archive'){textOut('One local index mounted.');go('Research Recordings')}
- else if(page==='Research Recordings'){textOut('Select a recording to play.');for(let i=1;i<recordings.length;i++)if(s.step>=recordingAt[i])btn('Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i))}
+ else if(page==='Research Recordings'){textOut('Select a recording to play.');for(let i=1;i<recordings.length;i++)if(canPlay(s,i))btn('Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i))}
+ else if(page==='Clone Batch Sigma'&&s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']){textOut('CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.');const names=s.campaign==='MEN'?['Specimen Transfer Ledger','Drellis Minor Recovery Operation','Crime Lord Morgan','Research Oversight Authorization']:['Specimen Transfer Ledger','Transfer receipt'];for(const name of names)if(files(s)[name])btn(name,()=>selectPage('Read',name));}
  else if(page==='Records'||page==='Search'){const names=Object.keys(files(s)).filter(x=>page!=='Search'||(x+' '+files(s)[x]).toLowerCase().includes(query.toLowerCase()));textOut(names.length?'Available records':'No local records match.');names.forEach(x=>btn(x,()=>selectPage('Read',x)))}
  else if(page==='Read'){const body=files(s)[selected];$('heading').textContent=body?selected:'Record unavailable';textOut(body||'Access unavailable.')}
  else if(page==='Doors'){textOut('Current room · '+s.room+'\n'+rooms[s.room].map(d=>d+' · '+s.doors[d]).join('\n')+'\nSecurity Equipment Room · '+(s.equipment?'RELEASED':'SEALED'));if(s.step>=8){btn('Close current room',closeDoors);btn('Release equipment room',()=>act('EQUIPMENT'))}}
- else if(page==='Analysis'&&s.repaired){textOut('Select a subject for local analysis.');Object.keys(scans(s)).forEach(name=>btn('Scan '+name,()=>scan(name)))}
- else if(page==='Sample'&&s.repaired){textOut(selected+' · '+scans(s)[selected]+'\nSave specimen to this session?');btn('Save specimen',async()=>{await act('SAVE SCAN',selected);nav('Analysis')});go('Analysis')}
+ else if(page==='Analysis'&&s.repaired&&s.deck==='Lab'){textOut('Select a subject for local analysis.');Object.keys(scans(s)).forEach(name=>btn('Scan '+name,()=>scan(name)));go('Saved results');for(const name of Object.keys(s.matches))if(s.matches[name])btn('Individual specimen record — '+name,()=>selectPage('Read','Individual specimen record — '+name))}
+ else if(page==='Saved results'&&s.deck==='Lab'&&s.repaired){const names=Object.keys(s.saved).filter(n=>s.saved[n]);textOut(names.length?names.map(n=>n+' · '+scans(s)[n]).join('\n\n'):'No saved specimens.');go('Analysis')}
+ else if(page==='Sample'&&s.repaired&&s.deck==='Lab'&&s.lastScan===selected){textOut(selected+' · '+scans(s)[selected]+'\nSAVE SPECIMEN TO RESEARCH DATABASE?');if(s.matches[selected])btn('View individual specimen record',()=>selectPage('Read','Individual specimen record — '+selected));btn('Yes — save locally',async()=>{await act('SAVE SCAN',selected);nav('Analysis')});btn('No — discard',()=>nav('Analysis'));go('Analysis')}
  else if(page==='Status'){textOut(s.notice+(s.hint?'\n'+s.hint:''))}
  else {textOut('DIR · OPEN <directory or file> · SEARCH <text> · PLAY <record> · STATUS · DOORS'+(s.step>=6?' · AUTH <code>':'')+(s.repaired?' · SCAN <subject>':''))}
- if(s.deck==='Primary'){
-   if(s.step===7)btn('Enter authorization code',()=>{const v=prompt('Six-digit facility authorization');if(v)return act('AUTH',v.trim())});
-   if(s.step>=13)btn('Use archive station',()=>act('DECK','Archive'));
-   Object.keys(s.retrieved).forEach(x=>btn('Insert '+x,()=>act('INSERT',x)));
-   if(s.repaired&&page!=='Analysis')go('Analysis');if(page!=='Home')go('Home');
+ if(s.deck!=='Archive'&&s.deck!=='Director'){
+   if(s.deck==='Primary'&&s.step===7&&s.card)btn('Enter authorization code',()=>{const v=prompt('Six-digit facility authorization');if(v)return act('AUTH',v.trim())});
+   if(s.step>=13)btn('Use archive station',()=>act('DECK','Archive'));if(s.step>=12&&s.deck!=='Lab')btn('Return to laboratory workstation',()=>act('DECK','Lab'));if(s.step>=12&&s.deck!=='Primary')btn('Return to reception terminal',()=>act('DECK','Primary'));if(s.step>=14&&s.deck!=='ISB')btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'));
+   if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>btn('Insert '+x,async()=>{await act('INSERT',x);nav(x==='CLONE BATCH SIGMA'?'Clone Batch Sigma':'Read',x)}));
+   if(s.deck==='Lab'&&s.repaired&&page!=='Analysis')go('Analysis');if(s.deck==='Lab'&&canPlay(s,6)&&!s.seen[6]&&page!=='Research Recordings')btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6));if(page!=='Home')go('Home');
  }
  btn(muted?'Enable sound':'Mute sound',()=>{muted=!muted;draw()});if(localPlayer)btn('Operator view',toggleView);
 }
@@ -335,7 +421,7 @@ function playback(){
  const transcript=el('p','',target),chalk=el('div','',target);chalk.className='chalk';chalk.hidden=true;
  const meter=el('progress','',target),box=el('div','',target);meter.max=lines.length;
  let elapsed=0,paused=false,last=performance.now(),finishing=false;
- const duration=id===7?37000:lines.length*8000;
+ const lineTimes=lines.map(l=>Math.max(4500,l.length*58));const duration=lineTimes.reduce((n,v)=>n+v,0);
  let av=null;const paths=media[id];
  if(paths.video||paths.audio){av=el(paths.video?'video':'audio','',target);av.src=paths.video||paths.audio;av.muted=muted||s.mute;av.onended=()=>{elapsed=duration};av.onerror=()=>{av?.remove();av=null;last=performance.now()};av.play().catch(()=>{if(av){av.remove();av=null}})}
  const pause=button(box,'Pause',()=>{paused=!paused;pause.textContent=paused?'Resume':'Pause';if(av){if(paused)av.pause();else av.play().catch(report)}});
@@ -345,10 +431,10 @@ function playback(){
  async function frame(now){
    if(mediaKey!==key||s.playing!==id||!player())return;
    if(!paused){elapsed+=Math.min(1000,now-last)*(s.fast?12:1);if(av&&Number.isFinite(av.duration))elapsed=duration*av.currentTime/av.duration}
-   last=now;const frac=Math.min(1,elapsed/duration),i=Math.min(lines.length-1,Math.floor(frac*lines.length));
-   transcript.textContent=speaker+'  /  '+lines[i];meter.value=frac*lines.length;
+   last=now;const frac=Math.min(1,elapsed/duration),i=Math.max(0,lineTimes.findIndex((_,i)=>elapsed<lineTimes.slice(0,i+1).reduce((n,v)=>n+v,0)));
+   transcript.textContent=speaker+'  /  '+lines[frac===1?lines.length-1:i];meter.value=frac*lines.length;
    chalk.hidden=!(id===3&&frac>=.32);if(!chalk.hidden){chalk.textContent='rack Ⅲ     '+code.board+'     Δ';if(s.boardAid)chalk.setAttribute('aria-label','Frame description: blackboard reads '+code.board);else chalk.setAttribute('aria-hidden','true');if(s.boardAid)chalk.removeAttribute('aria-hidden')}
-   if(frac===1&&!finishing){finishing=true;try{if(id===7)await new Promise(r=>setTimeout(r,700));await act('FINISH',id)}catch(e){report(e);button(box,'Confirm playback completion',()=>act('FINISH',id))}return}
+   if(frac===1&&!finishing){finishing=true;try{if(id===7){transcript.textContent='';chalk.hidden=true;await new Promise(r=>setTimeout(r,s.fast?100:3000));}await act('FINISH',id)}catch(e){report(e);button(box,'Confirm playback completion',()=>act('FINISH',id))}return}
    requestAnimationFrame(frame)
  }requestAnimationFrame(frame)
 }
@@ -360,6 +446,7 @@ function dashboard(){
  const op=(n,label,a,arg='')=>button(n,label,()=>act(a,arg));
  if(physical.includes(route[s.step]))button(main,route[s.step],()=>{if(route[s.step]!=='BEGIN CRISIS'||confirm('Cue the reanimations now?'))return act(route[s.step])});
  if(s.danger){const clock=el('p','',main);clock.id='dangerClock';clock.dataset.time=s.danger;updateClock()}
+ if(s.step>=5&&s.step<8&&!s.card)op(main,'Confirm authorization card recovered','CARD');if(s.step>=12&&s.deck==='Director'&&!s.directorCylinder)op(main,'Confirm Director’s cylinder inserted','DIRECTOR CYLINDER');
  if(s.step>=10)op(main,s.hold?'Release crisis hold':'Hold crisis','hold');
  const session=card('Session');el('p',net.code+' · '+(net.local?'Local rehearsal':net.peer?'Player connected':'Awaiting player'),session);
  if(net.local)button(session,'Player view',toggleView);
@@ -368,10 +455,10 @@ function dashboard(){
  const hints=card('Operator assistance');if(s.step<18)[1,2,3].forEach(i=>op(hints,'Hint '+i,'HINT',i-1));if(s.step>=4)op(hints,'Accessible board clue','BOARD AID');
  const sys=card('Facility');el('p','Server '+(s.step>=4?'online':'offline')+' · relays '+(s.step>=11?2:s.step>=10?1:0)+'/2 · bench '+(s.repaired?'ready':s.parts?'parts received':'offline'),sys);
  if(s.step>=8&&!s.parts)op(sys,'Register scanner parts','PARTS');if(s.parts&&s.step>=12&&!s.repaired)op(sys,'Calibrate repaired bench','REPAIR');
- el('p','Retrieved: '+(Object.keys(s.retrieved).join(', ')||'none')+' · Sigma '+(s.step>=16?'inserted':'pending'),sys);
- const doors=card('Room & doors');let room=el('select','',doors);room.ariaLabel='Playback room';Object.keys(rooms).forEach(r=>room.add(new Option(r,r,false,r===s.room)));room.onchange=()=>act('ROOM',room.value).catch(report);
+ el('p','In possession: '+(Object.keys(s.retrieved).join(', ')||'none')+' · Inserted: '+(Object.keys(s.inserted).join(', ')||'none'),sys);
+ const doors=card('Room & doors');let room=el('select','',doors);room.ariaLabel='Physical station / room';Object.keys(rooms).forEach(r=>room.add(new Option(r,r,false,r===s.room)));room.onchange=()=>act('ROOM',room.value).catch(report);
  for(const [d,v] of Object.entries(s.doors)){const row=el('label',d+' ',doors),sel=el('select','',row);['OPEN','CLOSED','OBSTRUCTED'].forEach(x=>sel.add(new Option(x,x,false,x===v)));sel.onchange=()=>act('DOOR',d+'|'+sel.value).catch(report)}
- const archive=card('Recording index');for(let i=1;i<=7;i++){let label=rid(i)+' · '+(s.playing===i?'playing':s.seen[i]?'completed':s.step>=recordingAt[i]?'available':'sealed');if(s.step>=recordingAt[i])op(archive,label,'PLAY',i);else el('div',label,archive)}
+ const archive=card('Recording index');for(let i=1;i<=7;i++){let label=rid(i)+' · '+(s.playing===i?'playing':s.seen[i]?'completed':s.step>=recordingAt[i]?'available':'sealed');if(canPlay(s,i))op(archive,label,'PLAY',i);else el('div',label,archive)}
  const recovery=card('Checkpoints');button(recovery,'Export checkpoint',()=>{const href=URL.createObjectURL(new Blob([JSON.stringify(s,null,2)],{type:'application/json'}));const a=el('a');a.href=href;a.download='pershing-'+net.code+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(href),1000)});
  const saved=JSON.parse(localStorage.getItem(cacheKey(net.code)+'.checkpoints')||'{}');
  for(const [key,label] of [['beforeCirculation','Before relay 2'],['beforeTransmission','Before final playback']])if(saved[key])button(recovery,'Restore: '+label,()=>{if(confirm('Restore '+label+'?'))return act('IMPORT',JSON.stringify(saved[key]))});
@@ -387,23 +474,23 @@ async function command(value){
  if(s.deck==='Archive'&&s.step<14)return;
  if(s.deck==='Archive'){
    if(v==='DIR'){nav('Archive');return}if(v.startsWith('SEARCH ')){query=raw.slice(7);nav('Search');return}
-   if(v.startsWith('RETRIEVE '))return retrieve(v.slice(9));if(v==='PRIMARY')return act('DECK','Primary');throw Error('Use DIR, SEARCH, RETRIEVE or PRIMARY.')
+   if(v.startsWith('RETRIEVE '))return retrieve(v.slice(9));if(v==='ISB')return act('DECK','ISB');if(v==='LAB')return act('DECK','Lab');throw Error('Use DIR, SEARCH, RETRIEVE, ISB or LAB.')
  }
  if(['AUTH BLUE','CODE BLUE','CODE CLEARANCE BLUE','AUTHORIZATION CODE BLUE'].includes(v))return act('BLUE');
- if(v.startsWith('AUTH '))return act('AUTH',v.slice(5));
+ if(/^\d{6}$/.test(v))return act('AUTH',v);if(v.startsWith('AUTH '))return act('AUTH',v.slice(5));
  if(v==='DIR'||v==='HOME')return selectPage('Home');
  if(v==='HELP')return selectPage('Help');if(v==='STATUS')return selectPage('Status');if(v==='DOORS')return selectPage('Doors');
  if(v==='CLOSE CURRENT ROOM')return closeDoors();
  if(v==='UNLOCK SECURITY EQUIPMENT ROOM')return act('EQUIPMENT');
  if(v.startsWith('SEARCH ')){query=raw.slice(7);selectPage('Search');return}
  if(v.startsWith('OPEN ')){const path=v.slice(5);
-   const options=['Media Archive','Research Recordings','Doors','Records','Status',...(s.repaired?['Analysis']:[])];
+   const options=['Media Archive','Research Recordings','Doors','Records','Status','Help',...(s.deck==='Lab'&&s.repaired?['Analysis','Saved results']:[]),...(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']?['Clone Batch Sigma']:[])];
    const name=options.find(k=>k.toUpperCase()===path);if(name==='Research Recordings'&&!s.seen[1]&&page!=='Media Archive')throw Error('Select the parent media directory first.');if(name)return selectPage(name);
    const doc=Object.keys(files(s)).find(k=>k.toUpperCase()===path);if(doc)return selectPage('Read',doc);
  }
  const m=v.match(/^(?:PLAY|REPLAY) (?:REC-)?0*([1-7])$/);if(m){if(+m[1]===1&&!s.seen[1]&&page!=='Research Recordings')throw Error('Select the local recording directory first.');return act('PLAY',m[1])}
- if(v==='ARCHIVE')return act('DECK','Archive');if(v.startsWith('INSERT '))return act('INSERT',v.slice(7));
- if(v.startsWith('SCAN ')&&s.repaired){let key=Object.keys(scans(s)).find(k=>k.toUpperCase()===v.slice(5).replace(/^TODD$/,'T0DD'));if(key)return scan(key)}
+ if(v==='ARCHIVE')return act('DECK','Archive');if(v==='ISB')return act('DECK','ISB');if(v==='LAB')return act('DECK','Lab');if(v.startsWith('INSERT '))return act('INSERT',v.slice(7));
+ if(v.startsWith('SCAN ')&&s.deck==='Lab'&&s.repaired){let key=Object.keys(scans(s)).find(k=>k.toUpperCase()===v.slice(5).replace(/^TODD$/,'T0DD'));if(key)return scan(key)}
  if(['WHOAMI','PLEASE','ADMIN'].includes(v))return textOut({WHOAMI:'Unregistered duty operator.',PLEASE:'Magic word accepted. Authorization still denied.',ADMIN:'Nice try.'}[v],true);
  throw Error('Entry unavailable. Use DIR to browse or HELP for commands.')
 }
