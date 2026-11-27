@@ -512,6 +512,7 @@ function dashboard(){
  const board=$('board');board.replaceChildren();
  const card=(title)=>{let n=el('section','',board);n.className='card';el('h3',title,n);return n};
  const main=card(stages[s.step]||'Watch');el('p',s.step+'/18 · '+(route[s.step]||'Encounter underway'),main);
+ const authReference=el('p','DM ONLY · Six-digit authorization code: ',main);el('strong',code.prefix+code.board,authReference);
  el('p',s.playing?'Currently playing '+rid(s.playing):s.step===7&&s.authVerified?'Correct code validated · awaiting DM confirmation':'Awaiting '+(physical.includes(route[s.step])?'physical confirmation':'player interaction'),main);
  const op=(n,label,a,arg='')=>button(n,label,()=>act(a,arg));
  if(physical.includes(route[s.step]))button(main,route[s.step]==='ACTIVATE CRISIS'?'Activate Crisis':route[s.step],()=>act(route[s.step]));
