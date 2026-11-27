@@ -376,6 +376,7 @@ function draw(){
  $('board').hidden=player();$('monitor').hidden=!player();paintStationIdentity();syncAudio();
  if(!player()){$('notice').hidden=false;if(calibrationJob)calibrationJob.keys={};dashboard();return}
  if(!s.playing&&chamberPages.includes(page)){if(!analysisFolderAvailable(s)||s.step>=17){page='Home';selected=''}else if(page!=='Analysis'&&(!scannerReadyHere(s)||page==='Sample'&&s.lastScan!==selected||page==='Scan dossier'&&!files(s)[selected])){page='Analysis';selected=''}}
+ if(page==='Archive confirmation'&&(s.step<13||s.step>=17)){page='Home';selected=''}
  if(['Archive discovery','Archive protocol'].includes(page)&&!archiveReferenceAvailable(s)){page='Home';selected='';archiveDiscoveryJob=null}
  const out=$('choices');out.replaceChildren();const inChamber=chamberPages.includes(page)&&!s.playing&&s.step<17;$('notice').hidden=inChamber&&!/Specimen scan complete|Sample filed|Scanning chamber repaired|BIOLOGICAL ANALYSIS SYSTEM ONLINE|Calibration/i.test(playerNotice(s));$('heading').dataset.finalRecording='false';paintObjective();$('authSuccess').hidden=!(s.step===7&&s.authVerified);$('dmReminder').hidden=inChamber||![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=inChamber||!!s.playing||(s.deck==='Archive'&&s.step<14);
  if(s.playing){if(calibrationJob)endCalibration(false);playback();return}
@@ -387,6 +388,14 @@ function draw(){
  const important=(label,fn,shortcut,key,action=false)=>markChoice(btn(label,fn,shortcut),key,action);
  const group=label=>{const d=el('details','',out);d.className='choiceGroup';el('summary',label,d);const inner=el('div','',d);inner.className='actions';return inner};
  if(s.step>=17){$('commandForm').hidden=true;$('heading').textContent=s.step===18?'Biohazard alert':'Transmission ended';textOut(s.step===18?biohazardAlert:'TRANSMISSION TERMINATED.\nAwaiting further instructions.');if(localPlayer)btn('Operator view',toggleView);return}
+ if(page==='Archive confirmation'){
+   $('heading').textContent='Archive vault · physical access confirmation';
+   $('commandForm').hidden=true;
+   textOut('Has your DM confirmed that the party is physically present at the Imperial Research Archive Vault and has been granted access to the room?');
+   btn('YES — DM confirmed',enterArchive);
+   btn('NOT YET — Return',goBack);
+   return;
+ }
  if(['Archive discovery','Archive protocol'].includes(page)&&archiveReferenceAvailable(s)){drawArchiveReference(out,page==='Archive protocol');if(localPlayer)btn('Operator view',toggleView);return}
  if(s.deck==='Archive'&&page!=='Research Recordings'){
    $('heading').textContent=s.step>=14?'Tape elevator':'Retrieval station';textOut(s.step>=14?'Select a carrier for mechanical delivery. Decryption requires the ISB officer’s terminal.':'Display dark.');
@@ -417,18 +426,28 @@ function draw(){
  else {textOut('DIR · OPEN <directory or file> · SEARCH <text> · PLAY <record> · STATUS'+(s.deck==='ISB'?' · UNLOCK ARMORY':'')+(s.step>=6?' · AUTH <code>':'')+(s.repaired?' · SCAN <subject> · SAVE SCAN · DISCARD SCAN':'')+(s.step>=8?' · ISB · RECEPTION':'')+(s.step>=13?' · ARCHIVE':'')+(s.step>=14?' · INSERT <tape>':''))}
  if(s.deck!=='Archive'&&s.deck!=='Director'){
    if(s.deck==='Primary'&&s.step===7&&!s.authVerified)btn('Enter authorization code',()=>prepareManual('AUTH '));
-   const links=[];if(s.step>=14||s.step===13&&!archiveReferenceAvailable(s))links.push(['Use archive station','Archive','ARCHIVE',s.deck==='ISB'&&(s.step===13||s.step===14)]);if(s.step>=8&&s.deck!=='Primary')links.push(['Return to reception terminal','Primary','RECEPTION',s.step===8]);if(s.step>=8&&s.deck!=='ISB')links.push(['Use ISB officer’s terminal','ISB','ISB',s.step>=9]);const primary=links.filter(x=>x[3]),secondary=links.filter(x=>!x[3]);for(const [label,deck,cmd] of primary)important(label,()=>act('DECK',deck),cmd,'station:'+deck,true);if(secondary.length){const other=group('Other workstations');for(const [label,deck,cmd] of secondary)button(other,label,()=>act('DECK',deck),cmd)}
+   const links=[];if(s.step>=14||s.step===13&&!archiveReferenceAvailable(s))links.push(['Use archive station','Archive','ARCHIVE',s.deck==='ISB'&&(s.step===13||s.step===14)]);if(s.step>=8&&s.deck!=='Primary')links.push(['Return to reception terminal','Primary','RECEPTION',s.step===8]);if(s.step>=8&&s.deck!=='ISB')links.push(['Use ISB officer’s terminal','ISB','ISB',s.step>=9]);const primary=links.filter(x=>x[3]),secondary=links.filter(x=>!x[3]);for(const [label,deck,cmd] of primary)important(label,()=>deck==='Archive'?requestArchiveAccess():act('DECK',deck),cmd,'station:'+deck,true);if(secondary.length){const other=group('Other workstations');for(const [label,deck,cmd] of secondary)button(other,label,()=>deck==='Archive'?requestArchiveAccess():act('DECK',deck),cmd)}
    if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>important('Insert '+x,()=>insertTape(x),'INSERT '+x,'insert:'+x,x==='CLONE BATCH SIGMA'));
    if(archiveReferenceAvailable(s)){important('Review classified archive reference',()=>selectPage('Archive discovery'),'','archive-reference',s.step===13)}if(analysisFolderAvailable(s)&&!chamberPages.includes(page)){const analysis=markChoice(go('Analysis','M-Count Scanning Chamber'),scannerReadyHere(s)?'analysis:online':'analysis',!s.repaired&&reviewed.has('analysis'));out.prepend(analysis)}if(canPlay(s,6)&&!s.seen[6]&&page!=='Research Recordings'&&!chamberPages.includes(page))markRecording(btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6),'PLAY REC-006'),6);if(page!=='Home'){btn('Go back',goBack);go('Home');}
  }
  if(localPlayer)btn('Operator view',toggleView);
 }
 function rid(i){return 'REC-'+String(i).padStart(3,'0')}
+async function enterArchive(){
+ const alreadyAtArchive=s.deck==='Archive';
+ await act('DECK','Archive');
+ if(alreadyAtArchive)selectPage('Home');
+}
+function requestArchiveAccess(){
+ if(s.step<13||s.step>=17)throw Error('Archive access unavailable.');
+ if(s.archivePresenceConfirmed)return enterArchive();
+ nav('Archive confirmation');
+}
 function drawArchiveReference(out,protocol){
  $('heading').textContent=protocol?'Secure media retrieval protocol':'Classified archive discovery';
  textOut('');const screen=$('screen'),ticket=renderTicket,rows=protocol?archiveProtocolRows:archiveDiscoveryRows;
  const add=([line,tone])=>{const n=el('p',line,screen);n.className='archiveDiscoveryLine';n.dataset.archiveTone=tone};
- const controls=()=>{busy=false;if(!protocol)acknowledge('archive-reference');if(protocol){if(s.step===13||s.step===14)markChoice(button(out,'PROCEED TO ARCHIVE VAULT',()=>s.deck==='Archive'?selectPage('Home'):act('DECK','Archive'),'ARCHIVE'),'archive-vault',true);button(out,'Return to classified archive reference',()=>selectPage('Archive discovery'))}else markChoice(button(out,'VIEW ARCHIVE RETRIEVAL INSTRUCTIONS',()=>selectPage('Archive protocol')),'archive-protocol',true);button(out,'Return to main directory',()=>selectPage('Home'))};
+ const controls=()=>{busy=false;if(!protocol)acknowledge('archive-reference');if(protocol){if(s.step===13||s.step===14)markChoice(button(out,'PROCEED TO ARCHIVE VAULT',requestArchiveAccess,'ARCHIVE'),'archive-vault',true);button(out,'Return to classified archive reference',()=>selectPage('Archive discovery'))}else markChoice(button(out,'VIEW ARCHIVE RETRIEVAL INSTRUCTIONS',()=>selectPage('Archive protocol')),'archive-protocol',true);button(out,'Return to main directory',()=>selectPage('Home'))};
  const j=archiveDiscoveryJob;
  const valid=()=>j&&archiveDiscoveryJob===j&&ticket===renderTicket&&player()&&page==='Archive discovery'&&net.code===j.code&&s.campaign===j.campaign&&s.playbackSerial===j.serial&&archiveReferenceAvailable(s)&&!s.playing;
  if(protocol||!valid()||s.fast||reduced){archiveDiscoveryJob=null;rows.forEach(add);controls();return}
@@ -577,7 +596,7 @@ async function command(value){
    const doc=Object.keys(files(s)).find(k=>k.toUpperCase()===path);if(doc)return selectPage('Read',doc);
  }
  const m=v.match(/^(?:PLAY|REPLAY) (?:REC-)?0*([1-7])$/);if(m){if(+m[1]===1&&!s.seen[1]&&page!=='Research Recordings')throw Error('Select the local recording directory first.');return act('PLAY',m[1])}
- if(v==='ARCHIVE')return act('DECK','Archive');if(v==='ISB')return s.step>=8?act('DECK','ISB'):freestyle(raw);if(v==='RECEPTION')return act('DECK','Primary');if(v.startsWith('INSERT '))return insertTape(v.slice(7));
+ if(v==='ARCHIVE')return requestArchiveAccess();if(v==='ISB')return s.step>=8?act('DECK','ISB'):freestyle(raw);if(v==='RECEPTION')return act('DECK','Primary');if(v.startsWith('INSERT '))return insertTape(v.slice(7));
  if(v==='SAVE SCAN')return saveCurrentScan();if(v==='DISCARD SCAN'&&s.deck==='ISB'&&s.repaired&&page==='Sample'&&s.lastScan===selected)return nav('Specimens');
  if(v.startsWith('SCAN ')&&s.deck==='ISB'&&s.repaired){let key=Object.keys(scans(s)).find(k=>k.toUpperCase()===v.slice(5).replace(/^TODD$/,'T0DD'));if(key)return scan(key)}
  return freestyle(raw)
