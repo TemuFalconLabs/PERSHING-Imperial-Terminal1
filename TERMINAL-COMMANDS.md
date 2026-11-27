@@ -1039,3 +1039,439 @@ Procurement request denied. Two versions were sufficient.
 
 ## V21 active changes
 PLAY/REPLAY 1–6 from any accessible powered general-purpose terminal, existing progression gates unchanged. PLAY 7 only Director with all readiness requirements. OPEN M-COUNT SCANNING CHAMBER is an alias for OPEN ANALYSIS; dedicated scanner pages intentionally suppress recording commands/prompts. No separate maintenance-kit registration; one DM REPAIR after Armory release and laboratory entry. OPEN ARCHIVE DISCOVERY / OPEN ARCHIVE PROTOCOL revisit REC006 reference on Reception and ISB. No new player request action or Firebase rule change.
+
+
+## V22 additional typed Easter eggs
+400 total entries (256 prior, 144 additional). MEN and KIDS. Keyboard variants support spaces, plus signs or concatenation; CTRL/CONTROL and documented DEL/DELETE and ESC/ESCAPE aliases. Text-only simulations, not real keyboard interception or shell execution. Existing actionable terminal commands retain precedence; profanity is screened and submitted echo masked, with escalating regulation-issue soap responses and no gameplay penalties. Existing exact responses retained where earlier triggers overlap. Conduct vocabulary is defined in source; no need to reproduce it during play.
+
+POOP (aliases: POO; POOPS; POOPING; POOPED)
+Biological waste detected. Please contact sanitation.
+
+BUTT (aliases: BUM; BOTTOM)
+Unauthorized seating apparatus detected.
+
+FART (aliases: FARTS; FARTED; FARTING)
+Atmospheric contamination detected. Please refrain from further contributions.
+
+POOPY (aliases: POOPIE)
+Your vocabulary has been forwarded to Human Resources.
+
+PEE (aliases: PEEING; PIDDLE; WEE WEE)
+Liquid waste disposal facilities are located elsewhere.
+
+TOOT (aliases: TOOTS; TOOTED)
+Acoustic anomaly recorded. Source identification pending.
+
+STINKY (aliases: STINK; STINKS; SMELLY)
+Occupational hygiene complaint submitted.
+
+BOOGER (aliases: BOOGERS; BOOGIE)
+Biological specimen rejected.
+
+BUTTHEAD (aliases: BUTT HEAD)
+Command recognized. Please specify which officer.
+
+DIARRHEA (aliases: DIARRHOEA; THE RUNS)
+Emergency refresher access authorized.
+
+TOILET (aliases: POTTY; LATRINE; COMMODE)
+Refresher status: Operational, regrettably.
+
+WIPE
+Clarify: database or personal hygiene?
+
+NUMBER TWO (aliases: NUMBER 2)
+Priority sanitation incident acknowledged.
+
+UNDERWEAR (aliases: UNDERPANTS; UNDIES)
+Regulation garments are not searchable through this terminal.
+
+BURP (aliases: BELCH; BURPING)
+Your contribution to atmospheric pollution has been documented.
+
+WEDGIE
+Uniform adjustment request denied.
+
+DINGLEBERRY
+Unknown botanical specimen. Please do not bring it to the laboratory.
+
+TOILET PAPER (aliases: TP; LOO ROLL)
+Allocation: two squares per employee per shift.
+
+FLUSH (aliases: FLUSH TOILET)
+Waste management command received. Personnel files are not flushable.
+
+SNOT (aliases: RUNNY NOSE)
+Please direct nasal secretions away from sensitive equipment.
+
+GAS ATTACK (aliases: PASS GAS)
+The environmental relay does not accommodate personal atmospheric disturbances.
+
+POTTY BREAK
+Submit a refresher requisition. Approval expected after your shift.
+
+TUSH (aliases: HEINIE; BACKSIDE)
+Personal anatomy queries are outside this terminal's jurisdiction.
+
+NUMBER ONE (aliases: NUMBER 1)
+Refresher request logged. Please do not demonstrate.
+
+PEE PEE (aliases: PEEPEE)
+The Empire expects more sophisticated terminology from its personnel.
+
+SUDO MAKE ME A SANDWICH
+Request forwarded to Imperial Catering. Estimated completion: 17 years.
+
+ALT F4
+Your request to terminate Imperial service has been denied.
+
+CTRL C (aliases: CONTROL C)
+Unauthorized duplication is punishable by interrogation.
+
+CTRL V (aliases: CONTROL V)
+Imperial paste is not intended for consumption.
+
+CTRL SHIFT ESC (aliases: CONTROL SHIFT ESC; CTRL SHIFT ESCAPE; CONTROL SHIFT ESCAPE)
+Task management has been reserved for your supervisor.
+
+ALT TAB
+Unauthorized workplace multitasking detected.
+
+CTRL S (aliases: CONTROL S)
+Your work has been saved. Your career remains uncertain.
+
+CTRL X (aliases: CONTROL X)
+Cutting Imperial resources requires written authorization.
+
+CTRL A (aliases: CONTROL A)
+The Empire has already selected everything.
+
+CTRL F (aliases: CONTROL F)
+Finding competent management remains outside the search index.
+
+CTRL P (aliases: CONTROL P)
+Printer offline. Please submit a written request for a printed request form.
+
+CTRL Y (aliases: CONTROL Y)
+Repeating mistakes is an established Imperial procedure.
+
+CTRL R (aliases: CONTROL R)
+Refreshing the terminal will not improve your employment prospects.
+
+CTRL T (aliases: CONTROL T)
+Unauthorized tab expansion denied.
+
+CTRL W (aliases: CONTROL W)
+Closing your responsibilities is not authorized.
+
+CTRL N (aliases: CONTROL N)
+New window requested. This facility has no windows.
+
+CTRL O (aliases: CONTROL O)
+Opening restricted resources requires clearance.
+
+CTRL L (aliases: CONTROL L)
+Your location is already known.
+
+CTRL H (aliases: CONTROL H)
+Your history is classified. The ISB has a copy.
+
+CTRL SHIFT T (aliases: CONTROL SHIFT T)
+Previously closed mistakes have been restored.
+
+CTRL SHIFT N (aliases: CONTROL SHIFT N)
+Private browsing is a charming fantasy.
+
+CTRL SHIFT DELETE (aliases: CONTROL SHIFT DELETE; CTRL SHIFT DEL; CONTROL SHIFT DEL)
+Your browsing history has already been archived.
+
+CTRL BREAK (aliases: CONTROL BREAK)
+Taking a break requires supervisor approval.
+
+SHIFT DELETE
+The Empire retains permanent copies of your mistakes.
+
+WIN L (aliases: WINDOWS L)
+Your workstation has been locked for loyalty verification.
+
+WIN R (aliases: WINDOWS R)
+Running is prohibited in Imperial corridors.
+
+WIN D (aliases: WINDOWS D)
+Desktop unavailable. Return to your assigned duty.
+
+ALT ENTER
+Your request for a larger screen has been forwarded to Budget.
+
+ALT ESC
+Escape is not an authorized keyboard function.
+
+F1
+Assistance is available from your nearest supervisor. Good luck.
+
+F2
+Renaming Imperial property requires six signatures.
+
+F3
+Search assistance denied. Read the instructions.
+
+F5
+Refreshing the screen does not refresh your personnel record.
+
+F6
+Focus reassignment authorized. Please focus on your duties.
+
+F7
+Spelling inspection initiated. Imperial grammar remains superior.
+
+F8
+Safe mode unavailable. Your safety is our priority.
+
+F9
+Function reserved for purposes unknown to this department.
+
+F10
+Menu privileges pending approval.
+
+F11
+Full-screen loyalty demonstration requested.
+
+F12
+Developer privileges are not a rank.
+
+PRINT SCREEN (aliases: PRTSC; PRTSCR)
+Unauthorized screenshots are subject to review.
+
+GODMODE (aliases: GOD MODE)
+Executive privileges reserved for Emperor Palpatine.
+
+NOCLIP (aliases: NO CLIP)
+Please use the door.
+
+INSTALL WINDOWS
+Installation rejected. This facility has sufficient structural vulnerabilities.
+
+DELETE SYSTEM32 (aliases: DEL SYSTEM32)
+Your enthusiasm for unemployment is noted.
+
+PRINT MONEY
+Counterfeiting request forwarded to ISB.
+
+GIT COMMIT
+Commitment to the Empire is mandatory.
+
+GIT PUSH
+Resistance detected. Push harder.
+
+GIT BLAME
+Responsibility assigned to the previous shift.
+
+GIT MERGE
+Departmental consolidation requires executive approval.
+
+GIT CLONE
+Clone production is restricted to authorized research personnel.
+
+GIT RESET
+The Empire does not erase its mistakes. It reassigns them.
+
+GIT REVERT
+Previous policy reinstated. It was always the correct policy.
+
+GIT DIFF
+Disagreement with the approved version detected.
+
+GIT LOG
+Your activities have been logged more thoroughly than you realize.
+
+GIT BRANCH
+Independent branches of Imperial authority are prohibited.
+
+GIT CHECKOUT
+Leaving before the end of your shift is unauthorized.
+
+SEGFAULT (aliases: SEGMENTATION FAULT)
+Imperial Engineering regrets your existence.
+
+MAKE
+Build failed. Blame Engineering.
+
+COMPILE
+Compilation successful. Comprehension not detected.
+
+BUILD
+Construction request denied. The last large project exceeded budget.
+
+NPM INSTALL
+Dependency on unauthorized software detected.
+
+NPM UPDATE
+New dependencies have been added to your duties.
+
+PIP INSTALL
+Pipe installation requires Engineering clearance.
+
+DOCKER RUN
+Container departed. Please complete the cargo manifest.
+
+KUBECTL
+Your request for additional administrative clusters has been approved by the Department of Redundant Departments.
+
+SSH
+Secure connection denied. Your insecurity has been noted.
+
+TELNET
+Legacy communications detected. This technology belongs in a museum.
+
+FTP
+Unauthorized transfer request. The archive has a physical media policy.
+
+CURL
+Please uncurl and return to your duty station.
+
+WGET
+Requested resources are not in your allowance.
+
+NSLOOKUP
+Imperial naming authority is not subject to lookup.
+
+DNS FLUSH
+Network hygiene and refresher hygiene are separate departments.
+
+HOSTNAME
+Your station has been identified. So have you.
+
+LS
+Listing restricted. Try the directory provided to you.
+
+PWD
+Current location: under Imperial jurisdiction.
+
+CAT
+No animals permitted at the workstation.
+
+GREP
+Search completed. No evidence of initiative found.
+
+CHMOD
+Permission to change permissions denied.
+
+CHOWN
+All Imperial property belongs to the Empire.
+
+MKDIR
+Creation of another folder requires departmental review.
+
+RMDIR
+The folder contains forms that must be retained indefinitely.
+
+TOUCH
+Please do not touch sensitive equipment.
+
+ECHO
+Your words have been recorded. Your words have been recorded.
+
+REBOOT NOW
+The Empire is not finished with you yet.
+
+BLUE SCREEN (aliases: BSOD)
+Catastrophic optimism failure. Please await reassignment.
+
+KERNEL PANIC
+Remain calm. Panic is reserved for executive personnel.
+
+NULL POINTER
+Nothing located. The department is working as designed.
+
+SQL SELECT (aliases: SELECT STAR)
+Database query denied. Stars are Imperial property.
+
+DROP TABLE
+Furniture removal requires Facilities approval.
+
+SELECT 1
+One employee selected for routine supervision.
+
+SQL INSERT INTO
+Please specify the correct authorization cylinder.
+
+JSON
+Your structured complaint has been successfully ignored.
+
+YAML
+Indentation infraction detected. Report to document control.
+
+HTML
+Decorative formatting is not a substitute for loyalty.
+
+CSS
+Imperial uniform colors are not customizable.
+
+JAVASCRIPT
+Unauthorized scripting is a matter for the ISB.
+
+RUST
+Corrosion detected. File a maintenance request.
+
+COBOL
+Ancient Imperial payroll system located.
+
+BASIC
+Your competence assessment agrees.
+
+FORTRAN
+Engineering requests that you stop operating archaeological software.
+
+DIVIDE BY ZERO (aliases: 1/0)
+Mathematical dissent detected.
+
+INFINITE LOOP
+Form processing will continue until all forms are processed.
+
+RETURN NULL
+Nothing returned. Typical Imperial efficiency.
+
+BREAKPOINT
+Work interruption not authorized.
+
+UNIT TEST
+Unit tested. Employee failed.
+
+TESTING
+Testing the patience of the Empire is discouraged.
+
+DEPLOY
+Deployment request forwarded to the appropriate command authority.
+
+ROLLBACK
+The previous decision was also correct.
+
+MERGE CONFLICT
+Disagreement detected. Both departments blame the other.
+
+BUFFER OVERFLOW
+Your paperwork tray has exceeded its authorized capacity.
+
+OUT OF MEMORY
+Remember that forgetting Imperial directives is an offense.
+
+FATAL ERROR
+Human Resources has been informed of a staffing opportunity.
+
+RECURSION
+See recursion. See recursion. See recursion.
+
+LOADING
+Please continue waiting with appropriate enthusiasm.
+
+AI
+Artificial intelligence is permitted. Independent intelligence is not.
+
+CHATGPT
+Unauthorized advisory droid detected. Consult your assigned supervisor.
+
+MOUSE
+Mouse droid allocated. It cannot assist with your typing.
+
+KEYBOARD
+The equipment is functioning. The operator is under review.

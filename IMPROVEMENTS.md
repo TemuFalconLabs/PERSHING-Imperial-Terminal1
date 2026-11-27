@@ -400,3 +400,7 @@ V20 implementation checkpoint: IMP-026, 027, 030 and 036 implemented in developm
 
 ## V21 acceptance review — 27 November 2026
 01 Kest REC003 exact approved revision. 02/05 chamber naming and main cloning room. 03 existing REC005/relay gate confirmed by DM; unchanged. 04 one repair confirmation replaces kit registration. 06 universal recordings except REC007. 07 dedicated scan workflow. 08 classified on-site archive discovery, no early power clue, persistent reference, adult-only DM hook. Docs approved/read back first. Native/browser testing and preview pending.
+
+
+## V22 rehearsal refinements — 27 November 2026
+V22-001 CINDER red supplemental directive; V22-002 all six tapes visible with status; V22-003 18 MEN administrative records; V22-004 previously viewed subfolder; V22-005 six unread per page; V22-006 hidden clean bathroom/computer commands, shortcut variants and conduct screening with masked echo and repeat warnings. Both authoritative Docs amended and read back before code. Staged source regression: 862 adapted assertions across 27 groups, zero failures. Browser/live acceptance outstanding.

@@ -683,3 +683,64 @@ SECURE MEDIA RETRIEVAL PROTOCOL
 Unauthorized duplication or destruction of research documentation is strictly prohibited.
 PROCEED TO ARCHIVE VAULT
 Do not disclose offline status or tell players to restore power before arrival; they discover the unplugged terminal physically. Preserve existing power confirmation, mechanical retrieval, and ISB decryption. No new story gate. Preserve no early survivor counts, identities or outbreak spoilers. DM-only attention hook for Glitch and Crosseye: “Neither of you can recall ever undergoing the procedures described in that recording. But if what the researcher said is true, would you remember them even if you had?” No roll or confirmation of their involvement. Keep KIDS campaign knowledge distinct; no adult-specific personal hooks for KIDS.
+
+
+## Approved 27 November 2026 — V22 rehearsal refinements
+V22-001 — CINDER. Preserve the entire existing report and insert the following red supplemental text immediately before COMPLIANCE DIRECTIVE. IPD-9 is original campaign fiction, not a canonical Star Wars weapon.
+SUPPLEMENTAL DIRECTIVE — ASSET ERADICATION
+
+Operation Cinder extends beyond designated planetary targets. Authorized targets include:
+
+• Planetary population centers
+• Orbital space stations
+• Imperial military installations
+• Classified research facilities
+• Restricted intelligence repositories
+
+Planetary and orbital targets are to be eradicated by designated Imperial naval forces.
+
+Individual installations are to be eliminated through the deployment of IPD-9 Imperial Purge Devices.
+
+Designated transport vessels will deliver these devices to classified installations. Heavy loader droids will position the devices for subsequent remote detonation.
+
+The preservation of personnel, research specimens and classified documentation is subordinate to the successful eradication of the installation.
+
+LOCAL INSTALLATION STATUS
+
+DESIGNATION: APPROVED FOR ERADICATION
+DELIVERY METHOD: IMPERIAL TRANSPORT
+DEPLOYMENT: LOADER DROID COMPLEMENT
+DETONATION: REMOTE AUTHORIZATION
+
+EVACUATION OF PERSONNEL IS NOT REQUIRED.
+
+Do not reveal delivery status, transport identity or detonation timing. No new progression gate.
+V22-002 — All six archive tapes visible together without expanding another folder. CLONE BATCH SIGMA remains bright yellow while actionable; STARDUST, NECROMANCER, CINDER, ORDER 66 and LIFT INSPECTION normal green. Preserve existing retrieval, possession, authentication, and duplicate guards.
+V22-003 — Add the following 18 optional administrative records, normal green, no progression effects. Original approved creative descriptions:
+2. Unauthorized Wookiee Incident — A security officer reports that a Wookiee tore a locked door from its hinges. Engineering subsequently received a disciplinary notice for installing insufficiently Wookiee-resistant doors.
+3. Annual Employee Satisfaction Survey — Employees may select Extremely Satisfied, Very Satisfied or Satisfied. Employees requiring additional response options should report to the Imperial Security Bureau for assistance.
+4. Darth Vader Workplace Safety Advisory — Personnel attending meetings with Lord Vader are advised to avoid restrictive neckwear. The Imperial Department of Occupational Safety has determined that conventional protective equipment provides negligible benefit.
+6. Mandatory Morale Improvement Program — Employee morale has reportedly declined. Mandatory morale improvement meetings will continue until morale improves. Absence from these meetings will be interpreted as evidence of insufficient morale.
+7. Gonk Droid Performance Review — A Gonk droid has received the highest performance rating in the department. Management commends its reliability, punctuality and willingness to refrain from offering unsolicited opinions.
+8. Research Director's Coffee Dispute — Dr. Kest has formally requested that personnel stop consuming her imported caf. She notes that the facility possesses both biological sampling equipment and an extensive specimen registry, making identification of the responsible employee relatively straightforward.
+9. Imperial Uniform Color Compliance — A lengthy investigation determines that an officer's uniform was charcoal gray rather than regulation Imperial gray. Three committees have been established to determine whether disciplinary action is appropriate.
+10. Droid Employee of the Month — A malfunctioning mouse droid received the award after accidentally remaining stationary in front of the time clock for 72 consecutive hours. Its dedication to remaining on duty was considered exemplary.
+11. Unauthorized Use of the Imperial March — Personnel are prohibited from playing the Imperial March when entering the employee cafeteria, using the refresher or arriving late to meetings. Musical accompaniment is reserved for appropriately ranked personnel.
+14. Imperial Pension Eligibility — Employees must survive thirty years of Imperial service to qualify for retirement benefits. An internal financial review describes the pension program as exceptionally affordable.
+15. Classified Document Redaction Failure — A heavily redacted administrative report reveals almost nothing except the words incident, unfortunate, approximately seventeen and do not feed it again. No further explanation is available.
+16. Emergency Refresher Usage Restrictions — Following an unspecified incident involving an employee and a shipment of Outer Rim jalapeños, personnel are forbidden from occupying the refresher for more than fifteen consecutive minutes. The incident has been classified as a localized environmental emergency.
+17. Imperial Suggestion Box — A review of employee suggestions indicates that 100% of respondents support current management policies. The report subsequently clarifies that the suggestion box is not anonymous and is monitored by the ISB.
+20. Imperial Dating Service Investigation — An experimental employee matchmaking program was suspended after it repeatedly paired personnel with their own surveillance officers. The ISB maintains that the resulting relationships were operationally beneficial.
+21. Department of Redundant Departments — A newly created administrative department has been tasked with identifying unnecessary administrative departments. Its first recommendation is to establish three additional departments.
+23. Unauthorized Carbonite Storage — An employee has requested permission to spend the remainder of his disciplinary suspension frozen in carbonite. Human Resources has denied the request because time spent frozen does not constitute active disciplinary participation.
+24. Imperial Catering Procurement Investigation — A supplier has been awarded an exclusive contract to provide the facility with beans. An audit reveals that the Empire employs more personnel to count, verify and reconcile the beans than it employs to prepare them. This is a subtle Ryan callback.
+25. Emergency Evacuation Drill Results — The facility's latest evacuation exercise was deemed unsuccessful because employees attempted to evacuate before obtaining written authorization. Management congratulates the remaining personnel for demonstrating exemplary adherence to Imperial policy.
+V22-004 — Administrative Archives contains collapsed Previously Viewed subfolder with count. Opening an administrative record marks it viewed; on return it appears within Previously Viewed. Accessible/searchable, persistent across refresh/reconnection. No effect on research or recording review. V22-005 — At most six unread administrative records per page, navigable without losing access to remaining records. Normal green; previously viewed folder muted.
+V22-006 — Add approximately 100 unique hidden profanity-free humorous triggers across potty humor and programming/computer commands. Harmless words (poop, butt, fart, poopy, pee, toot, stinky, booger, butthead, diarrhea, toilet, wipe, number two, underwear, burp) receive playful individual responses. Simulated programming and operating-system commands are text only, never executed. Recognize keyboard shortcut variants with or without spaces/plus signs, case insensitive, CTRL/CONTROL and DEL/DELETE, ESC/ESCAPE variants; e.g. CTRLALTDELETE, CTRL ALT DEL, CONTROL+ALT+DELETE, ALTF4, ALT F4, ALT+F4. Include CTRL+C, CTRL+V, CTRL+Z, CTRL+SHIFT+ESC, ALT+TAB, CTRL+S and additional shortcuts. Preserve real command precedence, existing Easter eggs, reasonable misspellings and natural-language variants. No progression changes or classified disclosures. Both MEN and KIDS; no visible menu clutter.
+Profanity response: detect common profanity and reasonable disguised spellings without false substring matches in innocent words, preserve harmless bathroom humor, and never echo the offending word. The assistant is authorized to choose the appropriate screening vocabulary.
+IMPERIAL CONDUCT VIOLATION DETECTED
+Watch your mouth, citizen.
+Report immediately to the Imperial Department of Personal Hygiene to have your filthy mouth scrubbed with regulation-issue Imperial bar soap.
+Your cooperation is mandatory.
+Red heading and Watch your mouth line; ordinary green remaining text. Repeat responses: Your mouth apparently requires additional maintenance. A second bar of soap has been requisitioned. / Industrial-strength Imperial soap has been authorized. / A sanitation droid has been dispatched. Please open your mouth. / Your vocabulary has been classified as a biological hazard. No actual penalties.
+Implementation authorized; preview publication remains separately controlled. Production and Firebase rules unchanged.
