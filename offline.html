@@ -382,7 +382,7 @@ function change(session,role,action,arg,now){
    if(action==='ADVANCE'){
      if(old.step>=17)throw Error('Use crisis controls.');
      s={...old,step:old.step+1,playing:0,hint:''};
-     if(s.step===11)s.danger=now;if(s.step===8)s.card=true;if(s.step===17){s.directorCylinder=true;s.deck='Director';s.room='Director';s.doors={...s.doors,'Director office door':'CLOSED'};}
+     if(s.step===11){s.danger=now;s.doors={...s.doors,'Lab corridor':'OPEN'};}if(s.step===8)s.card=true;if(s.step===17){s.directorCylinder=true;s.deck='Director';s.room='Director';s.doors={...s.doors,'Director office door':'CLOSED'};}
      if(s.step===12){s.deck='ISB';s.room='Laboratory'}if(s.step===14){s.deck='Archive';s.room='Archive'}if(s.step===16){s.deck='ISB';s.room='ISB';s.inserted={...s.inserted,'CLONE BATCH SIGMA':true};delete s.retrieved['CLONE BATCH SIGMA'];}
    }
    if(!validSave(s)||s.campaign!==old.campaign)throw Error('Checkpoint unavailable or belongs to a different campaign.');
