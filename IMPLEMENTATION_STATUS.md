@@ -111,3 +111,7 @@ Screenplay amended first. Routine records grouped; meaningful new records and av
 
 ### Version 18 — Morgan dossier revision
 Screenplay amended and read back first. Morgan already knows too much; Varrick and Rane are to eliminate her after successful apprehension of the two surviving clone specimens. Exact approved dossier synchronized with content and creative baseline; Drellis Minor Recovery Operation and all gates unchanged. 356 adapted source assertions in 14 groups passed; includes exact text, MEN-only and station/tape access checks. Browser/Pages serving and production remain unverified.
+
+
+## Approved V18 follow-up — documentation checkpoint
+Both authoritative Google Docs amended and read back. Approved four-station/Armory, replay Stop and Back, five-second retrieval, all-subject scan highlighting, manual crisis and dual-operator calibration requirements are recorded in CREATIVE_BASELINE.md and IMPROVEMENTS.md. Implementation, rules changes if needed, offline rebuild, browser/live testing and preview remain pending. Production unchanged. Maintenance-kit placement, final rival name, insignia art and exact richer archive text remain unresolved; REC-006 reviewed report not reproduced.
