@@ -20,7 +20,7 @@ function change(session,role,action,arg,now){
      if(s.step===12){s.deck='ISB';s.room='Laboratory'}if(s.step===14){s.deck='Archive';s.room='Archive'}if(s.step===16){s.deck='ISB';s.room='ISB';s.inserted={...s.inserted,'CLONE BATCH SIGMA':true};delete s.retrieved['CLONE BATCH SIGMA'];}
    }
    if(!validSave(s)||s.campaign!==old.campaign)throw Error('Checkpoint unavailable or belongs to a different campaign.');
-   s=normalize(s);s.revision=old.revision+1;s.notice='Station checkpoint synchronized.';
+   s=normalize(s);s.playbackSerial=Math.max(old.playbackSerial||0,s.playbackSerial||0)+1;s.revision=old.revision+1;s.notice='Station checkpoint synchronized.';
    s.log=[...old.log.slice(-59),{at:now,who:role,action,detail:'Operator checkpoint'}];
  }else s=apply(old,role,action,arg,now);
  const checkpoints=action==='RESET'?{}:{...session.checkpoints};

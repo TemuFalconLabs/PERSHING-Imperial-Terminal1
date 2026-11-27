@@ -6,9 +6,11 @@ export function directorReadiness(s){
 }
 export function recordingGroups(s,recordings,playable){
  const available=[],replays=[];
- for(let id=1;id<recordings.length;id++)if(playable(s,id))(s.step>=9&&s.seen?.[id]?replays:available).push(id);
+ for(let id=1;id<recordings.length;id++)if(playable(s,id))(s.seen?.[id]===true?replays:available).push(id);
  return {available,replays};
 }
+export function recordingStatus(s,id,playable){if(s.playing===id)return 'PLAYBACK IN PROGRESS';if(s.seen?.[id]===true)return 'REVIEWED — REPLAY AVAILABLE';return playable(s,id)?'AVAILABLE — NEW':'ACCESS DENIED'}
+export const workstationNames={Primary:'RECEPTION',ISB:'ISB',Archive:'ARCHIVE',Director:'RESEARCH DIRECTOR'};
 export function analysisPageAfterRepair(before,after,page){
  if(before?.step>0&&after.step===0)return 'Home';
  if(before?.deck!==after.deck)return page==='Analysis'&&scannerReadyHere(after)||page==='Analysis'&&after.deck==='ISB'&&after.step>=12?'Analysis':'Home';

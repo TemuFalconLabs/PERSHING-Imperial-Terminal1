@@ -587,3 +587,55 @@ Sound intent: mechanical startup, soft target-entry tone, rising stability pitch
 Additional approved terminal refinements: Stop recording during a replay only after first full completion; cancel media/TTS/callbacks without FINISH, progression or alert, return to originating folder. Contextual Back returns to parent folder or prior search; preserve Home. Archive mechanical retrieval approximately five seconds with simple 8-bit claw retrieving a round physical disc; no decryption at archive; retain tape lifecycle, duplicate protection and fast/reduced-motion alternative. Analyze biological specimen remains available but loses yellow action highlighting only after all selectable campaign subjects have been scanned, irrespective of attendance (including T0DD and Sam in current MEN roster; no invented Tom findings). Count successful scans independently of save/decline; preserve reset/undo/recovery. Ryan remains HUMAN / AVERAGE / NONE; requested assessment mentions recent high-voltage exposure and subject emitting sparks during scan; proposed wording “Evidence of recent high-voltage exposure detected. Subject emitting sparks during scan.” No new mechanical effect. Richer archive backstory concept approved; exact new record text still requires review; preserve approved scripts, Morgan, Sigma and mysteries. REC-006 prematurely reviewed user report requires reproduction and repair; cause not established. Distinct workstation insignia and rival research director name remain proposals awaiting final design selection.
 
 Status: approved design, implementation pending. Exact approved source amendment copied from the Imperial Terminal Experience Screenplay; Master Adventure has matching amendment. No deployment authorization.
+
+
+## V20 approved refinement amendment
+
+Approved 26 November 2026 — V20 final five refinements
+This amendment supersedes the outstanding design proposals in the V18/V19 amendment. Preserve all other approved text, the existing REC-001–007 scripts, Sigma, Morgan and individual dossiers. No production release authorized.
+Terminal identity: four persistent, restrained upper-right emblems plus explicit workstation designation: Reception (Imperial cog, green); ISB (security shield/eye, muted red); Archive (data stack, muted cyan); Research Director (hexagonal scientific atom, muted violet). Approximate desktop width 15–20%; responsive on phones; keep gameplay text green and yellow/red meanings intact. Original stylized emblems, not a claim of official ISB or science insignia. Never overlay or compete with the crisis visual.
+Research Director: Dr. Veyra Kest, Director of Imperial Advanced Science Division, is the existing deceased female director. She is a competing research lead, not Pershing's subordinate. Pershing investigates biological transfer of Force sensitivity; Kest investigates clone survivability and seeks to outperform him for Moff Gideon's patronage. Gideon and ultimate objectives remain DM-only; no premature player disclosure. Preserve the existing recordings referring to Pershing as a collaborating/requesting researcher and exact approved dossier wording. Do not rename repository/project.
+Armory maintenance kit: replace the B17/B71 crate and shipping-manifest puzzle, technical-stores cage/key and Engineering spare requirement with one Imperial Instrument Maintenance Kit in the Armory. It contains all necessary replacement components and tools; no individual inventory tracking. After authorization, unlock Armory from ISB; DM confirms physical recovery of kit. Ryan performs physical analyzer repair and DM confirms installed parts; Ryan and Glitch then perform the already-approved two-lock calibration. Optional, fail-forward, no new main gate. Armory combat supplies remain as approved.
+Adult campaign optional archive lore: six records replace weaker local filler, accessible at authorized ISB as the relevant existing milestones are reached, no required reading. Keep select administrative humor, existing tapes, exact Sigma/Morgan/individual dossier content and KIDS-specific story intact. New text follows.
+Research Division Correspondence
+INTERNAL RESEARCH CORRESPONDENCE — RESTRICTED
+From: Dr. Veyra Kest, Research Director
+To: Research Coordination Office
+Dr. Pershing has requested the experimental histories of specimens demonstrating exceptional resilience. His work concerns the transfer of elevated M-count characteristics; this facility has been tasked with establishing why particular specimens survive procedures that destroy otherwise viable clones.
+I have authorized the transfer of the requested materials. This cooperation should not be mistaken for an acknowledgment that his approach is superior. His laboratory has the luxury of caution. We are expected to deliver results.
+Future progress reports shall distinguish discoveries made at this installation from conclusions reached elsewhere. I will not have the achievements of my personnel attributed to a researcher who merely receives our findings.
+— V. Kest
+Specimen Termination Report
+BIOLOGICAL QUALITY ASSURANCE — RESTRICTED
+A routine reconciliation identified inconsistencies between several termination certificates and subsequent instrument readings. The attending technicians confirmed that the specimens were nonresponsive at the time of certification. Later readings nevertheless displayed irregular biological activity.
+Engineering attributes the discrepancy to residual interference from the experimental apparatus. Research personnel have requested that future readings be preserved separately from clinical determinations until the source of the interference can be established.
+Director Kest has rejected a proposal to repeat the entire certification procedure. She considers the additional delay unjustified and has instructed staff to retain the original entries alongside the supplemental data.
+The affected records remain provisionally closed. No further interpretation has been authorized.
+Confidential Personnel Grievance
+PERSONNEL OFFICE — CONFIDENTIAL
+I have worked at three Imperial research installations. I understand the necessity of classified work and have never questioned the authority of the Research Division.
+However, Director Kest has repeatedly shortened the observation period between experimental procedures. Several of us have requested an independent review of the revised schedule. We are told that delays would compromise this installation's standing with research oversight.
+The Director has assured us that the results justify the accelerated schedule. I would be considerably more reassured if the results were available to the personnel conducting the procedures.
+I request reassignment to an ordinary laboratory.
+Disposition: Reassignment denied. Employee advised to address future concerns through the established chain of command.
+Memory Suppression Incident
+NEUROLOGICAL RESEARCH — RESTRICTED
+During routine assessment, an experimental specimen recognized a maintenance sequence that was not part of the current training materials. A second observer noted an apparent familiarity with equipment arranged in an earlier test environment.
+These responses may represent retained procedural knowledge rather than conscious recollection. The modified inhibitor system was designed to impede the formation of long-term memories without destroying useful acquired skills; the distinction remains difficult to establish under controlled conditions.
+Director Kest has requested that all unexpected responses be recorded, but that personnel avoid prompting specimens with questions concerning previous sessions.
+No determination regarding the recovery of autobiographical memory has been made. Further assessment is pending.
+Research Funding Review
+RESEARCH ALLOCATION COMMITTEE — RESTRICTED
+Competing installations have submitted progress estimates for the next review period. The committee notes that the survivability initiative has produced observations of potential value, although its expenditure per viable specimen remains substantial.
+Director Kest has requested additional equipment and personnel, citing the limitations of the current experimental schedule. Her request includes a comparative assessment of the scientific methods employed by Dr. Pershing.
+The committee declines to comment on disagreements between research directors. Continued allocation will depend upon measurable progress rather than professional assertions.
+The next review will be conducted by authorized representatives. Their identities and the terms of executive sponsorship are not included in this record.
+Unauthorized Biological Activity
+ENVIRONMENTAL MONITORING — RESTRICTED
+The overnight duty technician reported intermittent instrument activation in an unoccupied observation area. Inspection revealed no authorized personnel present. The automatic monitoring system registered activity on multiple occasions, but the readings were insufficient to establish a source.
+Engineering inspected the local equipment and found no obvious mechanical fault. The incident was referred to Research for comparison with recent experimental data.
+Director Kest has instructed the duty staff to retain the monitoring logs and continue normal operations. Additional investigation will be conducted when the relevant personnel are available.
+Until then, staff are reminded that unauthorized changes to observation schedules and environmental controls must be reported through the appropriate channels.
+Recording status: one authoritative state derived from successful first FINISH (never folder review, unlock, navigation, refresh or a stale playback callback). ACCESS DENIED, AVAILABLE — NEW, PLAYBACK IN PROGRESS, REVIEWED — REPLAY AVAILABLE. Keep completed replays collapsed. REC-006 locked before confirmed lab entry and available/new afterward until completion. User-reported premature status remains a reproduction requirement; do not claim original cause established solely from source. Preserve all previous gates and recovery controls.
+
+Status: approved design; development implementation candidate. Original REC-006 incident not yet reproduced. No production or preview deployment authorized.
