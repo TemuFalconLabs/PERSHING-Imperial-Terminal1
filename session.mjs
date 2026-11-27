@@ -1,6 +1,6 @@
 import {apply,fresh,normalize,validSave} from './engine.mjs';
 const config={apiKey:'AIzaSyCoeR3eJ_2kQsRfXi_c2c4MTS4GSpl2STg',authDomain:'pershing-imperial-terminal.firebaseapp.com',databaseURL:'https://pershing-imperial-terminal-default-rtdb.firebaseio.com',projectId:'pershing-imperial-terminal',storageBucket:'pershing-imperial-terminal.firebasestorage.app',messagingSenderId:'126649528532',appId:'1:126649528532:web:6b7c1df73178283e3b8b41'};
-const allowed=new Set(['PLAY','FINISH','STOP PLAYBACK','CALIBRATE','AUTH','CLOSE','DECK','INSERT','RETRIEVE','EQUIPMENT','BLUE','SCAN','SAVE SCAN']);
+const allowed=new Set(['PLAY','FINISH','STOP PLAYBACK','CALIBRATE','AUTH','CLOSE','INSERT','RETRIEVE','EQUIPMENT','BLUE','SCAN','SAVE SCAN']);
 const letters='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 export const newCode=()=>Array.from(crypto.getRandomValues(new Uint8Array(8)),n=>letters[n%letters.length]).join('');
 export const cacheKey=(code)=>'pershing.v2.dm.'+code;
