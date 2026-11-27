@@ -393,3 +393,6 @@ Until then, staff are reminded that unauthorized changes to observation schedule
 Recording status: one authoritative state derived from successful first FINISH (never folder review, unlock, navigation, refresh or a stale playback callback). ACCESS DENIED, AVAILABLE — NEW, PLAYBACK IN PROGRESS, REVIEWED — REPLAY AVAILABLE. Keep completed replays collapsed. REC-006 locked before confirmed lab entry and available/new afterward until completion. User-reported premature status remains a reproduction requirement; do not claim original cause established solely from source. Preserve all previous gates and recovery controls.
 
 Status: approved design; development implementation candidate. Original REC-006 incident not yet reproduced. No production or preview deployment authorized.
+
+
+V20 implementation checkpoint: IMP-026, 027, 030 and 036 implemented in development; IMP-035 status hardening implemented, original symptom still needs browser reproduction. Both authoritative Docs updated first and verified. 416 adapted assertions across 15 groups passed; existing canonical recordings/tapes/dossiers/scans unchanged; offline regenerated. No live or preview deployment.
