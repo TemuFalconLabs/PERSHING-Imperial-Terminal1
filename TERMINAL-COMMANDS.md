@@ -1035,3 +1035,7 @@ ROGER.
 
 B3
 Procurement request denied. Two versions were sufficient.
+
+
+## V21 active changes
+PLAY/REPLAY 1–6 from any accessible powered general-purpose terminal, existing progression gates unchanged. PLAY 7 only Director with all readiness requirements. OPEN M-COUNT SCANNING CHAMBER is an alias for OPEN ANALYSIS; dedicated scanner pages intentionally suppress recording commands/prompts. No separate maintenance-kit registration; one DM REPAIR after Armory release and laboratory entry. OPEN ARCHIVE DISCOVERY / OPEN ARCHIVE PROTOCOL revisit REC006 reference on Reception and ISB. No new player request action or Firebase rule change.

@@ -26,13 +26,15 @@ If you're taking over the engineering shift, reconnect the cable and verify that
 
 ### REC-003 — Research briefing
 
-Research scientist
+Dr. Veyra Kest, Research Director
 
 Research log. The latest series of trials has concluded. As anticipated, the mortality rate among the experimental clone specimens was exceptionally high. However, the results were not entirely without merit.
 
 A small number of clones demonstrated remarkable biological resilience, surviving procedures that proved fatal to the remainder of their cohort. Interestingly, blood analysis has also revealed slightly elevated M-counts among the surviving specimens.
 
-Dr. Pershing believes these characteristics may prove particularly valuable to his ongoing research. At his request, I have authorized the transfer of the surviving specimens to another research facility for more extensive examination.
+I am particularly encouraged by this discovery. It would be rather satisfying to make more progress in Dr. Pershing's area of research than the man himself.
+
+Naturally, he has expressed considerable interest in my findings. At his request, I have authorized the transfer of the surviving specimens to another research facility for more extensive examination. I trust he will remember whose research made this opportunity possible.
 
 We have spent considerable resources investigating why so many specimens have failed. Perhaps we have been asking the wrong question.
 
@@ -639,3 +641,45 @@ Until then, staff are reminded that unauthorized changes to observation schedule
 Recording status: one authoritative state derived from successful first FINISH (never folder review, unlock, navigation, refresh or a stale playback callback). ACCESS DENIED, AVAILABLE — NEW, PLAYBACK IN PROGRESS, REVIEWED — REPLAY AVAILABLE. Keep completed replays collapsed. REC-006 locked before confirmed lab entry and available/new afterward until completion. User-reported premature status remains a reproduction requirement; do not claim original cause established solely from source. Preserve all previous gates and recovery controls.
 
 Status: approved design; development implementation candidate. Original REC-006 incident not yet reproduced. No production or preview deployment authorized.
+
+
+## Approved 27 November 2026 — V21 acceptance-review refinements
+Supersedes conflicting earlier requirements only as specified here. V20 preview remains unchanged until separately authorized; implementation and native/browser acceptance pending.
+01. REC-003 — replace approved spoken dialogue with the following exact revision. Speaker: Dr. Veyra Kest, Research Director. Educated British female, composed, scholarly, increasingly smug; slight self-satisfied smile at rivalry, genuine scientific fascination at the end. Preserve visual-only 1938 clue and existing gates.
+Research log. The latest series of trials has concluded. As anticipated, the mortality rate among the experimental clone specimens was exceptionally high. However, the results were not entirely without merit.
+A small number of clones demonstrated remarkable biological resilience, surviving procedures that proved fatal to the remainder of their cohort. Interestingly, blood analysis has also revealed slightly elevated M-counts among the surviving specimens.
+I am particularly encouraged by this discovery. It would be rather satisfying to make more progress in Dr. Pershing's area of research than the man himself.
+Naturally, he has expressed considerable interest in my findings. At his request, I have authorized the transfer of the surviving specimens to another research facility for more extensive examination. I trust he will remember whose research made this opportunity possible.
+We have spent considerable resources investigating why so many specimens have failed. Perhaps we have been asking the wrong question.
+What makes these particular specimens so difficult to kill?
+02/05. M-Count Scanning Chamber is the physical device, located within the main giant cloning room. No separate analysis room or bench. Rename applicable device labels, objectives, diagnostics and directions; preserve scan results, independent matching dossiers and optional status. Remove obsolete analysis-room door from active navigation; retain compatible checkpoint migration if necessary.
+03. REC-005 completion before relays 1 and 2 and laboratory entry confirmed by DM was verified in the user's V20 rehearsal. No change to sequence.
+04. Simplify maintenance kit: physical collection from released Armory, no separate software registration. After confirmed laboratory entry and physical repair by Ryan using kit, DM clicks “Confirm Scanning Chamber Repaired” once; this enables existing two-operator calibration, which is still required before scanning. Keep existing calibration controls and manual override. Player diagnostic: M-COUNT SCANNING CHAMBER: OFFLINE / Replacement components required. / Maintenance kit location: Armory. / REPAIR CHAMBER TO ENABLE CALIBRATION / *** DM CONFIRMATION REQUIRED UPON SUCCESS ***. Maintain physical Armory release and lab prerequisites. No additional administrative checklist.
+06. REC-001–006 may play/replay from any accessible general-purpose terminal once existing sequence and physical gates permit. REC-007 remains exclusive to Research Director’s terminal, with all existing readiness requirements. Display red REC-007 title and red RESEARCH DIRECTOR'S TERMINAL ONLY notation, including when available. No premature playback. Archive tape retrieval and decryption stay station-specific. M-count interface is not a general-purpose terminal.
+07. Separate scanning and recording workflows. Dedicated M-Count Scanning Chamber interface: calibration, scan selection, results, save/discard, matched dossiers and return to main directory. No recording prompts, shortcuts or unrelated records during scanning or associated dossier review. Continue scanning without navigation interruption. No separate general-purpose scanning terminal.
+08. First successful REC-006 completion triggers enhanced archive discovery; preserve exact REC-006 spoken dialogue. Progressive text reveal approximately five seconds, subdued processing sounds and distinct discovery notification, honor mute/fast/reduced-motion. Persist archive reference for later review; replay does not retrigger discovery or advance. No teleportation or physical-gate bypass. Player display:
+RECORDING 006 COMPLETE
+Analyzing associated research references...
+Searching classified archive index...
+1 RESTRICTED RECORD MATCH FOUND
+CLONE BATCH SIGMA
+CLASSIFICATION: TOP SECRET
+Authorizing researcher: Dr. Veyra Kest
+Requesting researcher: Dr. Pershing
+Subject: Surviving experimental specimens
+Documentation: Experimental histories
+Attempting remote document access...
+ACCESS DENIED
+Electronic copies unavailable. Original documentation retained on secured physical media.
+Locating original documentation...
+PHYSICAL DATA TAPE LOCATED
+Location: Imperial Research Archive Vault
+ON SITE
+ON SITE in very bright cyan, distinct from yellow/green. Yellow action: VIEW ARCHIVE RETRIEVAL INSTRUCTIONS.
+SECURE MEDIA RETRIEVAL PROTOCOL
+01. Locate the Imperial Research Archive Vault.
+02. Retrieve the original Clone Batch Sigma data tape.
+03. Authenticate the tape at the ISB officer's terminal.
+Unauthorized duplication or destruction of research documentation is strictly prohibited.
+PROCEED TO ARCHIVE VAULT
+Do not disclose offline status or tell players to restore power before arrival; they discover the unplugged terminal physically. Preserve existing power confirmation, mechanical retrieval, and ISB decryption. No new story gate. Preserve no early survivor counts, identities or outbreak spoilers. DM-only attention hook for Glitch and Crosseye: “Neither of you can recall ever undergoing the procedures described in that recording. But if what the researcher said is true, would you remember them even if you had?” No roll or confirmation of their involvement. Keep KIDS campaign knowledge distinct; no adult-specific personal hooks for KIDS.

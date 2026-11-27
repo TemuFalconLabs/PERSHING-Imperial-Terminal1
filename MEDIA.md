@@ -1,6 +1,6 @@
 # Recording and prop book · DM only
 
-Provisional damaged card **4719??**, blackboard **1938**, full code **471938**. Three cylinders: duty, partially damaged ISB, Research Director. REC-001–005 reception; REC-006 ISB after confirmed laboratory entry; REC-007 Director only after Sigma and closed office door.
+Provisional damaged card **4719??**, blackboard **1938**, full code **471938**. Three cylinders: duty, partially damaged ISB, Research Director. REC-001–006 any accessible terminal after existing gates; REC-007 Director only after Sigma, cylinder and closed office door.
 
 ## REC-001 · Shift handover
 
@@ -28,15 +28,17 @@ Engineering report: identify disconnected server cable.
 
 ## REC-003 · Research briefing
 
-Research scientist
+Dr. Veyra Kest, Research Director
 
-Frame the board with 1938; no spoken digits.
+Dr. Veyra Kest: educated British female, composed, scholarly, increasingly smug; genuine scientific fascination at the end. Frame the board with 1938; no spoken digits.
 
 > Research log. The latest series of trials has concluded. As anticipated, the mortality rate among the experimental clone specimens was exceptionally high. However, the results were not entirely without merit.
 
 > A small number of clones demonstrated remarkable biological resilience, surviving procedures that proved fatal to the remainder of their cohort. Interestingly, blood analysis has also revealed slightly elevated M-counts among the surviving specimens.
 
-> Dr. Pershing believes these characteristics may prove particularly valuable to his ongoing research. At his request, I have authorized the transfer of the surviving specimens to another research facility for more extensive examination.
+> I am particularly encouraged by this discovery. It would be rather satisfying to make more progress in Dr. Pershing's area of research than the man himself.
+
+> Naturally, he has expressed considerable interest in my findings. At his request, I have authorized the transfer of the surviving specimens to another research facility for more extensive examination. I trust he will remember whose research made this opportunity possible.
 
 > We have spent considerable resources investigating why so many specimens have failed. Perhaps we have been asking the wrong question.
 
@@ -72,7 +74,7 @@ Routine occupational safety report; both relays.
 
 Laboratory researcher
 
-ISB officer’s terminal after laboratory entry; memory suppression and archive designation.
+Any accessible terminal after confirmed laboratory entry; memory suppression and archive designation. First completion reveals the on-site Sigma archive reference; no advance disclosure of power failure.
 
 > Supplemental research log. One of the more persistent complications associated with repeated experimentation has been the psychological deterioration of the specimens. Those surviving an initial procedure frequently exhibit considerable resistance to subsequent testing.
 

@@ -396,3 +396,7 @@ Status: approved design; development implementation candidate. Original REC-006 
 
 
 V20 implementation checkpoint: IMP-026, 027, 030 and 036 implemented in development; IMP-035 status hardening implemented, original symptom still needs browser reproduction. Both authoritative Docs updated first and verified. 416 adapted assertions across 15 groups passed; existing canonical recordings/tapes/dossiers/scans unchanged; offline regenerated. No live or preview deployment.
+
+
+## V21 acceptance review — 27 November 2026
+01 Kest REC003 exact approved revision. 02/05 chamber naming and main cloning room. 03 existing REC005/relay gate confirmed by DM; unchanged. 04 one repair confirmation replaces kit registration. 06 universal recordings except REC007. 07 dedicated scan workflow. 08 classified on-site archive discovery, no early power clue, persistent reference, adult-only DM hook. Docs approved/read back first. Native/browser testing and preview pending.

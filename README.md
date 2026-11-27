@@ -15,3 +15,6 @@ With Node 22+ and Java 21, run `npm install`, `npx playwright install chromium`,
 The prior cartridge-based station is preserved at legacy.html. See IMPLEMENTATION_STATUS.md for release and recovery information.
 
 **Current candidate:** use a fresh version 2 session. The updated terminal route is on the feature branch; do not assume Pages production has been updated before release verification.
+
+## V21 development candidate
+REC001–006 universal access after gates, REC007 local Director only. Scanning chamber inside the cloning room with single DM repair confirmation and isolated scan workflow. Classified on-site archive discovery after REC006. V20 preview remains separate; V21 not deployed.
