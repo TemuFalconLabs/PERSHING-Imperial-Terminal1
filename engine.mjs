@@ -72,7 +72,7 @@ export function apply(raw,who,action,arg='',now=Date.now()){
  const advance=()=>{s.step++;s.hint=''};
  let note='';let preserveNotice=false;
  if(action==='PLAY'){
-   const id=Number(arg);need(s.step<17&&canPlay(s,id),id===7?'Confidential playback unavailable at this station.':'Recording unavailable at this station.');
+   const id=Number(arg);need(s.step<17&&canPlay(s,id)&&(s.seen[id]||next==='PLAY '+id),id===7?'Confidential playback unavailable at this station.':'Recording unavailable at this station.');
    if(id===7)need(s.doors['Director office door']==='CLOSED','Confidential playback withheld. Close the Research Director’s office door.');
    need(!s.playing,'A recording is in progress.');s.playing=id;preserveNotice=!!s.seen[id];note='Playback · '+recordings[id][0];
  }else if(action==='FINISH'){

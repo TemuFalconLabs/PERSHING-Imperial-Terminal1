@@ -57,6 +57,8 @@ const cuePatterns={
  door:[[0,.13,130,65,'triangle',.05],[.14,.07,420,270,'triangle',.025]],
  alarm:[[0,.42,180,330,'sawtooth',.055],[.53,.42,180,330,'sawtooth',.055],[1.06,.42,180,330,'sawtooth',.055]],
  crisis:[[0,.19,360,210,'triangle',.045],[.23,.19,360,210,'triangle',.045]],
+ calInterference:[[0,.09,270,100,'sawtooth',.025],[.11,.08,310,95,'square',.015]],
+ calProgress1:[[0,.07,400,480,'sine',.025]],calProgress2:[[0,.07,520,650,'sine',.025]],calProgress3:[[0,.08,700,880,'sine',.025]],
  test:[[0,.12,620,820,'triangle',.07],[.16,.13,850,1100,'triangle',.07],[.34,.18,1120,840,'sine',.07]]
 };
 function cueForState(before,after){
@@ -304,6 +306,37 @@ function textOut(str,animate=false,tone=responseTone(str)){
  function tick(now){if(ticket!==renderTicket)return;if(now>=start){out.dataset.tone=tone;out.textContent=str.slice(0,Math.ceil(str.length*Math.min(1,(now-start)/ms)));if(now>=start+ms){busy=false;return}}requestAnimationFrame(tick)}requestAnimationFrame(tick)
 }
 function selectPage(p,sel=''){if(p==='Read'&&Object.hasOwn(files(s),sel))acknowledge('record:'+sel);if(p==='Analysis'&&analysisFolderAvailable(s))acknowledge(scannerReadyHere(s)?'analysis:online':'analysis');if(p==='Clone Batch Sigma'&&s.inserted?.['CLONE BATCH SIGMA'])acknowledge('sigma');nav(p,sel);if(!s.playing&&!['Analysis','Specimens','Saved results','Sample'].includes(p))textOut($('screen').textContent,true)}
+function calibrationValid(j){return !!s&&net?.code===j.code&&s.campaign===j.campaign&&s.step===j.step&&s.deck==='ISB'&&s.installed&&!s.repaired&&!s.playing&&s.step<17}
+function calibrationKey(e,down){const k={a:'a',d:'d',arrowup:'up',arrowdown:'down'}[e.key.toLowerCase()];if(!k)return false;e.preventDefault();e.stopImmediatePropagation();if(calibrationJob&&!calibrationJob.paused)calibrationJob.keys[k]=down;return true}
+document.addEventListener('keyup',e=>{if(calibrationJob&&player())calibrationKey(e,false)},true);
+window.addEventListener('blur',()=>{if(calibrationJob)calibrationJob.keys={}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&calibrationJob)calibrationJob.keys={}});
+function endCalibration(redraw=true){if(calibrationJob){calibrationJob.keys={};calibrationJob=null;stopFallback()}if(redraw&&s){page='Analysis';draw()}}
+function startCalibration(){if(calibrationJob||!s.installed||s.repaired||s.step<12||s.step>=17||s.deck!=='ISB'||s.playing)throw Error('Calibration unavailable.');const j={code:net.code,campaign:s.campaign,step:s.step,model:newCalibration(),keys:{},paused:false,last:performance.now(),message:'DUAL-OPERATOR CALIBRATION REQUIRED',progressCue:0,finishing:false};calibrationJob=j;page='Analysis';$('saver').hidden=true;playCue('relay');draw();requestAnimationFrame(now=>calibrationFrame(j,now))}
+function drawCalibration(){
+ const j=calibrationJob;$('commandForm').hidden=true;$('heading').textContent='Dual-operator calibration';textOut('');const out=$('screen'),choices=$('choices');
+ instrumentHeader(out);el('h3','DUAL-OPERATOR CALIBRATION',out);j.lockLabel=el('p','',out);const c=el('canvas','',out);c.width=320;c.height=180;c.className='pixelCanvas';c.setAttribute('aria-label','Dual-axis reticle target calibration');j.canvas=c;
+ const controls=el('div','',out);controls.className='calControls';el('p','OPERATOR 1 · RYAN — A / D · HORIZONTAL',controls).className='calHorizontal';el('p','OPERATOR 2 · GLITCH — ↑ / ↓ · VERTICAL',controls).className='calVertical';el('small','MAINTAIN RETICLE WITHIN TARGET ZONE',out);j.meter=el('progress','',out);j.meter.max=100;j.status=el('p','',out);j.status.setAttribute('aria-live','polite');
+ button(choices,j.paused?'Resume calibration':'Pause calibration',()=>{j.paused=!j.paused;j.keys={};draw()});button(choices,'Cancel calibration',()=>endCalibration());if(localPlayer)button(choices,'Operator view',toggleView);paintCalibration(j);
+}
+function paintCalibration(j){const m=j.model,g=j.canvas?.getContext('2d');if(!g)return;g.fillStyle='#08150d';g.fillRect(0,0,320,180);g.fillStyle='#183924';for(let x=0;x<320;x+=20)g.fillRect(x,0,1,180);for(let y=0;y<180;y+=20)g.fillRect(0,y,320,1);g.strokeStyle='#326447';g.beginPath();g.arc(160,90,68,0,Math.PI*2);g.stroke();g.fillStyle='#204c2c';g.fillRect(135,76,50,28);g.strokeStyle='#65ff91';g.strokeRect(135,76,50,28);const x=Math.round(160+m.x*156),y=Math.round(90+m.y*86);g.fillStyle='#ffea00';g.fillRect(x,0,1,180);g.fillStyle='#73d9ff';g.fillRect(0,y,320,1);g.strokeStyle='#65ff91';g.lineWidth=2;g.strokeRect(x-6,y-6,12,12);g.lineWidth=1;j.lockLabel.textContent='LOCK '+m.lock+' OF 2 · '+(j.paused?'PAUSED':m.done?'COMPLETE':'SYSTEM UNSTABLE');j.meter.value=Math.min(100,m.stability/(m.lock===1?2:3)*100);const message=m.axis?'SIGNAL INTERFERENCE DETECTED · '+m.axis.toUpperCase()+' INPUT LAG':j.paused?'CALIBRATION PAUSED':j.message;j.status.textContent=message;j.status.dataset.scanTone=m.axis?'critical':m.done?'new':'normal';
+}
+async function calibrationFrame(j,now){
+ if(calibrationJob!==j)return;if(!calibrationValid(j)){endCalibration(player());return}const dt=(now-j.last)/1000;j.last=now;
+ if(player()&&!document.hidden&&!j.paused&&!j.finishing){
+  j.model=tickCalibration(j.model,dt,j.keys,s.calibrationInterference!==false);for(const ev of j.model.events){
+   if(ev==='target'){playCue('tap');j.message='STABILIZING SENSOR SIGNAL...'}
+   if(ev==='lost'){playCue('denied');j.message='CALIBRATION LOST · REINITIALIZING TARGET FRAME...';j.progressCue=0}
+   if(ev==='interference')playCue('calInterference');
+   if(ev==='lock1'){playCue('unlock');j.message='CALIBRATION LOCK 1 ACHIEVED · SECONDARY CALIBRATION REQUIRED';j.progressCue=0}
+   if(ev==='lock2'){j.message='CALIBRATION LOCK 2 ACHIEVED';j.finishing=true}
+  }
+  const band=Math.floor(j.model.stability/(j.model.lock===1?2:3)*4);if(band>j.progressCue&&band<4){j.progressCue=band;playCue('calProgress'+band)}
+  paintCalibration(j);activity();
+  if(j.model.done&&j.finishing){try{await act('CALIBRATE','2');playCue('unlock');if(calibrationJob===j)endCalibration()}catch(e){report(e);if(calibrationJob===j){j.finishing=false;j.model.done=false;j.model.stability=0;j.model.inside=false;j.message='CONFIRMATION FAILED · RETRY SECOND LOCK';requestAnimationFrame(t=>calibrationFrame(j,t))}}return}
+ }else if(player()&&j.canvas?.isConnected){if(s.calibrationInterference===false){j.model.axis='';j.model.remaining=0;j.model.nextPulse=j.model.time+3}paintCalibration(j)}
+ requestAnimationFrame(t=>calibrationFrame(j,t))
+}
 function instrumentHeader(out){el('small','IMPERIAL ADVANCED SCIENCE DIVISION',out).className='scanDivision';el('h3','M-COUNT ANALYSIS',out).className='scanHeading';el('small','BIOLOGICAL SPECIMEN CLASSIFICATION SYSTEM',out).className='scanDivision';}
 function drawScanReport(name,parent){const report=structuredScan(s.campaign,name,scans(s)[name]);if(!report)return;const box=el('section','',parent);box.className='scanReport';const fields=[['SUBJECT',report.subject],[report.classification?'CLASSIFICATION':'SPECIES',report.species],['M-COUNT',report.count],['REGISTRY MATCH',report.registry]];if(report.classification)fields.push(['PHYSICAL CONDITION',report.condition],['MISSING COMPONENTS',report.missing]);for(const [label,value] of fields){const row=el('div','',box);row.className='scanRow';el('span',label,row).className='scanLabel';const result=el('strong',value,row);if(label==='M-COUNT')result.dataset.scanTone=report.tone;if(label==='REGISTRY MATCH'&&s.matches[name])result.dataset.scanTone=reviewed.has('record:Individual specimen record — '+name)?'normal':'new';if(['PHYSICAL CONDITION','MISSING COMPONENTS'].includes(label))result.dataset.scanTone='warning'}if(report.classification)el('small','ASSESSMENT:',box).dataset.scanTone='warning';el('p',report.note,box).dataset.scanTone=report.tone;if(report.warning)el('p',report.warning,box).dataset.scanTone='critical'}
 function scanScreen(names,live=false){textOut('');const out=$('screen');instrumentHeader(out);for(const name of names)drawScanReport(name,out);if(live)el('p','SAVE SPECIMEN TO RESEARCH DATABASE?',out).className='scanSavePrompt';else if(!names.length)el('p','No saved specimens.',out);}
@@ -385,7 +418,24 @@ function draw(){
 }
 function rid(i){return 'REC-'+String(i).padStart(3,'0')}
 function closeDoors(){if(confirm('Close the doors serving '+s.room+'?'))return act('CLOSE')}
-async function retrieve(x){$('screen').classList.add('retrieving');try{textOut('Carriage moving…');await new Promise(r=>setTimeout(r,s.fast||reduced?0:900));await act('RETRIEVE',x)}finally{$('screen').classList.remove('retrieving')}}
+function retrievalValid(j){return !!s&&net.code===j.code&&s.deck==='Archive'&&s.step===j.step&&s.revision===j.revision&&!s.retrieved[j.name]&&!s.inserted[j.name]}
+function drawRetrieval(j){
+ $('commandForm').hidden=true;$('heading').textContent='Mechanical archive retrieval';textOut('');const out=$('screen');
+ el('p','RETRIEVING PHYSICAL CARRIER · '+j.name,out);const c=el('canvas','',out);c.width=160;c.height=92;c.className='pixelCanvas';c.setAttribute('aria-label','Mechanical claw retrieving archive disc');j.canvas=c;const p=el('progress','',out);p.max=5;j.meter=p;el('small','Carriage moving…',out);
+}
+function paintRetrieval(j,t){
+ const g=j.canvas?.getContext('2d');if(!g)return;g.fillStyle='#09180f';g.fillRect(0,0,160,92);
+ const mix=(a,b,p)=>a+(b-a)*Math.max(0,Math.min(1,p));let x=t<1?mix(22,72,t):t<3.5?72:mix(72,133,(t-3.5)/1.5);let y=t<1?18:t<2.1?mix(18,57,(t-1)/1.1):t<2.6?57:t<3.5?mix(57,18,(t-2.6)/.9):18;
+ g.fillStyle='#326447';g.fillRect(8,9,144,3);g.fillRect(12,78,136,3);g.fillStyle='#65ff91';g.fillRect(Math.round(x)-6,9,12,6);g.fillRect(Math.round(x)-1,15,2,Math.round(y)-15);g.fillRect(Math.round(x)-7,Math.round(y),14,4);
+ const gripping=t>=2.3;g.fillRect(Math.round(x)-(gripping?8:12),Math.round(y)+3,3,11);g.fillRect(Math.round(x)+(gripping?5:9),Math.round(y)+3,3,11);
+ const discX=gripping?x:72,discY=gripping?y+12:69;g.fillStyle='#65ff91';g.fillRect(Math.round(discX)-5,Math.round(discY)-7,10,14);g.fillRect(Math.round(discX)-7,Math.round(discY)-5,14,10);g.fillStyle='#09180f';g.fillRect(Math.round(discX)-2,Math.round(discY)-2,4,4);j.meter.value=t;
+}
+async function retrieve(x){
+ if(retrievalJob||s.deck!=='Archive'||s.step<14||s.retrieved[x]||s.inserted[x]||!Object.hasOwn(tapes,x))throw Error('Carrier unavailable.');
+ const j={code:net.code,step:s.step,revision:s.revision,name:x};retrievalJob=j;
+ try{if(!s.fast&&!reduced){draw();const start=performance.now();await new Promise(resolve=>{function frame(now){if(retrievalJob!==j||!player()||!retrievalValid(j)){resolve();return}const t=Math.min(5,(now-start)/1000);paintRetrieval(j,t);if(t>=5)resolve();else requestAnimationFrame(frame)}requestAnimationFrame(frame)})}if(retrievalJob===j&&player()&&retrievalValid(j))await act('RETRIEVE',x)}
+ finally{if(retrievalJob===j){retrievalJob=null;busy=false;draw()}}
+}
 async function scan(name){
  if(!scannerReadyHere(s)||!Object.hasOwn(scans(s),name)||scanJob||s.playing||s.step>=17)throw Error('M-count analysis unavailable.');
  const job={code:net.code,revision:s.revision,message:scanPhases[0]},valid=()=>player()&&net.code===job.code&&s.revision===job.revision&&scannerReadyHere(s)&&!s.playing&&s.step<17;scanJob=job;
