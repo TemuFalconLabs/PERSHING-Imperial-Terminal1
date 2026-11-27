@@ -72,11 +72,11 @@ export function apply(raw,who,action,arg='',now=Date.now()){
  const advance=()=>{s.step++;s.hint=''};
  let note='';let preserveNotice=false;
  if(action==='PLAY'){
-   const id=Number(arg);need(s.step<17&&canPlay(s,id)&&(s.seen[id]||next==='PLAY '+id),id===7?'Confidential playback unavailable at this station.':'Recording unavailable at this station.');
+   const id=Number(arg);need(s.step<17&&canPlay(s,id),id===7?'Confidential playback unavailable at this station.':'Recording unavailable at this station.');
    if(id===7)need(s.doors['Director office door']==='CLOSED','Confidential playback withheld. Close the Research Director’s office door.');
    need(!s.playing,'A recording is in progress.');s.playing=id;preserveNotice=!!s.seen[id];note='Playback · '+recordings[id][0];
  }else if(action==='FINISH'){
-   const id=Number(arg);need(id&&id===s.playing);const wasSeen=!!s.seen[id];need(wasSeen||next==='PLAY '+id,'First playback is not the current recording gate.');s.seen[id]=true;s.playing=0;
+   const id=Number(arg);need(id&&id===s.playing);const wasSeen=!!s.seen[id];s.seen[id]=true;s.playing=0;
    if(!wasSeen&&next==='PLAY '+id)advance();preserveNotice=wasSeen;note=id===7?'Transmission ended. Awaiting operator cue.':'Playback complete. Archive index synchronized.';
  }else if(action==='STOP PLAYBACK'){
    const id=Number(arg);need(id&&s.playing===id&&s.seen[id],'Only a previously completed recording may be stopped.');s.playing=0;preserveNotice=true;

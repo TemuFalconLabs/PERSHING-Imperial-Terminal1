@@ -115,3 +115,7 @@ Screenplay amended and read back first. Morgan already knows too much; Varrick a
 
 ## Approved V18 follow-up — documentation checkpoint
 Both authoritative Google Docs amended and read back. Approved four-station/Armory, replay Stop and Back, five-second retrieval, all-subject scan highlighting, manual crisis and dual-operator calibration requirements are recorded in CREATIVE_BASELINE.md and IMPROVEMENTS.md. Implementation, rules changes if needed, offline rebuild, browser/live testing and preview remain pending. Production unchanged. Maintenance-kit placement, final rival name, insignia art and exact richer archive text remain unresolved; REC-006 reviewed report not reproduced.
+
+
+### V19 staged implementation
+Approved amendment implemented in development source: four terminals, Armory, contextual Back, replay-only Stop, timed mechanical carrier retrieval, Ryan assessment, all-subject scan tracking, manual alarm and independent handprint, two-lock calibration and DM interference toggle/override. Initial adapted engine/model checks: 80 passed. Native browser/emulator and production testing are not yet performed. Repository request allowlist updated for STOP PLAYBACK and CALIBRATE; production Firebase rules are not published by this change. Exact new archive record writing, insignia artwork, rival director name, kit placement and REC-006 defect reproduction remain open.

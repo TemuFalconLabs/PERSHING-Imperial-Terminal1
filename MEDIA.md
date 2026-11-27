@@ -1,6 +1,6 @@
 # Recording and prop book · DM only
 
-Provisional damaged card **4719??**, blackboard **1938**, full code **471938**. Three cylinders: duty, partially damaged ISB, Research Director. REC-001–005 reception; REC-006 lab; REC-007 Director only after Sigma and closed office door.
+Provisional damaged card **4719??**, blackboard **1938**, full code **471938**. Three cylinders: duty, partially damaged ISB, Research Director. REC-001–005 reception; REC-006 ISB after confirmed laboratory entry; REC-007 Director only after Sigma and closed office door.
 
 ## REC-001 · Shift handover
 
@@ -72,7 +72,7 @@ Routine occupational safety report; both relays.
 
 Laboratory researcher
 
-Lab workstation; memory suppression and archive designation.
+ISB officer’s terminal after laboratory entry; memory suppression and archive designation.
 
 > Supplemental research log. One of the more persistent complications associated with repeated experimentation has been the psychological deterioration of the specimens. Those surviving an initial procedure frequently exhibit considerable resistance to subsequent testing.
 
@@ -90,7 +90,7 @@ Lab workstation; memory suppression and archive designation.
 
 Facility commander
 
-Commander visibly distressed, attempting to maintain composure. Distant blaster fire. After “they didn't stay dead,” loud impact; commander turns toward something outside the camera’s field of view. After “I said seal it,” blaster fire intensifies; commander returns to recording. On final cutoff, violent noise and abrupt termination. Allow approximately three seconds of complete silence before the red biohazard alarm appears. Actual media still to be produced.
+Commander visibly distressed, attempting to maintain composure. Distant blaster fire. After “they didn't stay dead,” loud impact; commander turns toward something outside the camera’s field of view. After “I said seal it,” blaster fire intensifies; commander returns to recording. On final cutoff, violent noise and abrupt termination. Allow approximately three seconds of complete silence, then wait for the DM to select Activate Crisis before displaying the red biohazard alarm. Actual media still to be produced.
 
 > This is the facility commander. We have suffered a catastrophic containment failure. I am ordering the immediate evacuation of all surviving personnel.
 
@@ -106,7 +106,7 @@ Commander visibly distressed, attempting to maintain composure. Distant blaster 
 
 ## Post-REC-007 containment alert (automated, not commander dialogue)
 
-Post-recording automated announcement (future media): deliver the containment directive in the same pleasant, reassuring automated voice as “Your safety is our priority.” It follows REC-007 and the three seconds of silence; this is not a change to the commander's recording. The announcement is Imperial messaging, not a mechanical restriction on escape.
+Post-recording automated announcement (future media): deliver the containment directive in the same pleasant, reassuring automated voice as “Your safety is our priority.” It follows the DM’s Activate Crisis command after REC-007 and the three seconds of silence; this is not a change to the commander's recording. The announcement is Imperial messaging, not a mechanical restriction on escape.
 
 ```text
 BIOHAZARD ALERT
