@@ -35,8 +35,10 @@ export function structuredScan(campaign,name,raw){
  return {subject:name.toUpperCase(),species,count,registry,note,...(campaign==='MEN'&&name==='T0DD'?{classification:true,condition:'DEFECTIVE',missing:'RIGHT LEG',warning:'NO BIOLOGICAL SAMPLE DETECTED.'}:{}),tone:campaign==='MEN'&&name==='Sam'?'critical':/^(ELEVATED|VERY HIGH)$/.test(count)?'warning':'normal'};
 }
 
+import {humorousAdministrativeRecords} from './content.mjs';
 const administrativeRecords=new Set(['Staff directory','Property office','Refreshments','Droid port','Security abstract','Legacy duty circular','Laboratory inventory','Previous service ticket']);
-export const isAdministrativeRecord=name=>administrativeRecords.has(name);
+export const isAdministrativeRecord=name=>administrativeRecords.has(name)||Object.hasOwn(humorousAdministrativeRecords,name);
+export function administrativePage(names,reviewed,requested=0){const unread=names.filter(n=>!reviewed.has('record:'+n)),viewed=names.filter(n=>reviewed.has('record:'+n)),pages=Math.max(1,Math.ceil(unread.length/6)),index=Math.max(0,Math.min(pages-1,requested));return {unread:unread.slice(index*6,index*6+6),viewed,index,pages,totalUnread:unread.length}}
 export function partitionRecords(names){return {important:names.filter(n=>!isAdministrativeRecord(n)),routine:names.filter(isAdministrativeRecord)}}
 export const discoveryTone=(key,reviewed,action=false)=>action?'advance':reviewed.has(key)?'reviewed':'new';
 export const scanPhases=['Acquiring biological sample...','Analyzing M-count...','Querying Imperial specimen registry...'];

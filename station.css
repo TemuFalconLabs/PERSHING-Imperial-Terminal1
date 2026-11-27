@@ -52,3 +52,6 @@
 
 /* V21 classified archive reference and dedicated scanning chamber. */
 #choices .finalRecording,#choices .finalRecording .recordingStatus,#choices .finalRestriction,#heading[data-final-recording=true]{color:var(--critical)!important;font-weight:700}.finalRestriction{display:block;margin-top:.2rem}.archiveDiscoveryLine{margin:.32rem 0}.archiveDiscoveryLine[data-archive-tone=title]{font-weight:800;font-size:1.35rem;letter-spacing:.035em;margin:.85rem 0 .4rem}.archiveDiscoveryLine[data-archive-tone=critical]{color:var(--critical);font-weight:700}.archiveDiscoveryLine[data-archive-tone=new]{color:var(--available);font-weight:700}.archiveDiscoveryLine[data-archive-tone=onsite]{color:#00e5ff;font-size:1.5rem;font-weight:900;letter-spacing:.11em;text-shadow:0 0 7px #00e5ff66}.repairReminder{color:#c5a0ed;font-weight:bold}
+
+/* V22: optional records never compete with progression. */
+#choices button[data-priority=routine],.tapeStatus{color:var(--response)}.tapeStatus,.adminPageLabel{flex-basis:100%;font-size:.85rem}.cinderDirective{color:var(--critical);font-weight:700;white-space:pre-wrap;margin:.65rem 0}.viewedFolder{width:100%}
