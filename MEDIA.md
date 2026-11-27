@@ -1,6 +1,6 @@
 # Recording and prop book · DM only
 
-Provisional damaged card **4719??**, blackboard **1938**, full code **471938**. Three cylinders: duty, partially damaged ISB, Research Director. REC-001–006 any accessible terminal after existing gates; REC-007 Director only after Sigma, cylinder and closed office door.
+Provisional damaged card **4719??**, visible blackboard suffix **938**, full code **471938**. Three cylinders: duty, partially damaged ISB, Research Director. REC-001–006 any accessible terminal after existing gates; REC-007 Director only after Sigma, cylinder and closed office door.
 
 ## REC-001 · Shift handover
 
@@ -30,7 +30,7 @@ Engineering report: identify disconnected server cable.
 
 Dr. Veyra Kest, Research Director
 
-Dr. Veyra Kest: educated British female, composed, scholarly, increasingly smug; genuine scientific fascination at the end. Frame the board with 1938; no spoken digits.
+Dr. Veyra Kest: educated British female, composed, scholarly, increasingly smug; genuine scientific fascination at the end. Approved REC-003 still: Kest obscures the first three code digits; 938 is visible on the blackboard. No spoken digits.
 
 > Research log. The latest series of trials has concluded. As anticipated, the mortality rate among the experimental clone specimens was exceptionally high. However, the results were not entirely without merit.
 
