@@ -53,6 +53,11 @@
 
 /* V21 classified archive reference and dedicated scanning chamber. */
 #choices .finalRecording,#choices .finalRecording .recordingStatus,#choices .finalRestriction,#heading[data-final-recording=true]{color:var(--critical)!important;font-weight:700}.finalRestriction{display:block;margin-top:.2rem}.archiveDiscoveryLine{margin:.32rem 0}.archiveDiscoveryLine[data-archive-tone=title]{font-weight:800;font-size:1.35rem;letter-spacing:.035em;margin:.85rem 0 .4rem}.archiveDiscoveryLine[data-archive-tone=critical]{color:var(--critical);font-weight:700}.archiveDiscoveryLine[data-archive-tone=new]{color:var(--available);font-weight:700}.archiveDiscoveryLine[data-archive-tone=onsite]{color:#00e5ff;font-size:1.5rem;font-weight:900;letter-spacing:.11em;text-shadow:0 0 7px #00e5ff66}.repairReminder{color:#c5a0ed;font-weight:bold}
+
+/* V22: optional records never compete with progression. */
+#choices button[data-priority=routine],.tapeStatus{color:var(--response)}.tapeStatus,.adminPageLabel{flex-basis:100%;font-size:.85rem}.cinderDirective{color:var(--critical);font-weight:700;white-space:pre-wrap;margin:.65rem 0}.viewedFolder{width:100%}
+
+#screen .conductWarning{color:var(--critical);font-weight:700;margin-bottom:.65rem;white-space:pre-wrap}
 </style></head>
 <body><main><header><div class="stamp">ISD<span>07</span></div><div><small>IMPERIAL SCIENCE DIVISION</small><h1 id="title">Duty station</h1></div><output id="link">STANDBY</output></header><div id="audioTools"><button id="soundToggle" type="button" aria-pressed="false">Mute sound</button><button id="soundTest" type="button">Test sound</button><small id="audioStatus" role="status">Tap Test sound to check output.</small><details id="voiceSettings"><summary>Narration voice settings</summary><div class="voiceRow"><label for="narrationVoice">Narration voice</label><select id="narrationVoice"><option value="">Automatic (existing speaker profiles)</option></select><button id="voiceTest" type="button">Test voice</button></div><small id="voiceStatus" role="status">Loading device voices…</small></details></div>
 <section id="setup"><h2 id="setupTitle">Connect to duty station</h2><form id="join"><label>Session code <input id="codeInput" maxlength="8" autocapitalize="characters" autocomplete="off" required></label><button>Connect</button></form>
@@ -151,7 +156,7 @@ const localResearchRecords = {
 const tapes = {
   "STARDUST": "PROJECT STARDUST\n\nIMPERIAL CLASSIFIED RESEARCH ARCHIVE\n\nClassification: TOP SECRET\n\nProject oversight: Director Orson Krennic\n\nLead research scientist: Dr. Galen Erso\n\nResearch installation: Eadu\n\nProject status: TERMINATED\n\nPROJECT SUMMARY\n\nOriginally presented as an advanced energy research initiative, Project Stardust successfully developed a method of amplifying and concentrating energy through the use of kyber crystals.\n\nThe resulting technology was incorporated into the primary weapons system of the Empire's DS-1 orbital battle station, commonly known as the Death Star.\n\nPOST-INCIDENT SECURITY REVIEW\n\nFollowing the destruction of the battle station at Yavin, an internal investigation determined that deliberate sabotage by research personnel contributed to its loss.\n\nEffective immediately, all personnel assigned to classified Imperial research initiatives shall be subject to enhanced surveillance, compartmentalized access and independent verification of experimental results.\n\nPERSONNEL COMPLIANCE NOTICE\n\nScientific expertise does not exempt an individual from suspicion of treason.\n\nEND OF RECORD",
   "NECROMANCER": "PROJECT NECROMANCER\n\nIMPERIAL ADVANCED SCIENCE DIVISION\n\nClassification: TOP SECRET\n\nOriginal research director: Dr. Royce Hemlock\n\nOriginal research installation: Mount Tantiss, Wayland\n\nCurrent research installations: CLASSIFIED\n\nPrimary beneficiary: RESTRICTED\n\nPROJECT SUMMARY\n\nProject Necromancer was established to overcome the biological limitations of conventional cloning technology, with particular emphasis on the successful replication and preservation of elevated M-counts.\n\nEarly experiments demonstrated that genetically viable clones did not necessarily retain the biological characteristics of their donors. Attempts to introduce these characteristics artificially resulted in exceptionally high specimen mortality.\n\nRESEARCH CONTINUITY DIRECTIVE\n\nDespite the loss of the Mount Tantiss research installation, the objectives of Project Necromancer remain a matter of the highest Imperial priority.\n\nSurviving research materials have been distributed among classified installations. All viable specimens demonstrating resistance to experimental procedures or elevated M-counts are to be preserved for further examination.\n\nSPECIAL AUTHORIZATION\n\nThe ultimate purpose of Project Necromancer is restricted to executive-level personnel. Research staff are reminded that successful execution of their assigned duties does not require knowledge of the project's final objective.\n\nEND OF RECORD",
-  "CINDER": "OPERATION CINDER\n\nIMPERIAL EXECUTIVE CONTINGENCY DIRECTIVE\n\nClassification: TOP SECRET\n\nIssuing authority: Emperor Palpatine\n\nActivation criteria: Confirmed death of the Emperor\n\nDelivery method: Sentinel messenger droids\n\nOperational status: ACTIVATED\n\nOPERATIONAL SUMMARY\n\nFollowing confirmation of the Emperor's death at Endor, designated Imperial commanders received instructions to commence punitive operations against selected inhabited worlds.\n\nThe authorized deployment of climate disruption arrays and Imperial naval forces was intended to render targeted population centers uninhabitable.\n\nREGISTERED TARGETS\n\nNaboo\n\nVardos\n\nBurnin Konn\n\nNacronis\n\nAdditional targets: CLASSIFIED\n\nEXECUTIVE CLARIFICATION\n\nA world's demonstrated loyalty to the Empire does not constitute grounds for exemption.\n\nImperial commanders are reminded that the Emperor's final orders supersede all previous commitments to the protection of Imperial citizens and military personnel.\n\nCOMPLIANCE DIRECTIVE\n\nThe death of the Emperor does not absolve his servants of their obligation to obey him.\n\nEND OF RECORD",
+  "CINDER": "OPERATION CINDER\n\nIMPERIAL EXECUTIVE CONTINGENCY DIRECTIVE\n\nClassification: TOP SECRET\n\nIssuing authority: Emperor Palpatine\n\nActivation criteria: Confirmed death of the Emperor\n\nDelivery method: Sentinel messenger droids\n\nOperational status: ACTIVATED\n\nOPERATIONAL SUMMARY\n\nFollowing confirmation of the Emperor's death at Endor, designated Imperial commanders received instructions to commence punitive operations against selected inhabited worlds.\n\nThe authorized deployment of climate disruption arrays and Imperial naval forces was intended to render targeted population centers uninhabitable.\n\nREGISTERED TARGETS\n\nNaboo\n\nVardos\n\nBurnin Konn\n\nNacronis\n\nAdditional targets: CLASSIFIED\n\nEXECUTIVE CLARIFICATION\n\nA world's demonstrated loyalty to the Empire does not constitute grounds for exemption.\n\nImperial commanders are reminded that the Emperor's final orders supersede all previous commitments to the protection of Imperial citizens and military personnel.\n\nSUPPLEMENTAL DIRECTIVE — ASSET ERADICATION\n\nOperation Cinder extends beyond designated planetary targets. Authorized targets include:\n\n• Planetary population centers\n• Orbital space stations\n• Imperial military installations\n• Classified research facilities\n• Restricted intelligence repositories\n\nPlanetary and orbital targets are to be eradicated by designated Imperial naval forces.\n\nIndividual installations are to be eliminated through the deployment of IPD-9 Imperial Purge Devices.\n\nDesignated transport vessels will deliver these devices to classified installations. Heavy loader droids will position the devices for subsequent remote detonation.\n\nThe preservation of personnel, research specimens and classified documentation is subordinate to the successful eradication of the installation.\n\nLOCAL INSTALLATION STATUS\n\nDESIGNATION: APPROVED FOR ERADICATION\nDELIVERY METHOD: IMPERIAL TRANSPORT\nDEPLOYMENT: LOADER DROID COMPLEMENT\nDETONATION: REMOTE AUTHORIZATION\n\nEVACUATION OF PERSONNEL IS NOT REQUIRED.\n\nCOMPLIANCE DIRECTIVE\n\nThe death of the Emperor does not absolve his servants of their obligation to obey him.\n\nEND OF RECORD",
   "ORDER 66": "ORDER 66\n\nIMPERIAL SECURITY BUREAU — HISTORICAL REVIEW\n\nClassification: TOP SECRET\n\nIssuing authority: Supreme Chancellor Palpatine\n\nOriginal installation: Kamino\n\nProgram: Clone behavioral modification\n\nDirective status: EXECUTED\n\nPROGRAM OVERVIEW\n\nDuring the development of the Grand Army of the Republic, Kaminoan scientists implanted biological inhibitor chips within the developing clone specimens.\n\nAlthough the Jedi were informed that these implants were intended to regulate aggressive behavior, their actual purpose was to ensure unconditional compliance with certain classified executive directives.\n\nDIRECTIVE EXECUTION\n\nUpon activation of Order 66, clone personnel were compelled to regard their Jedi commanders as enemies of the Republic, overriding established personal relationships, loyalties and independent judgment.\n\nRESEARCH FINDINGS\n\nWhile the program was overwhelmingly successful, isolated instances of noncompliance were documented. Genetic abnormalities, implant defects and unauthorized surgical removal were identified as potential contributing factors.\n\nIMPERIAL RESEARCH APPLICATIONS\n\nThe success of the inhibitor chip program demonstrated that biological implants could be utilized to modify complex neurological functions.\n\nFurther research into alternative applications of this technology has been authorized by the Imperial Advanced Science Division.\n\nFINAL ASSESSMENT\n\nLoyalty is considerably more reliable when it is not left to the discretion of the individual.\n\nEND OF RECORD",
   "CLONE BATCH SIGMA": "CLONE BATCH SIGMA — general classified records",
   "LIFT INSPECTION": "ARCHIVE LIFT INSPECTION\n\nIMPERIAL DEPARTMENT OF OCCUPATIONAL SAFETY\n\nClassification: ADMINISTRATIVE\n\nInspection type: Routine mechanical safety\n\nEquipment: Archive retrieval lift\n\nInspection result: PASSED WITH EXCEPTIONS\n\nINSPECTION FINDINGS\n\nDuring routine load testing, the archive retrieval lift consistently reported an unexplained excess weight of 87 kilograms.\n\nEngineering conducted an extensive diagnostic examination of the lift's sensors, mechanical components and calibration software. No deficiencies were identified.\n\nROOT CAUSE ANALYSIS\n\nThe inspecting officer was standing on the lift.\n\nCORRECTIVE ACTION\n\nThe inspecting officer was instructed to step off the lift. Subsequent readings were within acceptable tolerances.\n\nADMINISTRATIVE FOLLOW-UP\n\nThe inspecting officer has formally disputed the findings, citing concerns regarding the accuracy of his recorded body weight.\n\nThe matter has been referred to Personnel for further investigation.\n\nEquipment status: OPERATIONAL\n\nPersonnel grievance: PENDING\n\nEND OF RECORD"
@@ -175,6 +180,26 @@ const adultScans = {
   Sam:'Species UNKNOWN · count UNKNOWN · WARNING: UNSTABLE · no classification issued.'
 };
 const kidScans = Object.fromEntries(['James','Kai','Van','Liz','Henry','Colson','Jasper'].map(n=>[n,'Sample received. Reference interval unavailable. No clinical interpretation issued.']));
+const humorousAdministrativeRecords = {
+  "Unauthorized Wookiee Incident": "A security officer reports that a Wookiee tore a locked door from its hinges. Engineering subsequently received a disciplinary notice for installing insufficiently Wookiee-resistant doors.",
+  "Annual Employee Satisfaction Survey": "Employees may select Extremely Satisfied, Very Satisfied or Satisfied. Employees requiring additional response options should report to the Imperial Security Bureau for assistance.",
+  "Darth Vader Workplace Safety Advisory": "Personnel attending meetings with Lord Vader are advised to avoid restrictive neckwear. The Imperial Department of Occupational Safety has determined that conventional protective equipment provides negligible benefit.",
+  "Mandatory Morale Improvement Program": "Employee morale has reportedly declined. Mandatory morale improvement meetings will continue until morale improves. Absence from these meetings will be interpreted as evidence of insufficient morale.",
+  "Gonk Droid Performance Review": "A Gonk droid has received the highest performance rating in the department. Management commends its reliability, punctuality and willingness to refrain from offering unsolicited opinions.",
+  "Research Director's Coffee Dispute": "Dr. Kest has formally requested that personnel stop consuming her imported caf. She notes that the facility possesses both biological sampling equipment and an extensive specimen registry, making identification of the responsible employee relatively straightforward.",
+  "Imperial Uniform Color Compliance": "A lengthy investigation determines that an officer's uniform was charcoal gray rather than regulation Imperial gray. Three committees have been established to determine whether disciplinary action is appropriate.",
+  "Droid Employee of the Month": "A malfunctioning mouse droid received the award after accidentally remaining stationary in front of the time clock for 72 consecutive hours. Its dedication to remaining on duty was considered exemplary.",
+  "Unauthorized Use of the Imperial March": "Personnel are prohibited from playing the Imperial March when entering the employee cafeteria, using the refresher or arriving late to meetings. Musical accompaniment is reserved for appropriately ranked personnel.",
+  "Imperial Pension Eligibility": "Employees must survive thirty years of Imperial service to qualify for retirement benefits. An internal financial review describes the pension program as exceptionally affordable.",
+  "Classified Document Redaction Failure": "A heavily redacted administrative report reveals almost nothing except the words incident, unfortunate, approximately seventeen and do not feed it again. No further explanation is available.",
+  "Emergency Refresher Usage Restrictions": "Following an unspecified incident involving an employee and a shipment of Outer Rim jalapeños, personnel are forbidden from occupying the refresher for more than fifteen consecutive minutes. The incident has been classified as a localized environmental emergency.",
+  "Imperial Suggestion Box": "A review of employee suggestions indicates that 100% of respondents support current management policies. The report subsequently clarifies that the suggestion box is not anonymous and is monitored by the ISB.",
+  "Imperial Dating Service Investigation": "An experimental employee matchmaking program was suspended after it repeatedly paired personnel with their own surveillance officers. The ISB maintains that the resulting relationships were operationally beneficial.",
+  "Department of Redundant Departments": "A newly created administrative department has been tasked with identifying unnecessary administrative departments. Its first recommendation is to establish three additional departments.",
+  "Unauthorized Carbonite Storage": "An employee has requested permission to spend the remainder of his disciplinary suspension frozen in carbonite. Human Resources has denied the request because time spent frozen does not constitute active disciplinary participation.",
+  "Imperial Catering Procurement Investigation": "A supplier has been awarded an exclusive contract to provide the facility with beans. An audit reveals that the Empire employs more personnel to count, verify and reconcile the beans than it employs to prepare them.",
+  "Emergency Evacuation Drill Results": "The facility's latest evacuation exercise was deemed unsuccessful because employees attempted to evacuate before obtaining written authorization. Management congratulates the remaining personnel for demonstrating exemplary adherence to Imperial policy."
+};
 // Minimum milestone, title, record. All scene text is served through the same access predicate.
 function files(s){
   const rows=[
@@ -192,6 +217,7 @@ function files(s){
     [13,'Previous service ticket','The archive terminal is broken again. Resolution: Connected power.']
   ];
   if(s.campaign==='MEN'){const superseded=new Set(['Property office','Refreshments','Droid port','Security abstract','Laboratory inventory']);for(let i=rows.length-1;i>=0;i--)if(superseded.has(rows[i][1]))rows.splice(i,1);if(s.deck==='ISB'&&s.step>=8){const gate=[8,12,8,12,8,14];Object.entries(localResearchRecords).forEach(([name,body],i)=>{if(s.step>=gate[i])rows.push([gate[i],name,body])})}}
+  if(s.campaign==='MEN')for(const [name,body] of Object.entries(humorousAdministrativeRecords))rows.push([0,name,body]);
   if(s.legacy) rows.push([0,'Legacy duty circular','ISSUING OFFICER: NO LONGER EMPLOYED. PLEASE DIRECT COMPLAINTS TO YOUR SURVIVING SUPERVISOR.']);
   if(s.campaign==='MEN') rows.push(
     [5,'Traffic receipt','A transmission without an acknowledgement is entered as disposition unknown. A clerk has crossed out both DELIVERED and LOST.'],
@@ -458,7 +484,7 @@ const eggEntries=[
 {"category":"Computer and programming","key":"GIT PULL","aliases":[],"responses":["Independent development branches are prohibited."]},
 {"category":"Computer and programming","key":"HELLO WORLD","aliases":[],"responses":["Hello, citizen. Your location has been recorded."]},
 {"category":"Computer and programming","key":"404","aliases":[],"responses":["Employee not found. Payroll adjusted accordingly."]},
-{"category":"Computer and programming","key":"CTRL ALT DEL","aliases":["CTRL ALT DELETE","CONTROL ALT DELETE"],"responses":["Emergency intervention requested. Supervisor notified."]},
+{"category":"Computer and programming","key":"CTRL ALT DEL","aliases":["CTRL ALT DELETE","CONTROL ALT DELETE","CONTROL ALT DEL"],"responses":["Emergency intervention requested. Supervisor notified."]},
 {"category":"Computer and programming","key":"C:\\>","aliases":["C:"],"responses":["Core directory mounted. Your clearance remains disappointing."]},
 {"category":"Computer and programming","key":"HACK THE PLANET","aliases":[],"responses":["Planetary hacking requires regional authorization."]},
 {"category":"Computer and programming","key":"RM -RF /","aliases":["RM RF /"],"responses":["Enthusiasm noted. Security notified."]},
@@ -684,6 +710,1309 @@ const eggEntries=[
 {"category":"Special short commands","key":"B2","aliases":[],"responses":["ROGER."]},
 {"category":"Special short commands","key":"B3","aliases":[],"responses":["Procurement request denied. Two versions were sufficient."]}
 ];
+// V22: unique text-only triggers; no operating-system actions.
+eggEntries.push(...[
+  {
+    "category": "Bathroom humor",
+    "key": "POOP",
+    "aliases": [
+      "POO",
+      "POOPS",
+      "POOPING",
+      "POOPED"
+    ],
+    "responses": [
+      "Biological waste detected. Please contact sanitation."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "BUTT",
+    "aliases": [
+      "BUM",
+      "BOTTOM"
+    ],
+    "responses": [
+      "Unauthorized seating apparatus detected."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "FART",
+    "aliases": [
+      "FARTS",
+      "FARTED",
+      "FARTING"
+    ],
+    "responses": [
+      "Atmospheric contamination detected. Please refrain from further contributions."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "POOPY",
+    "aliases": [
+      "POOPIE"
+    ],
+    "responses": [
+      "Your vocabulary has been forwarded to Human Resources."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "PEE",
+    "aliases": [
+      "PEEING",
+      "PIDDLE",
+      "WEE WEE"
+    ],
+    "responses": [
+      "Liquid waste disposal facilities are located elsewhere."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "TOOT",
+    "aliases": [
+      "TOOTS",
+      "TOOTED"
+    ],
+    "responses": [
+      "Acoustic anomaly recorded. Source identification pending."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "STINKY",
+    "aliases": [
+      "STINK",
+      "STINKS",
+      "SMELLY"
+    ],
+    "responses": [
+      "Occupational hygiene complaint submitted."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "BOOGER",
+    "aliases": [
+      "BOOGERS",
+      "BOOGIE"
+    ],
+    "responses": [
+      "Biological specimen rejected."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "BUTTHEAD",
+    "aliases": [
+      "BUTT HEAD"
+    ],
+    "responses": [
+      "Command recognized. Please specify which officer."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "DIARRHEA",
+    "aliases": [
+      "DIARRHOEA",
+      "THE RUNS"
+    ],
+    "responses": [
+      "Emergency refresher access authorized."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "TOILET",
+    "aliases": [
+      "POTTY",
+      "LATRINE",
+      "COMMODE"
+    ],
+    "responses": [
+      "Refresher status: Operational, regrettably."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "WIPE",
+    "aliases": [],
+    "responses": [
+      "Clarify: database or personal hygiene?"
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "NUMBER TWO",
+    "aliases": [
+      "NUMBER 2"
+    ],
+    "responses": [
+      "Priority sanitation incident acknowledged."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "UNDERWEAR",
+    "aliases": [
+      "UNDERPANTS",
+      "UNDIES"
+    ],
+    "responses": [
+      "Regulation garments are not searchable through this terminal."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "BURP",
+    "aliases": [
+      "BELCH",
+      "BURPING"
+    ],
+    "responses": [
+      "Your contribution to atmospheric pollution has been documented."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "WEDGIE",
+    "aliases": [],
+    "responses": [
+      "Uniform adjustment request denied."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "DINGLEBERRY",
+    "aliases": [],
+    "responses": [
+      "Unknown botanical specimen. Please do not bring it to the laboratory."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "TOILET PAPER",
+    "aliases": [
+      "TP",
+      "LOO ROLL"
+    ],
+    "responses": [
+      "Allocation: two squares per employee per shift."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "FLUSH",
+    "aliases": [
+      "FLUSH TOILET"
+    ],
+    "responses": [
+      "Waste management command received. Personnel files are not flushable."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "SNOT",
+    "aliases": [
+      "RUNNY NOSE"
+    ],
+    "responses": [
+      "Please direct nasal secretions away from sensitive equipment."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "GAS ATTACK",
+    "aliases": [
+      "PASS GAS"
+    ],
+    "responses": [
+      "The environmental relay does not accommodate personal atmospheric disturbances."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "POTTY BREAK",
+    "aliases": [],
+    "responses": [
+      "Submit a refresher requisition. Approval expected after your shift."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "TUSH",
+    "aliases": [
+      "HEINIE",
+      "BACKSIDE"
+    ],
+    "responses": [
+      "Personal anatomy queries are outside this terminal's jurisdiction."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "NUMBER ONE",
+    "aliases": [
+      "NUMBER 1"
+    ],
+    "responses": [
+      "Refresher request logged. Please do not demonstrate."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "PEE PEE",
+    "aliases": [
+      "PEEPEE"
+    ],
+    "responses": [
+      "The Empire expects more sophisticated terminology from its personnel."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SUDO MAKE ME A SANDWICH",
+    "aliases": [],
+    "responses": [
+      "Request forwarded to Imperial Catering. Estimated completion: 17 years."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ALT F4",
+    "aliases": [],
+    "responses": [
+      "Your request to terminate Imperial service has been denied."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL C",
+    "aliases": [
+      "CONTROL C"
+    ],
+    "responses": [
+      "Unauthorized duplication is punishable by interrogation."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL V",
+    "aliases": [
+      "CONTROL V"
+    ],
+    "responses": [
+      "Imperial paste is not intended for consumption."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL SHIFT ESC",
+    "aliases": [
+      "CONTROL SHIFT ESC",
+      "CTRL SHIFT ESCAPE",
+      "CONTROL SHIFT ESCAPE"
+    ],
+    "responses": [
+      "Task management has been reserved for your supervisor."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ALT TAB",
+    "aliases": [],
+    "responses": [
+      "Unauthorized workplace multitasking detected."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL S",
+    "aliases": [
+      "CONTROL S"
+    ],
+    "responses": [
+      "Your work has been saved. Your career remains uncertain."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL X",
+    "aliases": [
+      "CONTROL X"
+    ],
+    "responses": [
+      "Cutting Imperial resources requires written authorization."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL A",
+    "aliases": [
+      "CONTROL A"
+    ],
+    "responses": [
+      "The Empire has already selected everything."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL F",
+    "aliases": [
+      "CONTROL F"
+    ],
+    "responses": [
+      "Finding competent management remains outside the search index."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL P",
+    "aliases": [
+      "CONTROL P"
+    ],
+    "responses": [
+      "Printer offline. Please submit a written request for a printed request form."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL Y",
+    "aliases": [
+      "CONTROL Y"
+    ],
+    "responses": [
+      "Repeating mistakes is an established Imperial procedure."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL R",
+    "aliases": [
+      "CONTROL R"
+    ],
+    "responses": [
+      "Refreshing the terminal will not improve your employment prospects."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL T",
+    "aliases": [
+      "CONTROL T"
+    ],
+    "responses": [
+      "Unauthorized tab expansion denied."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL W",
+    "aliases": [
+      "CONTROL W"
+    ],
+    "responses": [
+      "Closing your responsibilities is not authorized."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL N",
+    "aliases": [
+      "CONTROL N"
+    ],
+    "responses": [
+      "New window requested. This facility has no windows."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL O",
+    "aliases": [
+      "CONTROL O"
+    ],
+    "responses": [
+      "Opening restricted resources requires clearance."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL L",
+    "aliases": [
+      "CONTROL L"
+    ],
+    "responses": [
+      "Your location is already known."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL H",
+    "aliases": [
+      "CONTROL H"
+    ],
+    "responses": [
+      "Your history is classified. The ISB has a copy."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL SHIFT T",
+    "aliases": [
+      "CONTROL SHIFT T"
+    ],
+    "responses": [
+      "Previously closed mistakes have been restored."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL SHIFT N",
+    "aliases": [
+      "CONTROL SHIFT N"
+    ],
+    "responses": [
+      "Private browsing is a charming fantasy."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL SHIFT DELETE",
+    "aliases": [
+      "CONTROL SHIFT DELETE",
+      "CTRL SHIFT DEL",
+      "CONTROL SHIFT DEL"
+    ],
+    "responses": [
+      "Your browsing history has already been archived."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL BREAK",
+    "aliases": [
+      "CONTROL BREAK"
+    ],
+    "responses": [
+      "Taking a break requires supervisor approval."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SHIFT DELETE",
+    "aliases": [],
+    "responses": [
+      "The Empire retains permanent copies of your mistakes."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "WIN L",
+    "aliases": [
+      "WINDOWS L"
+    ],
+    "responses": [
+      "Your workstation has been locked for loyalty verification."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "WIN R",
+    "aliases": [
+      "WINDOWS R"
+    ],
+    "responses": [
+      "Running is prohibited in Imperial corridors."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "WIN D",
+    "aliases": [
+      "WINDOWS D"
+    ],
+    "responses": [
+      "Desktop unavailable. Return to your assigned duty."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ALT ENTER",
+    "aliases": [],
+    "responses": [
+      "Your request for a larger screen has been forwarded to Budget."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ALT ESC",
+    "aliases": [],
+    "responses": [
+      "Escape is not an authorized keyboard function."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F1",
+    "aliases": [],
+    "responses": [
+      "Assistance is available from your nearest supervisor. Good luck."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F2",
+    "aliases": [],
+    "responses": [
+      "Renaming Imperial property requires six signatures."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F3",
+    "aliases": [],
+    "responses": [
+      "Search assistance denied. Read the instructions."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F5",
+    "aliases": [],
+    "responses": [
+      "Refreshing the screen does not refresh your personnel record."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F6",
+    "aliases": [],
+    "responses": [
+      "Focus reassignment authorized. Please focus on your duties."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F7",
+    "aliases": [],
+    "responses": [
+      "Spelling inspection initiated. Imperial grammar remains superior."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F8",
+    "aliases": [],
+    "responses": [
+      "Safe mode unavailable. Your safety is our priority."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F9",
+    "aliases": [],
+    "responses": [
+      "Function reserved for purposes unknown to this department."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F10",
+    "aliases": [],
+    "responses": [
+      "Menu privileges pending approval."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F11",
+    "aliases": [],
+    "responses": [
+      "Full-screen loyalty demonstration requested."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F12",
+    "aliases": [],
+    "responses": [
+      "Developer privileges are not a rank."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "PRINT SCREEN",
+    "aliases": [
+      "PRTSC",
+      "PRTSCR"
+    ],
+    "responses": [
+      "Unauthorized screenshots are subject to review."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GODMODE",
+    "aliases": [
+      "GOD MODE"
+    ],
+    "responses": [
+      "Executive privileges reserved for Emperor Palpatine."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "NOCLIP",
+    "aliases": [
+      "NO CLIP"
+    ],
+    "responses": [
+      "Please use the door."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "INSTALL WINDOWS",
+    "aliases": [],
+    "responses": [
+      "Installation rejected. This facility has sufficient structural vulnerabilities."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DELETE SYSTEM32",
+    "aliases": [
+      "DEL SYSTEM32"
+    ],
+    "responses": [
+      "Your enthusiasm for unemployment is noted."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "PRINT MONEY",
+    "aliases": [],
+    "responses": [
+      "Counterfeiting request forwarded to ISB."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT COMMIT",
+    "aliases": [],
+    "responses": [
+      "Commitment to the Empire is mandatory."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT PUSH",
+    "aliases": [],
+    "responses": [
+      "Resistance detected. Push harder."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT BLAME",
+    "aliases": [],
+    "responses": [
+      "Responsibility assigned to the previous shift."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT MERGE",
+    "aliases": [],
+    "responses": [
+      "Departmental consolidation requires executive approval."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT CLONE",
+    "aliases": [],
+    "responses": [
+      "Clone production is restricted to authorized research personnel."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT RESET",
+    "aliases": [],
+    "responses": [
+      "The Empire does not erase its mistakes. It reassigns them."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT REVERT",
+    "aliases": [],
+    "responses": [
+      "Previous policy reinstated. It was always the correct policy."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT DIFF",
+    "aliases": [],
+    "responses": [
+      "Disagreement with the approved version detected."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT LOG",
+    "aliases": [],
+    "responses": [
+      "Your activities have been logged more thoroughly than you realize."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT BRANCH",
+    "aliases": [],
+    "responses": [
+      "Independent branches of Imperial authority are prohibited."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT CHECKOUT",
+    "aliases": [],
+    "responses": [
+      "Leaving before the end of your shift is unauthorized."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SEGFAULT",
+    "aliases": [
+      "SEGMENTATION FAULT"
+    ],
+    "responses": [
+      "Imperial Engineering regrets your existence."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "MAKE",
+    "aliases": [],
+    "responses": [
+      "Build failed. Blame Engineering."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "COMPILE",
+    "aliases": [],
+    "responses": [
+      "Compilation successful. Comprehension not detected."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "BUILD",
+    "aliases": [],
+    "responses": [
+      "Construction request denied. The last large project exceeded budget."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "NPM INSTALL",
+    "aliases": [],
+    "responses": [
+      "Dependency on unauthorized software detected."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "NPM UPDATE",
+    "aliases": [],
+    "responses": [
+      "New dependencies have been added to your duties."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "PIP INSTALL",
+    "aliases": [],
+    "responses": [
+      "Pipe installation requires Engineering clearance."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DOCKER RUN",
+    "aliases": [],
+    "responses": [
+      "Container departed. Please complete the cargo manifest."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "KUBECTL",
+    "aliases": [],
+    "responses": [
+      "Your request for additional administrative clusters has been approved by the Department of Redundant Departments."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SSH",
+    "aliases": [],
+    "responses": [
+      "Secure connection denied. Your insecurity has been noted."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "TELNET",
+    "aliases": [],
+    "responses": [
+      "Legacy communications detected. This technology belongs in a museum."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "FTP",
+    "aliases": [],
+    "responses": [
+      "Unauthorized transfer request. The archive has a physical media policy."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CURL",
+    "aliases": [],
+    "responses": [
+      "Please uncurl and return to your duty station."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "WGET",
+    "aliases": [],
+    "responses": [
+      "Requested resources are not in your allowance."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "NSLOOKUP",
+    "aliases": [],
+    "responses": [
+      "Imperial naming authority is not subject to lookup."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DNS FLUSH",
+    "aliases": [],
+    "responses": [
+      "Network hygiene and refresher hygiene are separate departments."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "HOSTNAME",
+    "aliases": [],
+    "responses": [
+      "Your station has been identified. So have you."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "LS",
+    "aliases": [],
+    "responses": [
+      "Listing restricted. Try the directory provided to you."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "PWD",
+    "aliases": [],
+    "responses": [
+      "Current location: under Imperial jurisdiction."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CAT",
+    "aliases": [],
+    "responses": [
+      "No animals permitted at the workstation."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GREP",
+    "aliases": [],
+    "responses": [
+      "Search completed. No evidence of initiative found."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CHMOD",
+    "aliases": [],
+    "responses": [
+      "Permission to change permissions denied."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CHOWN",
+    "aliases": [],
+    "responses": [
+      "All Imperial property belongs to the Empire."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "MKDIR",
+    "aliases": [],
+    "responses": [
+      "Creation of another folder requires departmental review."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "RMDIR",
+    "aliases": [],
+    "responses": [
+      "The folder contains forms that must be retained indefinitely."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "TOUCH",
+    "aliases": [],
+    "responses": [
+      "Please do not touch sensitive equipment."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ECHO",
+    "aliases": [],
+    "responses": [
+      "Your words have been recorded. Your words have been recorded."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "REBOOT NOW",
+    "aliases": [],
+    "responses": [
+      "The Empire is not finished with you yet."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "BLUE SCREEN",
+    "aliases": [
+      "BSOD"
+    ],
+    "responses": [
+      "Catastrophic optimism failure. Please await reassignment."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "KERNEL PANIC",
+    "aliases": [],
+    "responses": [
+      "Remain calm. Panic is reserved for executive personnel."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "NULL POINTER",
+    "aliases": [],
+    "responses": [
+      "Nothing located. The department is working as designed."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SQL SELECT",
+    "aliases": [
+      "SELECT STAR"
+    ],
+    "responses": [
+      "Database query denied. Stars are Imperial property."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DROP TABLE",
+    "aliases": [],
+    "responses": [
+      "Furniture removal requires Facilities approval."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SELECT 1",
+    "aliases": [],
+    "responses": [
+      "One employee selected for routine supervision."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SQL INSERT INTO",
+    "aliases": [],
+    "responses": [
+      "Please specify the correct authorization cylinder."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "JSON",
+    "aliases": [],
+    "responses": [
+      "Your structured complaint has been successfully ignored."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "YAML",
+    "aliases": [],
+    "responses": [
+      "Indentation infraction detected. Report to document control."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "HTML",
+    "aliases": [],
+    "responses": [
+      "Decorative formatting is not a substitute for loyalty."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CSS",
+    "aliases": [],
+    "responses": [
+      "Imperial uniform colors are not customizable."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "JAVASCRIPT",
+    "aliases": [],
+    "responses": [
+      "Unauthorized scripting is a matter for the ISB."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "RUST",
+    "aliases": [],
+    "responses": [
+      "Corrosion detected. File a maintenance request."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "COBOL",
+    "aliases": [],
+    "responses": [
+      "Ancient Imperial payroll system located."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "BASIC",
+    "aliases": [],
+    "responses": [
+      "Your competence assessment agrees."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "FORTRAN",
+    "aliases": [],
+    "responses": [
+      "Engineering requests that you stop operating archaeological software."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DIVIDE BY ZERO",
+    "aliases": [
+      "1/0"
+    ],
+    "responses": [
+      "Mathematical dissent detected."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "INFINITE LOOP",
+    "aliases": [],
+    "responses": [
+      "Form processing will continue until all forms are processed."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "RETURN NULL",
+    "aliases": [],
+    "responses": [
+      "Nothing returned. Typical Imperial efficiency."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "BREAKPOINT",
+    "aliases": [],
+    "responses": [
+      "Work interruption not authorized."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "UNIT TEST",
+    "aliases": [],
+    "responses": [
+      "Unit tested. Employee failed."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "TESTING",
+    "aliases": [],
+    "responses": [
+      "Testing the patience of the Empire is discouraged."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DEPLOY",
+    "aliases": [],
+    "responses": [
+      "Deployment request forwarded to the appropriate command authority."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ROLLBACK",
+    "aliases": [],
+    "responses": [
+      "The previous decision was also correct."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "MERGE CONFLICT",
+    "aliases": [],
+    "responses": [
+      "Disagreement detected. Both departments blame the other."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "BUFFER OVERFLOW",
+    "aliases": [],
+    "responses": [
+      "Your paperwork tray has exceeded its authorized capacity."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "OUT OF MEMORY",
+    "aliases": [],
+    "responses": [
+      "Remember that forgetting Imperial directives is an offense."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "FATAL ERROR",
+    "aliases": [],
+    "responses": [
+      "Human Resources has been informed of a staffing opportunity."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "RECURSION",
+    "aliases": [],
+    "responses": [
+      "See recursion. See recursion. See recursion."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "LOADING",
+    "aliases": [],
+    "responses": [
+      "Please continue waiting with appropriate enthusiasm."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "AI",
+    "aliases": [],
+    "responses": [
+      "Artificial intelligence is permitted. Independent intelligence is not."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CHATGPT",
+    "aliases": [],
+    "responses": [
+      "Unauthorized advisory droid detected. Consult your assigned supervisor."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "MOUSE",
+    "aliases": [],
+    "responses": [
+      "Mouse droid allocated. It cannot assist with your typing."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "KEYBOARD",
+    "aliases": [],
+    "responses": [
+      "The equipment is functioning. The operator is under review."
+    ]
+  }
+]);
+
+const conductWords=new Set('ASS ASSES ASSHOLE ASSHOLES BASTARD BASTARDS BITCH BITCHES BITCHING BOLLOCKS CRAP CRAPPY DAMN DAMNED DAMMIT GODDAMN GODDAMMIT FUCK FUCKS FUCKED FUCKING FUCKER FUCKERS MOTHERFUCKER MOTHERFUCKERS MOTHERFUCKING SHIT SHITS SHITTY SHITTING BULLSHIT DICK DICKS DICKHEAD DICKHEADS COCK COCKS CUNT CUNTS PISS PISSED PISSING PISSES PRICK PRICKS WANK WANKER WANKERS TWAT TWATS SLUT SLUTS WHORE WHORES'.split(' '));
+const conductLeet={'0':'O','1':'I','3':'E','4':'A','5':'S','7':'T','@':'A','$':'S','!':'I'};
+function containsProfanity(raw){
+ const v=String(raw).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+ const words=v.match(/[A-Z0-9@$]+(?:![A-Z0-9@$]+)*/g)||[];
+ if(words.some(w=>conductWords.has(w)||conductWords.has(w.replace(/[013457@$!]/g,c=>conductLeet[c]))))return true;
+ if(/(?:^|[^A-Z0-9])(?:F\*{1,3}K|F\*{1,3}CK|FU\*{1,2}|SH\*T|B\*TCH|A\*{2}|D\*MN|D\*CK)(?=$|[^A-Z0-9])/.test(v))return true;
+ // Require separators between letters, rather than matching across ordinary words.
+ const spaced=v.match(/(?:^|[^A-Z0-9])(?:[A-Z0-9@$][\s._+\-]+){2,}[A-Z0-9@$](?=$|[^A-Z0-9])/g)||[];
+ return spaced.some(w=>conductWords.has(w.replace(/[\s._+\-]+/g,'').replace(/[013457@$!]/g,c=>conductLeet[c]).replace(/[^A-Z]/g,'')));
+}
+const conductResponses=[
+ "Report immediately to the Imperial Department of Personal Hygiene to have your filthy mouth scrubbed with regulation-issue Imperial bar soap.\nYour cooperation is mandatory.",
+ "Your mouth apparently requires additional maintenance. A second bar of soap has been requisitioned.",
+ "Industrial-strength Imperial soap has been authorized.",
+ "A sanitation droid has been dispatched. Please open your mouth.",
+ "Your vocabulary has been classified as a biological hazard."
+];
+
 const eggPrograms=[
 {"key":"MORALE.EXE","aliases":["MORALE","MORALE SURVEY"],"title":"IMPERIAL PERSONNEL SERVICES — MORALE.EXE","question":"How satisfied are you with your Imperial employment?","choices":[["Extremely satisfied","Excessive enthusiasm detected. Psychological evaluation recommended."],["Moderately satisfied","Insufficient enthusiasm. Loyalty training assigned."],["Dissatisfied","Thank you for identifying yourself."],["I would prefer not to answer","Noncooperation recorded."]],"ending":"SURVEY COMPLETE.","reset":"Retake survey"},
 {"key":"LOYALTY.EXE","aliases":["LOYALTY","LOYALTY TEST"],"title":"IMPERIAL SECURITY BUREAU — LOYALTY.EXE","question":"Are you loyal to the Galactic Empire?","choices":[["YES","Unsubstantiated claim. Further investigation required."],["NO","Confession accepted. Thank you for your cooperation."]],"ending":"ASSESSMENT: ADDITIONAL MONITORING REQUIRED.","reset":"Restart"},
@@ -724,6 +2053,7 @@ function findEgg(raw){
  return null;
 }
 function eggReply(raw,history){
+ if(containsProfanity(raw)){const n=(history.counts['conduct-violation']||0)+1;history.counts['conduct-violation']=n;return {conduct:true,text:'IMPERIAL CONDUCT VIOLATION DETECTED\nWatch your mouth, citizen.\n\n'+conductResponses[Math.min(n-1,conductResponses.length-1)]}}
  const e=findEgg(raw);
  if(!e){const n=++history.unknown;return {text:eggUnknown[(n-1)%eggUnknown.length]+(eggMilestones[n]?'\n\n'+eggMilestones[n]:''),unknown:true}}
  const n=(history.counts[e.key]||0)+1;history.counts[e.key]=n;
@@ -787,8 +2117,10 @@ function structuredScan(campaign,name,raw){
  return {subject:name.toUpperCase(),species,count,registry,note,...(campaign==='MEN'&&name==='T0DD'?{classification:true,condition:'DEFECTIVE',missing:'RIGHT LEG',warning:'NO BIOLOGICAL SAMPLE DETECTED.'}:{}),tone:campaign==='MEN'&&name==='Sam'?'critical':/^(ELEVATED|VERY HIGH)$/.test(count)?'warning':'normal'};
 }
 
+
 const administrativeRecords=new Set(['Staff directory','Property office','Refreshments','Droid port','Security abstract','Legacy duty circular','Laboratory inventory','Previous service ticket']);
-const isAdministrativeRecord=name=>administrativeRecords.has(name);
+const isAdministrativeRecord=name=>administrativeRecords.has(name)||Object.hasOwn(humorousAdministrativeRecords,name);
+function administrativePage(names,reviewed,requested=0){const unread=names.filter(n=>!reviewed.has('record:'+n)),viewed=names.filter(n=>reviewed.has('record:'+n)),pages=Math.max(1,Math.ceil(unread.length/6)),index=Math.max(0,Math.min(pages-1,requested));return {unread:unread.slice(index*6,index*6+6),viewed,index,pages,totalUnread:unread.length}}
 function partitionRecords(names){return {important:names.filter(n=>!isAdministrativeRecord(n)),routine:names.filter(isAdministrativeRecord)}}
 const discoveryTone=(key,reviewed,action=false)=>action?'advance':reviewed.has(key)?'reviewed':'new';
 const scanPhases=['Acquiring biological sample...','Analyzing M-count...','Querying Imperial specimen registry...'];
@@ -824,10 +2156,11 @@ const archiveReferenceAvailable=s=>s.step>=13&&s.step<17&&s.seen?.[6]===true;
 const $=id=>document.getElementById(id), params=new URLSearchParams(location.search),standalone=document.documentElement.hasAttribute('data-offline'),dm=standalone||params.has('dm'), reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let host,s,net,localPlayer=false,localPlayerOpened=false,page='Home',selected='',query='',lastActivity=Date.now(),busy=false,renderTicket=0,mediaKey='',audioCtx,muted=false;
 let eggHistory=newEggHistory(),reviewed=new Set(),reviewKey='',scanJob=null,calibrationJob=null,retrievalJob=null,pageTrail=[],activePlayback=null,archiveDiscoveryJob=null;
-function readReviewState(info,state,reset=false){const key='pershing.review.v17.'+info.code+'.'+state.campaign;if(key!==reviewKey||reset){reviewKey=key;reviewed=new Set();try{if(reset)localStorage.removeItem(key);else reviewed=new Set(JSON.parse(localStorage.getItem(key)||'[]'))}catch{}}}
+let adminPageIndex=0,adminSearchPage=0,adminOpen=false,viewedOpen=false;
+function readReviewState(info,state,reset=false){const key='pershing.review.v17.'+info.code+'.'+state.campaign;if(key!==reviewKey||reset){reviewKey=key;reviewed=new Set();adminPageIndex=0;adminSearchPage=0;adminOpen=false;viewedOpen=false;try{if(reset)localStorage.removeItem(key);else reviewed=new Set(JSON.parse(localStorage.getItem(key)||'[]'))}catch{}}}
 function acknowledge(key){if(!key)return;reviewed.add(key);try{localStorage.setItem(reviewKey,JSON.stringify([...reviewed]))}catch{}}
 function markChoice(node,key,action=false){node.dataset.priority=discoveryTone(key,reviewed,action);if(node.dataset.priority==='new'){const tag=el('span','NEW — ',null);tag.className='newFlag';tag.setAttribute('aria-hidden','true');node.prepend(tag)}return node}
-function recordChoice(node,name,label=name){const target=chamberPages.includes(page)&&name.startsWith('Individual specimen record — ')?'Scan dossier':'Read';const b=button(node,label,()=>selectPage(target,name),'OPEN '+name.toUpperCase());return isAdministrativeRecord(name)?(b.dataset.priority='reviewed',b):markChoice(b,'record:'+name)}
+function recordChoice(node,name,label=name){const target=chamberPages.includes(page)&&name.startsWith('Individual specimen record — ')?'Scan dossier':'Read';const b=button(node,label,()=>{if(isAdministrativeRecord(name)&&page!=='Search')adminOpen=true;selectPage(target,name)},'OPEN '+name.toUpperCase());return isAdministrativeRecord(name)?(b.dataset.priority=reviewed.has('record:'+name)?'reviewed':'routine',b):markChoice(b,'record:'+name)}
 const player=()=>!dm||localPlayer;
 const bloodVisible=()=>!!(s&&player()&&s.step===18&&s.finalBloodOverlayVisible);
 const el=(tag,txt='',parent)=>{const n=document.createElement(tag);n.textContent=txt;if(parent)parent.append(n);return n};
@@ -835,7 +2168,7 @@ function button(node,label,fn,shortcut=''){const b=el('button',label,node);b.typ
 // Local presentation only: each shortcut invokes its existing guarded action once.
 let commandPending=false;
 function echoCommand(value){$('commandEcho').hidden=false;$('commandEchoText').textContent=value}
-function displayCommand(value){const v=value.trim();return /^(?:AUTH\s+)?\d{6}$/i.test(v)?'AUTH ******':v.toUpperCase()}
+function displayCommand(value){const v=value.trim();if(containsProfanity(v))return '[REDACTED — CONDUCT VIOLATION]';return /^(?:AUTH\s+)?\d{6}$/i.test(v)?'AUTH ******':v.toUpperCase()}
 function commandTypingPlan(value,instant){return instant?{step:value.length||1,delay:0}:{step:Math.max(1,Math.ceil(value.length/23)),delay:44}}
 async function autoCommand(value,fn){
  if(commandPending||busy||scanJob||!s||!player()||s.playing||bloodVisible())return;
@@ -1121,7 +2454,7 @@ function textOut(str,animate=false,tone=responseTone(str)){
  busy=true;playCue('link');out.dataset.tone='normal';out.textContent='PROCESSING …';const start=performance.now()+750,ms=Math.min(3200,str.length*14);
  function tick(now){if(ticket!==renderTicket)return;if(now>=start){out.dataset.tone=tone;out.textContent=str.slice(0,Math.ceil(str.length*Math.min(1,(now-start)/ms)));if(now>=start+ms){busy=false;return}}requestAnimationFrame(tick)}requestAnimationFrame(tick)
 }
-function selectPage(p,sel=''){if(['Read','Scan dossier'].includes(p)&&Object.hasOwn(files(s),sel))acknowledge('record:'+sel);if(p==='Analysis'&&analysisFolderAvailable(s))acknowledge(scannerReadyHere(s)?'analysis:online':'analysis');if(p==='Clone Batch Sigma'&&s.inserted?.['CLONE BATCH SIGMA'])acknowledge('sigma');nav(p,sel);if(!s.playing&&!chamberPages.includes(p)&&!['Archive discovery','Archive protocol'].includes(p))textOut($('screen').textContent,true)}
+function selectPage(p,sel=''){if(['Read','Scan dossier'].includes(p)&&Object.hasOwn(files(s),sel))acknowledge('record:'+sel);if(p==='Analysis'&&analysisFolderAvailable(s))acknowledge(scannerReadyHere(s)?'analysis:online':'analysis');if(p==='Clone Batch Sigma'&&s.inserted?.['CLONE BATCH SIGMA'])acknowledge('sigma');nav(p,sel);if(!s.playing&&!chamberPages.includes(p)&&!['Archive discovery','Archive protocol'].includes(p)&&!(p==='Read'&&sel==='CINDER'))textOut($('screen').textContent,true)}
 function calibrationValid(j){return !!s&&net?.code===j.code&&s.campaign===j.campaign&&s.step===j.step&&s.deck==='ISB'&&s.installed&&!s.repaired&&!s.playing&&s.step<17}
 function calibrationKey(e,down){const k={a:'a',d:'d',arrowup:'up',arrowdown:'down'}[e.key.toLowerCase()];if(!k)return false;e.preventDefault();e.stopImmediatePropagation();if(calibrationJob&&!calibrationJob.paused)calibrationJob.keys[k]=down;return true}
 document.addEventListener('keyup',e=>{if(calibrationJob&&player())calibrationKey(e,false)},true);
@@ -1205,7 +2538,7 @@ function draw(){
  if(['Archive discovery','Archive protocol'].includes(page)&&archiveReferenceAvailable(s)){drawArchiveReference(out,page==='Archive protocol');if(localPlayer)btn('Operator view',toggleView);return}
  if(s.deck==='Archive'&&page!=='Research Recordings'){
    $('heading').textContent=s.step>=14?'Tape elevator':'Retrieval station';textOut(s.step>=14?'Select a carrier for mechanical delivery. Decryption requires the ISB officer’s terminal.':'Display dark.');
-   if(s.step>=14)Object.keys(tapes).filter(x=>!s.retrieved[x]&&!s.inserted[x]&&(page!=='Search'||x.includes(query.toUpperCase()))).forEach(x=>x==='CLONE BATCH SIGMA'?important('Retrieve '+x,()=>retrieve(x),'RETRIEVE '+x,'retrieve:'+x,true):btn('Retrieve '+x,()=>retrieve(x),'RETRIEVE '+x));
+   if(s.step>=14)Object.keys(tapes).filter(x=>page!=='Search'||x.includes(query.toUpperCase())).forEach(x=>{if(s.retrieved[x]||s.inserted[x]){const row=el('div',x+' — '+(s.inserted[x]?'AUTHENTICATED':'RETRIEVED'),out);row.className='tapeStatus';return}const b=x==='CLONE BATCH SIGMA'?important('Retrieve '+x,()=>retrieve(x),'RETRIEVE '+x,'retrieve:'+x,true):btn('Retrieve '+x,()=>retrieve(x),'RETRIEVE '+x);if(x!=='CLONE BATCH SIGMA')b.dataset.priority='routine'});
    if(s.step>=14)go('Research Recordings');{const b=btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'),'ISB');if(s.retrieved?.['CLONE BATCH SIGMA'])markChoice(b,'isb',true)}
  }else if(s.deck==='Director'&&page!=='Research Recordings'){
    $('heading').textContent='Research Director’s terminal';textOut(!s.directorCylinder?'EXECUTIVE AUTHENTICATION REQUIRED\nInsert the Research Director’s security cylinder.':!s.inserted['CLONE BATCH SIGMA']?'Executive credentials verified. Classified archive authorization pending.':s.doors['Director office door']!=='CLOSED'?'Security cylinder detected...\nExecutive credentials verified.\nCONFIDENTIAL TRANSMISSION AVAILABLE\nPRIVACY PROTOCOL ACTIVE\nClose the office door to authorize playback.':'PRIVACY CHECK COMPLETE\nCONFIDENTIAL PLAYBACK AVAILABLE');if(recordingPlayable(s,7)){const b=btn('Play REC-007 · '+recordings[7][0],()=>act('PLAY',7),'PLAY REC-007');b.classList.add('availableRecording');markRecording(b,7)}else if(nextLockedRecording(s)===7)lockedRecordingRow(out,7);go('Research Recordings');btn('Return to ISB officer’s terminal',()=>act('DECK','ISB'),'ISB');
@@ -1214,8 +2547,8 @@ function draw(){
  }else if(page==='Media Archive'){textOut('One local index mounted.');go('Research Recordings')}
  else if(page==='Research Recordings'){textOut('Select a recording to play.');const {available,replays}=recordingGroups(s,recordings,recordingPlayable);const add=(node,i)=>{const b=button(node,'Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i),'PLAY '+rid(i));b.classList.add('availableRecording');markRecording(b,i)};available.forEach(i=>add(out,i));const locked=nextLockedRecording(s);if(locked)lockedRecordingRow(out,locked);if(replays.length){const replay=group('Completed recordings · replay ('+replays.length+')');replays.forEach(i=>add(replay,i))}if(['Archive','Director'].includes(s.deck)){if(archiveReferenceAvailable(s))go('Archive discovery','Review classified archive reference');btn(s.deck==='Archive'?'Return to retrieval station':'Return to Research Director’s terminal',()=>nav('Home'))}}
  else if(page==='Clone Batch Sigma'&&s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']){textOut('CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.\n\nExecutive terminal: Research Director’s office beyond the cloning laboratory. Local access only.');const names=s.campaign==='MEN'?['Specimen Transfer Ledger','Drellis Minor Recovery Operation','Crime Lord Morgan','Research Oversight Authorization']:['Specimen Transfer Ledger','Transfer receipt'];for(const name of names)if(files(s)[name])recordChoice(out,name);}
- else if(page==='Records'||page==='Search'){const names=Object.keys(files(s)).filter(x=>page!=='Search'||(x+' '+files(s)[x]).toLowerCase().includes(query.toLowerCase()));textOut(names.length?'Available records':'No local records match.');const {important:relevant,routine}=partitionRecords(names);const lore=relevant.filter(n=>Object.hasOwn(localResearchRecords,n));relevant.filter(n=>!Object.hasOwn(localResearchRecords,n)).forEach(x=>recordChoice(out,x));if(lore.length){const archive=group('Research correspondence and incident files ('+lore.length+')');lore.forEach(x=>recordChoice(archive,x));if(page==='Search')archive.parentNode.open=true}if(routine.length){const admin=group('Administrative Archives ('+routine.length+')');routine.forEach(x=>recordChoice(admin,x))}}
- else if(page==='Read'){const body=files(s)[selected];$('heading').textContent=body?(selected==='Scanner diagnostic'?'M-Count Scanning Chamber diagnostic':selected):'Record unavailable';textOut(body||'Access unavailable.')}
+ else if(page==='Records'||page==='Search'){const names=Object.keys(files(s)).filter(x=>page!=='Search'||(x+' '+files(s)[x]).toLowerCase().includes(query.toLowerCase()));textOut(names.length?'Available records':'No local records match.');const {important:relevant,routine}=partitionRecords(names);const lore=relevant.filter(n=>Object.hasOwn(localResearchRecords,n));relevant.filter(n=>!Object.hasOwn(localResearchRecords,n)).forEach(x=>recordChoice(out,x));if(lore.length){const archive=group('Research correspondence and incident files ('+lore.length+')');lore.forEach(x=>recordChoice(archive,x));if(page==='Search')archive.parentNode.open=true}if(routine.length){const admin=group('Administrative Archives ('+routine.length+')'),outer=admin.parentNode;outer.open=adminOpen||page==='Search';outer.ontoggle=()=>{if(outer.isConnected&&page!=='Search')adminOpen=outer.open};const search=page==='Search',p=administrativePage(routine,reviewed,search?adminSearchPage:adminPageIndex);if(search)adminSearchPage=p.index;else adminPageIndex=p.index;const repaint=i=>{if(search)adminSearchPage=i;else{adminPageIndex=i;adminOpen=true}draw()};p.unread.forEach(x=>recordChoice(admin,x));if(p.pages>1){el('small','Unread page '+(p.index+1)+' of '+p.pages+' · '+p.totalUnread+' unread',admin).className='adminPageLabel';if(p.index>0)button(admin,'Previous page',()=>repaint(p.index-1));if(p.index+1<p.pages)button(admin,'Next page',()=>repaint(p.index+1))}if(p.viewed.length){const folder=el('details','',admin);folder.className='choiceGroup viewedFolder';el('summary','Previously Viewed ('+p.viewed.length+')',folder);folder.open=search||viewedOpen;folder.ontoggle=()=>{if(folder.isConnected&&!search)viewedOpen=folder.open};const inner=el('div','',folder);inner.className='actions';p.viewed.forEach(x=>recordChoice(inner,x))}}}
+ else if(page==='Read'){const body=files(s)[selected];$('heading').textContent=body?(selected==='Scanner diagnostic'?'M-Count Scanning Chamber diagnostic':selected):'Record unavailable';if(selected==='CINDER'&&body&&body.includes('SUPPLEMENTAL DIRECTIVE — ASSET ERADICATION')){const start=body.indexOf('SUPPLEMENTAL DIRECTIVE — ASSET ERADICATION'),end=body.indexOf('COMPLIANCE DIRECTIVE',start);textOut('');const screen=$('screen');el('div',body.slice(0,start),screen);el('div',body.slice(start,end),screen).className='cinderDirective';el('div',body.slice(end),screen)}else textOut(body||'Access unavailable.')}
  else if(page==='Doors'&&s.deck==='ISB'&&s.step>=8){textOut('ARMORY · '+(s.equipment?'RELEASED':'SEALED'));if(!s.equipment)btn('Release Armory',()=>act('EQUIPMENT'),'UNLOCK ARMORY')}
  else if(page==='Analysis'&&analysisFolderAvailable(s)){
    $('heading').textContent='M-Count Scanning Chamber';
@@ -1365,13 +2698,14 @@ function showEggProgram(p){
  for(const [label,response] of p.choices)button(choices,label,()=>{choices.replaceChildren();el('p','RESPONSE RECORDED: '+label.toUpperCase(),choices);el('p',response,choices);el('p',p.ending,choices);button(choices,p.reset,()=>showEggProgram(p));button(choices,'Return to terminal',()=>draw())});
  button(choices,'Return to terminal',()=>draw());
 }
-function freestyle(raw){if(!raw)return;const reply=eggReply(raw,eggHistory);if(reply.program)showEggProgram(reply.program);else {if(reply.unknown)playCue('denied');textOut(reply.text,true,reply.unknown?'warning':responseTone(reply.text))}}
+function freestyle(raw){if(!raw)return;const reply=eggReply(raw,eggHistory);if(reply.conduct){playCue('denied');textOut('');const out=$('screen'),lines=reply.text.split('\n\n');el('div',lines[0],out).className='conductWarning';el('div',lines.slice(1).join('\n\n'),out);return}if(reply.program)showEggProgram(reply.program);else {if(reply.unknown)playCue('denied');textOut(reply.text,true,reply.unknown?'warning':responseTone(reply.text))}}
 function recordSearchMatches(raw){const q=raw.toLowerCase().trim();return !!q&&Object.entries(files(s)).some(([name,body])=>(name+' '+body).toLowerCase().includes(q))}
 async function command(value){
  if(bloodVisible())return;
  let raw=value.trim().replace(/\s+/g,' '),v=raw.toUpperCase();
  if(s.playing){if(v==='PAUSE')pausePlayback();if(v==='STOP'||v==='STOP RECORDING')stopPlayback();return}if(calibrationJob||retrievalJob)return;if(chamberPages.includes(page)&&/^(?:PLAY|REPLAY)\s/.test(v))throw Error('Return to the main directory to play research recordings.');
  if(s.deck==='Archive'&&s.step<14){if(v==='ISB')return act('DECK','ISB');return}
+ if(containsProfanity(raw))return freestyle(raw);
  if(s.deck==='Archive'){
    if(v==='OPEN RESEARCH RECORDINGS')return selectPage('Research Recordings');const recording=v.match(/^(?:PLAY|REPLAY) (?:REC-)?0*([1-7])$/);if(recording)return act('PLAY',recording[1]);
    if(v==='DIR'){nav('Archive');return}if(v.startsWith('SEARCH ')){const term=raw.slice(7);if(!Object.keys(tapes).some(x=>x.includes(term.toUpperCase()))&&findEgg(term))return freestyle(term);query=term;nav('Search');return}
@@ -1383,7 +2717,7 @@ async function command(value){
  if(v==='HELP')return selectPage('Help');if(v==='STATUS')return selectPage('Status');if(v==='DOORS'&&s.deck==='ISB'&&s.step>=8)return selectPage('Doors');if(v==='BACK')return goBack();
  if(v==='CLOSE CURRENT ROOM')return closeDoors();
  if(v==='UNLOCK ARMORY'||v==='UNLOCK SECURITY EQUIPMENT ROOM')return act('EQUIPMENT');
- if(v.startsWith('SEARCH ')){const term=raw.slice(7);if(!recordSearchMatches(term)&&findEgg(term))return freestyle(term);query=term;selectPage('Search');return}
+ if(v.startsWith('SEARCH ')){const term=raw.slice(7);if(!recordSearchMatches(term)&&findEgg(term))return freestyle(term);query=term;adminSearchPage=0;selectPage('Search');return}
  if(v.startsWith('OPEN ')){const path=v.slice(5).replace(/^M[- ]COUNT (?:ANALYSIS|SCANNING CHAMBER)$/,'ANALYSIS').replace(/^REVIEW SAVED SPECIMEN RESULTS$/,'SAVED RESULTS');
    const options=['Media Archive','Research Recordings',...(archiveReferenceAvailable(s)?['Archive discovery','Archive protocol']:[]),...(s.deck==='ISB'&&s.step>=8?['Doors']:[]),'Records','Status','Help',...(analysisFolderAvailable(s)?['Analysis']:[]),...(scannerReadyHere(s)?['Saved results','Specimens']:[]),...(s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']?['Clone Batch Sigma']:[])];
    const name=options.find(k=>k.toUpperCase()===path);if(name==='Research Recordings'&&!s.seen[1]&&page!=='Media Archive')throw Error('Select the parent media directory first.');if(name)return selectPage(name);
