@@ -31,7 +31,7 @@ export const eggEntries=[
 {"category":"Computer and programming","key":"GIT PULL","aliases":[],"responses":["Independent development branches are prohibited."]},
 {"category":"Computer and programming","key":"HELLO WORLD","aliases":[],"responses":["Hello, citizen. Your location has been recorded."]},
 {"category":"Computer and programming","key":"404","aliases":[],"responses":["Employee not found. Payroll adjusted accordingly."]},
-{"category":"Computer and programming","key":"CTRL ALT DEL","aliases":["CTRL ALT DELETE","CONTROL ALT DELETE"],"responses":["Emergency intervention requested. Supervisor notified."]},
+{"category":"Computer and programming","key":"CTRL ALT DEL","aliases":["CTRL ALT DELETE","CONTROL ALT DELETE","CONTROL ALT DEL"],"responses":["Emergency intervention requested. Supervisor notified."]},
 {"category":"Computer and programming","key":"C:\\>","aliases":["C:"],"responses":["Core directory mounted. Your clearance remains disappointing."]},
 {"category":"Computer and programming","key":"HACK THE PLANET","aliases":[],"responses":["Planetary hacking requires regional authorization."]},
 {"category":"Computer and programming","key":"RM -RF /","aliases":["RM RF /"],"responses":["Enthusiasm noted. Security notified."]},
@@ -257,6 +257,1309 @@ export const eggEntries=[
 {"category":"Special short commands","key":"B2","aliases":[],"responses":["ROGER."]},
 {"category":"Special short commands","key":"B3","aliases":[],"responses":["Procurement request denied. Two versions were sufficient."]}
 ];
+// V22: unique text-only triggers; no operating-system actions.
+eggEntries.push(...[
+  {
+    "category": "Bathroom humor",
+    "key": "POOP",
+    "aliases": [
+      "POO",
+      "POOPS",
+      "POOPING",
+      "POOPED"
+    ],
+    "responses": [
+      "Biological waste detected. Please contact sanitation."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "BUTT",
+    "aliases": [
+      "BUM",
+      "BOTTOM"
+    ],
+    "responses": [
+      "Unauthorized seating apparatus detected."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "FART",
+    "aliases": [
+      "FARTS",
+      "FARTED",
+      "FARTING"
+    ],
+    "responses": [
+      "Atmospheric contamination detected. Please refrain from further contributions."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "POOPY",
+    "aliases": [
+      "POOPIE"
+    ],
+    "responses": [
+      "Your vocabulary has been forwarded to Human Resources."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "PEE",
+    "aliases": [
+      "PEEING",
+      "PIDDLE",
+      "WEE WEE"
+    ],
+    "responses": [
+      "Liquid waste disposal facilities are located elsewhere."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "TOOT",
+    "aliases": [
+      "TOOTS",
+      "TOOTED"
+    ],
+    "responses": [
+      "Acoustic anomaly recorded. Source identification pending."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "STINKY",
+    "aliases": [
+      "STINK",
+      "STINKS",
+      "SMELLY"
+    ],
+    "responses": [
+      "Occupational hygiene complaint submitted."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "BOOGER",
+    "aliases": [
+      "BOOGERS",
+      "BOOGIE"
+    ],
+    "responses": [
+      "Biological specimen rejected."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "BUTTHEAD",
+    "aliases": [
+      "BUTT HEAD"
+    ],
+    "responses": [
+      "Command recognized. Please specify which officer."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "DIARRHEA",
+    "aliases": [
+      "DIARRHOEA",
+      "THE RUNS"
+    ],
+    "responses": [
+      "Emergency refresher access authorized."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "TOILET",
+    "aliases": [
+      "POTTY",
+      "LATRINE",
+      "COMMODE"
+    ],
+    "responses": [
+      "Refresher status: Operational, regrettably."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "WIPE",
+    "aliases": [],
+    "responses": [
+      "Clarify: database or personal hygiene?"
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "NUMBER TWO",
+    "aliases": [
+      "NUMBER 2"
+    ],
+    "responses": [
+      "Priority sanitation incident acknowledged."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "UNDERWEAR",
+    "aliases": [
+      "UNDERPANTS",
+      "UNDIES"
+    ],
+    "responses": [
+      "Regulation garments are not searchable through this terminal."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "BURP",
+    "aliases": [
+      "BELCH",
+      "BURPING"
+    ],
+    "responses": [
+      "Your contribution to atmospheric pollution has been documented."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "WEDGIE",
+    "aliases": [],
+    "responses": [
+      "Uniform adjustment request denied."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "DINGLEBERRY",
+    "aliases": [],
+    "responses": [
+      "Unknown botanical specimen. Please do not bring it to the laboratory."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "TOILET PAPER",
+    "aliases": [
+      "TP",
+      "LOO ROLL"
+    ],
+    "responses": [
+      "Allocation: two squares per employee per shift."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "FLUSH",
+    "aliases": [
+      "FLUSH TOILET"
+    ],
+    "responses": [
+      "Waste management command received. Personnel files are not flushable."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "SNOT",
+    "aliases": [
+      "RUNNY NOSE"
+    ],
+    "responses": [
+      "Please direct nasal secretions away from sensitive equipment."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "GAS ATTACK",
+    "aliases": [
+      "PASS GAS"
+    ],
+    "responses": [
+      "The environmental relay does not accommodate personal atmospheric disturbances."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "POTTY BREAK",
+    "aliases": [],
+    "responses": [
+      "Submit a refresher requisition. Approval expected after your shift."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "TUSH",
+    "aliases": [
+      "HEINIE",
+      "BACKSIDE"
+    ],
+    "responses": [
+      "Personal anatomy queries are outside this terminal's jurisdiction."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "NUMBER ONE",
+    "aliases": [
+      "NUMBER 1"
+    ],
+    "responses": [
+      "Refresher request logged. Please do not demonstrate."
+    ]
+  },
+  {
+    "category": "Bathroom humor",
+    "key": "PEE PEE",
+    "aliases": [
+      "PEEPEE"
+    ],
+    "responses": [
+      "The Empire expects more sophisticated terminology from its personnel."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SUDO MAKE ME A SANDWICH",
+    "aliases": [],
+    "responses": [
+      "Request forwarded to Imperial Catering. Estimated completion: 17 years."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ALT F4",
+    "aliases": [],
+    "responses": [
+      "Your request to terminate Imperial service has been denied."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL C",
+    "aliases": [
+      "CONTROL C"
+    ],
+    "responses": [
+      "Unauthorized duplication is punishable by interrogation."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL V",
+    "aliases": [
+      "CONTROL V"
+    ],
+    "responses": [
+      "Imperial paste is not intended for consumption."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL SHIFT ESC",
+    "aliases": [
+      "CONTROL SHIFT ESC",
+      "CTRL SHIFT ESCAPE",
+      "CONTROL SHIFT ESCAPE"
+    ],
+    "responses": [
+      "Task management has been reserved for your supervisor."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ALT TAB",
+    "aliases": [],
+    "responses": [
+      "Unauthorized workplace multitasking detected."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL S",
+    "aliases": [
+      "CONTROL S"
+    ],
+    "responses": [
+      "Your work has been saved. Your career remains uncertain."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL X",
+    "aliases": [
+      "CONTROL X"
+    ],
+    "responses": [
+      "Cutting Imperial resources requires written authorization."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL A",
+    "aliases": [
+      "CONTROL A"
+    ],
+    "responses": [
+      "The Empire has already selected everything."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL F",
+    "aliases": [
+      "CONTROL F"
+    ],
+    "responses": [
+      "Finding competent management remains outside the search index."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL P",
+    "aliases": [
+      "CONTROL P"
+    ],
+    "responses": [
+      "Printer offline. Please submit a written request for a printed request form."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL Y",
+    "aliases": [
+      "CONTROL Y"
+    ],
+    "responses": [
+      "Repeating mistakes is an established Imperial procedure."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL R",
+    "aliases": [
+      "CONTROL R"
+    ],
+    "responses": [
+      "Refreshing the terminal will not improve your employment prospects."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL T",
+    "aliases": [
+      "CONTROL T"
+    ],
+    "responses": [
+      "Unauthorized tab expansion denied."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL W",
+    "aliases": [
+      "CONTROL W"
+    ],
+    "responses": [
+      "Closing your responsibilities is not authorized."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL N",
+    "aliases": [
+      "CONTROL N"
+    ],
+    "responses": [
+      "New window requested. This facility has no windows."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL O",
+    "aliases": [
+      "CONTROL O"
+    ],
+    "responses": [
+      "Opening restricted resources requires clearance."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL L",
+    "aliases": [
+      "CONTROL L"
+    ],
+    "responses": [
+      "Your location is already known."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL H",
+    "aliases": [
+      "CONTROL H"
+    ],
+    "responses": [
+      "Your history is classified. The ISB has a copy."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL SHIFT T",
+    "aliases": [
+      "CONTROL SHIFT T"
+    ],
+    "responses": [
+      "Previously closed mistakes have been restored."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL SHIFT N",
+    "aliases": [
+      "CONTROL SHIFT N"
+    ],
+    "responses": [
+      "Private browsing is a charming fantasy."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL SHIFT DELETE",
+    "aliases": [
+      "CONTROL SHIFT DELETE",
+      "CTRL SHIFT DEL",
+      "CONTROL SHIFT DEL"
+    ],
+    "responses": [
+      "Your browsing history has already been archived."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CTRL BREAK",
+    "aliases": [
+      "CONTROL BREAK"
+    ],
+    "responses": [
+      "Taking a break requires supervisor approval."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SHIFT DELETE",
+    "aliases": [],
+    "responses": [
+      "The Empire retains permanent copies of your mistakes."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "WIN L",
+    "aliases": [
+      "WINDOWS L"
+    ],
+    "responses": [
+      "Your workstation has been locked for loyalty verification."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "WIN R",
+    "aliases": [
+      "WINDOWS R"
+    ],
+    "responses": [
+      "Running is prohibited in Imperial corridors."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "WIN D",
+    "aliases": [
+      "WINDOWS D"
+    ],
+    "responses": [
+      "Desktop unavailable. Return to your assigned duty."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ALT ENTER",
+    "aliases": [],
+    "responses": [
+      "Your request for a larger screen has been forwarded to Budget."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ALT ESC",
+    "aliases": [],
+    "responses": [
+      "Escape is not an authorized keyboard function."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F1",
+    "aliases": [],
+    "responses": [
+      "Assistance is available from your nearest supervisor. Good luck."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F2",
+    "aliases": [],
+    "responses": [
+      "Renaming Imperial property requires six signatures."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F3",
+    "aliases": [],
+    "responses": [
+      "Search assistance denied. Read the instructions."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F5",
+    "aliases": [],
+    "responses": [
+      "Refreshing the screen does not refresh your personnel record."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F6",
+    "aliases": [],
+    "responses": [
+      "Focus reassignment authorized. Please focus on your duties."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F7",
+    "aliases": [],
+    "responses": [
+      "Spelling inspection initiated. Imperial grammar remains superior."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F8",
+    "aliases": [],
+    "responses": [
+      "Safe mode unavailable. Your safety is our priority."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F9",
+    "aliases": [],
+    "responses": [
+      "Function reserved for purposes unknown to this department."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F10",
+    "aliases": [],
+    "responses": [
+      "Menu privileges pending approval."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F11",
+    "aliases": [],
+    "responses": [
+      "Full-screen loyalty demonstration requested."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "F12",
+    "aliases": [],
+    "responses": [
+      "Developer privileges are not a rank."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "PRINT SCREEN",
+    "aliases": [
+      "PRTSC",
+      "PRTSCR"
+    ],
+    "responses": [
+      "Unauthorized screenshots are subject to review."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GODMODE",
+    "aliases": [
+      "GOD MODE"
+    ],
+    "responses": [
+      "Executive privileges reserved for Emperor Palpatine."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "NOCLIP",
+    "aliases": [
+      "NO CLIP"
+    ],
+    "responses": [
+      "Please use the door."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "INSTALL WINDOWS",
+    "aliases": [],
+    "responses": [
+      "Installation rejected. This facility has sufficient structural vulnerabilities."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DELETE SYSTEM32",
+    "aliases": [
+      "DEL SYSTEM32"
+    ],
+    "responses": [
+      "Your enthusiasm for unemployment is noted."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "PRINT MONEY",
+    "aliases": [],
+    "responses": [
+      "Counterfeiting request forwarded to ISB."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT COMMIT",
+    "aliases": [],
+    "responses": [
+      "Commitment to the Empire is mandatory."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT PUSH",
+    "aliases": [],
+    "responses": [
+      "Resistance detected. Push harder."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT BLAME",
+    "aliases": [],
+    "responses": [
+      "Responsibility assigned to the previous shift."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT MERGE",
+    "aliases": [],
+    "responses": [
+      "Departmental consolidation requires executive approval."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT CLONE",
+    "aliases": [],
+    "responses": [
+      "Clone production is restricted to authorized research personnel."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT RESET",
+    "aliases": [],
+    "responses": [
+      "The Empire does not erase its mistakes. It reassigns them."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT REVERT",
+    "aliases": [],
+    "responses": [
+      "Previous policy reinstated. It was always the correct policy."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT DIFF",
+    "aliases": [],
+    "responses": [
+      "Disagreement with the approved version detected."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT LOG",
+    "aliases": [],
+    "responses": [
+      "Your activities have been logged more thoroughly than you realize."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT BRANCH",
+    "aliases": [],
+    "responses": [
+      "Independent branches of Imperial authority are prohibited."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GIT CHECKOUT",
+    "aliases": [],
+    "responses": [
+      "Leaving before the end of your shift is unauthorized."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SEGFAULT",
+    "aliases": [
+      "SEGMENTATION FAULT"
+    ],
+    "responses": [
+      "Imperial Engineering regrets your existence."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "MAKE",
+    "aliases": [],
+    "responses": [
+      "Build failed. Blame Engineering."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "COMPILE",
+    "aliases": [],
+    "responses": [
+      "Compilation successful. Comprehension not detected."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "BUILD",
+    "aliases": [],
+    "responses": [
+      "Construction request denied. The last large project exceeded budget."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "NPM INSTALL",
+    "aliases": [],
+    "responses": [
+      "Dependency on unauthorized software detected."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "NPM UPDATE",
+    "aliases": [],
+    "responses": [
+      "New dependencies have been added to your duties."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "PIP INSTALL",
+    "aliases": [],
+    "responses": [
+      "Pipe installation requires Engineering clearance."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DOCKER RUN",
+    "aliases": [],
+    "responses": [
+      "Container departed. Please complete the cargo manifest."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "KUBECTL",
+    "aliases": [],
+    "responses": [
+      "Your request for additional administrative clusters has been approved by the Department of Redundant Departments."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SSH",
+    "aliases": [],
+    "responses": [
+      "Secure connection denied. Your insecurity has been noted."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "TELNET",
+    "aliases": [],
+    "responses": [
+      "Legacy communications detected. This technology belongs in a museum."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "FTP",
+    "aliases": [],
+    "responses": [
+      "Unauthorized transfer request. The archive has a physical media policy."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CURL",
+    "aliases": [],
+    "responses": [
+      "Please uncurl and return to your duty station."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "WGET",
+    "aliases": [],
+    "responses": [
+      "Requested resources are not in your allowance."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "NSLOOKUP",
+    "aliases": [],
+    "responses": [
+      "Imperial naming authority is not subject to lookup."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DNS FLUSH",
+    "aliases": [],
+    "responses": [
+      "Network hygiene and refresher hygiene are separate departments."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "HOSTNAME",
+    "aliases": [],
+    "responses": [
+      "Your station has been identified. So have you."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "LS",
+    "aliases": [],
+    "responses": [
+      "Listing restricted. Try the directory provided to you."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "PWD",
+    "aliases": [],
+    "responses": [
+      "Current location: under Imperial jurisdiction."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CAT",
+    "aliases": [],
+    "responses": [
+      "No animals permitted at the workstation."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "GREP",
+    "aliases": [],
+    "responses": [
+      "Search completed. No evidence of initiative found."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CHMOD",
+    "aliases": [],
+    "responses": [
+      "Permission to change permissions denied."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CHOWN",
+    "aliases": [],
+    "responses": [
+      "All Imperial property belongs to the Empire."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "MKDIR",
+    "aliases": [],
+    "responses": [
+      "Creation of another folder requires departmental review."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "RMDIR",
+    "aliases": [],
+    "responses": [
+      "The folder contains forms that must be retained indefinitely."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "TOUCH",
+    "aliases": [],
+    "responses": [
+      "Please do not touch sensitive equipment."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ECHO",
+    "aliases": [],
+    "responses": [
+      "Your words have been recorded. Your words have been recorded."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "REBOOT NOW",
+    "aliases": [],
+    "responses": [
+      "The Empire is not finished with you yet."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "BLUE SCREEN",
+    "aliases": [
+      "BSOD"
+    ],
+    "responses": [
+      "Catastrophic optimism failure. Please await reassignment."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "KERNEL PANIC",
+    "aliases": [],
+    "responses": [
+      "Remain calm. Panic is reserved for executive personnel."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "NULL POINTER",
+    "aliases": [],
+    "responses": [
+      "Nothing located. The department is working as designed."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SQL SELECT",
+    "aliases": [
+      "SELECT STAR"
+    ],
+    "responses": [
+      "Database query denied. Stars are Imperial property."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DROP TABLE",
+    "aliases": [],
+    "responses": [
+      "Furniture removal requires Facilities approval."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "SELECT 1",
+    "aliases": [],
+    "responses": [
+      "One employee selected for routine supervision."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "INSERT INTO",
+    "aliases": [],
+    "responses": [
+      "Please specify the correct authorization cylinder."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "JSON",
+    "aliases": [],
+    "responses": [
+      "Your structured complaint has been successfully ignored."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "YAML",
+    "aliases": [],
+    "responses": [
+      "Indentation infraction detected. Report to document control."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "HTML",
+    "aliases": [],
+    "responses": [
+      "Decorative formatting is not a substitute for loyalty."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CSS",
+    "aliases": [],
+    "responses": [
+      "Imperial uniform colors are not customizable."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "JAVASCRIPT",
+    "aliases": [],
+    "responses": [
+      "Unauthorized scripting is a matter for the ISB."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "RUST",
+    "aliases": [],
+    "responses": [
+      "Corrosion detected. File a maintenance request."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "COBOL",
+    "aliases": [],
+    "responses": [
+      "Ancient Imperial payroll system located."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "BASIC",
+    "aliases": [],
+    "responses": [
+      "Your competence assessment agrees."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "FORTRAN",
+    "aliases": [],
+    "responses": [
+      "Engineering requests that you stop operating archaeological software."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DIVIDE BY ZERO",
+    "aliases": [
+      "1/0"
+    ],
+    "responses": [
+      "Mathematical dissent detected."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "INFINITE LOOP",
+    "aliases": [],
+    "responses": [
+      "Form processing will continue until all forms are processed."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "RETURN NULL",
+    "aliases": [],
+    "responses": [
+      "Nothing returned. Typical Imperial efficiency."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "BREAKPOINT",
+    "aliases": [],
+    "responses": [
+      "Work interruption not authorized."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "UNIT TEST",
+    "aliases": [],
+    "responses": [
+      "Unit tested. Employee failed."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "TESTING",
+    "aliases": [],
+    "responses": [
+      "Testing the patience of the Empire is discouraged."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "DEPLOY",
+    "aliases": [],
+    "responses": [
+      "Deployment request forwarded to the appropriate command authority."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "ROLLBACK",
+    "aliases": [],
+    "responses": [
+      "The previous decision was also correct."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "MERGE CONFLICT",
+    "aliases": [],
+    "responses": [
+      "Disagreement detected. Both departments blame the other."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "BUFFER OVERFLOW",
+    "aliases": [],
+    "responses": [
+      "Your paperwork tray has exceeded its authorized capacity."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "OUT OF MEMORY",
+    "aliases": [],
+    "responses": [
+      "Remember that forgetting Imperial directives is an offense."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "FATAL ERROR",
+    "aliases": [],
+    "responses": [
+      "Human Resources has been informed of a staffing opportunity."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "RECURSION",
+    "aliases": [],
+    "responses": [
+      "See recursion. See recursion. See recursion."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "LOADING",
+    "aliases": [],
+    "responses": [
+      "Please continue waiting with appropriate enthusiasm."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "AI",
+    "aliases": [],
+    "responses": [
+      "Artificial intelligence is permitted. Independent intelligence is not."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "CHATGPT",
+    "aliases": [],
+    "responses": [
+      "Unauthorized advisory droid detected. Consult your assigned supervisor."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "MOUSE",
+    "aliases": [],
+    "responses": [
+      "Mouse droid allocated. It cannot assist with your typing."
+    ]
+  },
+  {
+    "category": "Computer and programming",
+    "key": "KEYBOARD",
+    "aliases": [],
+    "responses": [
+      "The equipment is functioning. The operator is under review."
+    ]
+  }
+]);
+
+const conductWords=new Set('ASS ASSES ASSHOLE ASSHOLES BASTARD BASTARDS BITCH BITCHES BITCHING BOLLOCKS CRAP CRAPPY DAMN DAMNED DAMMIT GODDAMN GODDAMMIT FUCK FUCKS FUCKED FUCKING FUCKER FUCKERS MOTHERFUCKER MOTHERFUCKERS MOTHERFUCKING SHIT SHITS SHITTY SHITTING BULLSHIT DICK DICKS DICKHEAD DICKHEADS COCK COCKS CUNT CUNTS PISS PISSED PISSING PISSES PRICK PRICKS WANK WANKER WANKERS TWAT TWATS SLUT SLUTS WHORE WHORES'.split(' '));
+const conductLeet={'0':'O','1':'I','3':'E','4':'A','5':'S','7':'T','@':'A','$':'S','!':'I'};
+export function containsProfanity(raw){
+ const v=String(raw).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+ const words=v.match(/[A-Z0-9@$]+(?:![A-Z0-9@$]+)*/g)||[];
+ if(words.some(w=>conductWords.has(w)||conductWords.has(w.replace(/[013457@$!]/g,c=>conductLeet[c]))))return true;
+ if(/(?:^|[^A-Z0-9])(?:F\*{1,3}K|F\*{1,3}CK|FU\*{1,2}|SH\*T|B\*TCH|A\*{2}|D\*MN|D\*CK)(?=$|[^A-Z0-9])/.test(v))return true;
+ // Require separators between letters, rather than matching across ordinary words.
+ const spaced=v.match(/(?:^|[^A-Z0-9])(?:[A-Z0-9@$][\s._+\-]+){2,}[A-Z0-9@$](?=$|[^A-Z0-9])/g)||[];
+ return spaced.some(w=>conductWords.has(w.replace(/[\s._+\-]+/g,'').replace(/[013457@$!]/g,c=>conductLeet[c]).replace(/[^A-Z]/g,'')));
+}
+const conductResponses=[
+ "Report immediately to the Imperial Department of Personal Hygiene to have your filthy mouth scrubbed with regulation-issue Imperial bar soap.\nYour cooperation is mandatory.",
+ "Your mouth apparently requires additional maintenance. A second bar of soap has been requisitioned.",
+ "Industrial-strength Imperial soap has been authorized.",
+ "A sanitation droid has been dispatched. Please open your mouth.",
+ "Your vocabulary has been classified as a biological hazard."
+];
+
 export const eggPrograms=[
 {"key":"MORALE.EXE","aliases":["MORALE","MORALE SURVEY"],"title":"IMPERIAL PERSONNEL SERVICES — MORALE.EXE","question":"How satisfied are you with your Imperial employment?","choices":[["Extremely satisfied","Excessive enthusiasm detected. Psychological evaluation recommended."],["Moderately satisfied","Insufficient enthusiasm. Loyalty training assigned."],["Dissatisfied","Thank you for identifying yourself."],["I would prefer not to answer","Noncooperation recorded."]],"ending":"SURVEY COMPLETE.","reset":"Retake survey"},
 {"key":"LOYALTY.EXE","aliases":["LOYALTY","LOYALTY TEST"],"title":"IMPERIAL SECURITY BUREAU — LOYALTY.EXE","question":"Are you loyal to the Galactic Empire?","choices":[["YES","Unsubstantiated claim. Further investigation required."],["NO","Confession accepted. Thank you for your cooperation."]],"ending":"ASSESSMENT: ADDITIONAL MONITORING REQUIRED.","reset":"Restart"},
@@ -297,6 +1600,7 @@ export function findEgg(raw){
  return null;
 }
 export function eggReply(raw,history){
+ if(containsProfanity(raw)){const n=(history.counts['conduct-violation']||0)+1;history.counts['conduct-violation']=n;return {conduct:true,text:'IMPERIAL CONDUCT VIOLATION DETECTED\nWatch your mouth, citizen.\n\n'+conductResponses[Math.min(n-1,conductResponses.length-1)]}}
  const e=findEgg(raw);
  if(!e){const n=++history.unknown;return {text:eggUnknown[(n-1)%eggUnknown.length]+(eggMilestones[n]?'\n\n'+eggMilestones[n]:''),unknown:true}}
  const n=(history.counts[e.key]||0)+1;history.counts[e.key]=n;

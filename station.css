@@ -55,3 +55,5 @@
 
 /* V22: optional records never compete with progression. */
 #choices button[data-priority=routine],.tapeStatus{color:var(--response)}.tapeStatus,.adminPageLabel{flex-basis:100%;font-size:.85rem}.cinderDirective{color:var(--critical);font-weight:700;white-space:pre-wrap;margin:.65rem 0}.viewedFolder{width:100%}
+
+#screen .conductWarning{color:var(--critical);font-weight:700;margin-bottom:.65rem;white-space:pre-wrap}

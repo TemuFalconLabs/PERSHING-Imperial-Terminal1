@@ -1,4 +1,4 @@
-import {findEgg,eggReply,newEggHistory} from './easter-eggs.mjs';
+import {findEgg,eggReply,newEggHistory,containsProfanity} from './easter-eggs.mjs';
 import {crisisArtwork} from './crisis-art.mjs';
 import {analysisFolderAvailable,scannerReadyHere,directorReadiness,recordingGroups,analysisPageAfterRepair,structuredScan,isAdministrativeRecord,partitionRecords,administrativePage,discoveryTone,scanPhases,scanResultCue,newCalibration,tickCalibration,recordingStatus,workstationNames,chamberPages,archiveDiscoveryRows,archiveProtocolRows,archiveReferenceAvailable} from './station-presentation.mjs';
 import {voicePreferenceKey,voiceIdentity,isBritishVoice,orderedVoices,resolveNarrationVoice,voiceControlsLocked} from './voice-selection.mjs';
@@ -20,7 +20,7 @@ function button(node,label,fn,shortcut=''){const b=el('button',label,node);b.typ
 // Local presentation only: each shortcut invokes its existing guarded action once.
 let commandPending=false;
 function echoCommand(value){$('commandEcho').hidden=false;$('commandEchoText').textContent=value}
-function displayCommand(value){const v=value.trim();return /^(?:AUTH\s+)?\d{6}$/i.test(v)?'AUTH ******':v.toUpperCase()}
+function displayCommand(value){const v=value.trim();if(containsProfanity(v))return '[REDACTED — CONDUCT VIOLATION]';return /^(?:AUTH\s+)?\d{6}$/i.test(v)?'AUTH ******':v.toUpperCase()}
 function commandTypingPlan(value,instant){return instant?{step:value.length||1,delay:0}:{step:Math.max(1,Math.ceil(value.length/23)),delay:44}}
 async function autoCommand(value,fn){
  if(commandPending||busy||scanJob||!s||!player()||s.playing||bloodVisible())return;
@@ -550,13 +550,14 @@ function showEggProgram(p){
  for(const [label,response] of p.choices)button(choices,label,()=>{choices.replaceChildren();el('p','RESPONSE RECORDED: '+label.toUpperCase(),choices);el('p',response,choices);el('p',p.ending,choices);button(choices,p.reset,()=>showEggProgram(p));button(choices,'Return to terminal',()=>draw())});
  button(choices,'Return to terminal',()=>draw());
 }
-function freestyle(raw){if(!raw)return;const reply=eggReply(raw,eggHistory);if(reply.program)showEggProgram(reply.program);else {if(reply.unknown)playCue('denied');textOut(reply.text,true,reply.unknown?'warning':responseTone(reply.text))}}
+function freestyle(raw){if(!raw)return;const reply=eggReply(raw,eggHistory);if(reply.conduct){playCue('denied');textOut('');const out=$('screen'),lines=reply.text.split('\n\n');el('div',lines[0],out).className='conductWarning';el('div',lines.slice(1).join('\n\n'),out);return}if(reply.program)showEggProgram(reply.program);else {if(reply.unknown)playCue('denied');textOut(reply.text,true,reply.unknown?'warning':responseTone(reply.text))}}
 function recordSearchMatches(raw){const q=raw.toLowerCase().trim();return !!q&&Object.entries(files(s)).some(([name,body])=>(name+' '+body).toLowerCase().includes(q))}
 async function command(value){
  if(bloodVisible())return;
  let raw=value.trim().replace(/\s+/g,' '),v=raw.toUpperCase();
  if(s.playing){if(v==='PAUSE')pausePlayback();if(v==='STOP'||v==='STOP RECORDING')stopPlayback();return}if(calibrationJob||retrievalJob)return;if(chamberPages.includes(page)&&/^(?:PLAY|REPLAY)\s/.test(v))throw Error('Return to the main directory to play research recordings.');
  if(s.deck==='Archive'&&s.step<14){if(v==='ISB')return act('DECK','ISB');return}
+ if(containsProfanity(raw))return freestyle(raw);
  if(s.deck==='Archive'){
    if(v==='OPEN RESEARCH RECORDINGS')return selectPage('Research Recordings');const recording=v.match(/^(?:PLAY|REPLAY) (?:REC-)?0*([1-7])$/);if(recording)return act('PLAY',recording[1]);
    if(v==='DIR'){nav('Archive');return}if(v.startsWith('SEARCH ')){const term=raw.slice(7);if(!Object.keys(tapes).some(x=>x.includes(term.toUpperCase()))&&findEgg(term))return freestyle(term);query=term;nav('Search');return}
