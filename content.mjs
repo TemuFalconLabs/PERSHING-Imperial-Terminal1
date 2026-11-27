@@ -23,11 +23,12 @@ export const recordings = [
   ],
   [
     "Research briefing",
-    "Research scientist",
+    "Dr. Veyra Kest, Research Director",
     [
       "Research log. The latest series of trials has concluded. As anticipated, the mortality rate among the experimental clone specimens was exceptionally high. However, the results were not entirely without merit.",
       "A small number of clones demonstrated remarkable biological resilience, surviving procedures that proved fatal to the remainder of their cohort. Interestingly, blood analysis has also revealed slightly elevated M-counts among the surviving specimens.",
-      "Dr. Pershing believes these characteristics may prove particularly valuable to his ongoing research. At his request, I have authorized the transfer of the surviving specimens to another research facility for more extensive examination.",
+      "I am particularly encouraged by this discovery. It would be rather satisfying to make more progress in Dr. Pershing's area of research than the man himself.",
+      "Naturally, he has expressed considerable interest in my findings. At his request, I have authorized the transfer of the surviving specimens to another research facility for more extensive examination. I trust he will remember whose research made this opportunity possible.",
       "We have spent considerable resources investigating why so many specimens have failed. Perhaps we have been asking the wrong question.",
       "What makes these particular specimens so difficult to kill?"
     ]
@@ -123,7 +124,7 @@ export function files(s){
     [3,'Patch ticket','Network connection failure. Disconnected cable beneath service panel in Server Room. Reconnect the cable.'],
     [5,'Security abstract','An escort reported a missing receipt. The incident office retained the envelope, filed the report and requested the receipt as supporting evidence.'],
     [5,'ISB credential requirement','ISB security authentication required. Registered duty location: ISB Officer’s Office. Recover the security cylinder and insert it at reception.'],
-    [8,'Scanner diagnostic','M-COUNT ANALYSIS BENCH OFFLINE. Multiple component failures detected. Required: Imperial Instrument Maintenance Kit. Storage location: ARMORY. Release Armory from the authorized ISB terminal. Install replacement components at the physical analysis bench; two technicians are required for local calibration.'],
+    [8,'Scanner diagnostic','M-COUNT SCANNING CHAMBER: OFFLINE. Replacement components required. Imperial Instrument Maintenance Kit location: ARMORY. Release Armory from the authorized ISB terminal. Repair the chamber inside the main cloning laboratory to enable calibration. DM confirmation required upon success.'],
     [8,'Armory inventory','Imperial Instrument Maintenance Kit — one complete kit, containing replacement modules and repair tools. Issue through the authorized ISB terminal. Security equipment inventory is separate.'],
     [11,'Laboratory inventory','Slide frames returned: all. Staff effects returned: none. A researcher has written a forwarding address inside the cover, then rubbed it away.'],
     [11,'Archive directions','Beyond the main laboratory: mechanized tape vault. The local arm can deliver a carrier. Only the ISB officer’s terminal can decrypt the tapes.'],

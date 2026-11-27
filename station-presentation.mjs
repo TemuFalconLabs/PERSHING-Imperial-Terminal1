@@ -53,3 +53,11 @@ export function tickCalibration(previous,seconds,keys,enabled,random=Math.random
  const inside=Math.abs(m.x)<=.16&&Math.abs(m.y)<=.16;if(inside){if(!m.inside)m.events.push('target');m.stability+=dt}else{if(m.inside&&m.stability>0)m.events.push('lost');m.stability=0}m.inside=inside;
  if(m.stability+1e-8>=duration){if(m.lock===1){m.lock=2;m.stability=0;m.x=.53;m.y=-.46;m.inside=false;m.axis='';m.remaining=0;m.nextPulse=m.time+2.5;m.events.push('lock1')}else{m.stability=duration;m.done=true;m.events.push('lock2')}}return m;
 }
+
+// V21: local presentation, not a new story gate.
+export const chamberPages=['Analysis','Specimens','Saved results','Sample','Scan dossier'];
+export const archiveDiscoveryRows=[
+ ['RECORDING 006 COMPLETE','normal'],['Analyzing associated research references...','normal'],['Searching classified archive index...','normal'],['1 RESTRICTED RECORD MATCH FOUND','new'],['CLONE BATCH SIGMA','title'],['CLASSIFICATION: TOP SECRET','critical'],['Authorizing researcher: Dr. Veyra Kest','normal'],['Requesting researcher: Dr. Pershing','normal'],['Subject: Surviving experimental specimens','normal'],['Documentation: Experimental histories','normal'],['Attempting remote document access...','normal'],['ACCESS DENIED','critical'],['Electronic copies unavailable. Original documentation retained on secured physical media.','normal'],['Locating original documentation...','normal'],['PHYSICAL DATA TAPE LOCATED','new'],['Location: Imperial Research Archive Vault','normal'],['ON SITE','onsite']
+];
+export const archiveProtocolRows=[['SECURE MEDIA RETRIEVAL PROTOCOL','title'],['01. Locate the Imperial Research Archive Vault.','normal'],['02. Retrieve the original Clone Batch Sigma data tape.','normal'],["03. Authenticate the tape at the ISB officer's terminal.",'normal'],['Unauthorized duplication or destruction of research documentation is strictly prohibited.','critical']];
+export const archiveReferenceAvailable=s=>s.step>=13&&s.step<17&&s.seen?.[6]===true;
