@@ -1,6 +1,6 @@
 import {apply,fresh,normalize,validSave} from './engine.mjs';
 const config={apiKey:'AIzaSyCoeR3eJ_2kQsRfXi_c2c4MTS4GSpl2STg',authDomain:'pershing-imperial-terminal.firebaseapp.com',databaseURL:'https://pershing-imperial-terminal-default-rtdb.firebaseio.com',projectId:'pershing-imperial-terminal',storageBucket:'pershing-imperial-terminal.firebasestorage.app',messagingSenderId:'126649528532',appId:'1:126649528532:web:6b7c1df73178283e3b8b41'};
-const allowed=new Set(['PLAY','FINISH','AUTH','CLOSE','DECK','INSERT','RETRIEVE','EQUIPMENT','BLUE','SCAN','SAVE SCAN']);
+const allowed=new Set(['PLAY','FINISH','STOP PLAYBACK','CALIBRATE','AUTH','CLOSE','DECK','INSERT','RETRIEVE','EQUIPMENT','BLUE','SCAN','SAVE SCAN']);
 const letters='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 export const newCode=()=>Array.from(crypto.getRandomValues(new Uint8Array(8)),n=>letters[n%letters.length]).join('');
 export const cacheKey=(code)=>'pershing.v2.dm.'+code;
@@ -17,7 +17,7 @@ function change(session,role,action,arg,now){
      if(old.step>=17)throw Error('Use crisis controls.');
      s={...old,step:old.step+1,playing:0,hint:''};
      if(s.step===11)s.danger=now;if(s.step===8)s.card=true;if(s.step===17){s.directorCylinder=true;s.deck='Director';s.room='Director';s.doors={...s.doors,'Director office door':'CLOSED'};}
-     if(s.step===12){s.deck='Lab';s.room='Laboratory'}if(s.step===14){s.deck='Archive';s.room='Archive'}if(s.step===16){s.deck='ISB';s.room='ISB';s.inserted={...s.inserted,'CLONE BATCH SIGMA':true};delete s.retrieved['CLONE BATCH SIGMA'];}
+     if(s.step===12){s.deck='ISB';s.room='Laboratory'}if(s.step===14){s.deck='Archive';s.room='Archive'}if(s.step===16){s.deck='ISB';s.room='ISB';s.inserted={...s.inserted,'CLONE BATCH SIGMA':true};delete s.retrieved['CLONE BATCH SIGMA'];}
    }
    if(!validSave(s)||s.campaign!==old.campaign)throw Error('Checkpoint unavailable or belongs to a different campaign.');
    s=normalize(s);s.revision=old.revision+1;s.notice='Station checkpoint synchronized.';

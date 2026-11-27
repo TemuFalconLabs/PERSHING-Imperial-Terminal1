@@ -97,7 +97,7 @@ export const dossiers = {
 export const adultScans = {
   Glitch:'ELEVATED · specimen match MG-1842.', Crosseye:'ELEVATED · specimen match MG-6931.',
   Erik:'Trandoshan · NORMAL · no specimen match.', T0DD:'Inorganic · NOT APPLICABLE · no registry match. DEFECTIVE · RIGHT LEG MISSING. Subject appears to be a defective, ambulatory can opener. Correction: Partially ambulatory. NO BIOLOGICAL SAMPLE DETECTED.',
-  Ryan:'Human · AVERAGE · no specimen match.', Chris:'Duros · ELEVATED · explicitly no specimen match.',
+  Ryan:'Human · AVERAGE · no specimen match. Evidence of recent high-voltage exposure detected. Subject emitting sparks during scan.', Chris:'Duros · ELEVATED · explicitly no specimen match.',
   Merg:'Human · VERY HIGH · registry determination unavailable.',
   Ben:'Rodian · VERY HIGH · registry determination unavailable. Recalibrating ethanol sensor. Fictional BAC 0.67%.',
   Sam:'Species UNKNOWN · count UNKNOWN · WARNING: UNSTABLE · no classification issued.'
@@ -106,14 +106,14 @@ export const kidScans = Object.fromEntries(['James','Kai','Van','Liz','Henry','C
 // Minimum milestone, title, record. All scene text is served through the same access predicate.
 export function files(s){
   const rows=[
-    [0,'Staff directory','Duty desk: reception. Server service: floor junction. Equipment Room: sealed. Keep cylinders with the issuing officer.'],
+    [0,'Staff directory','Duty desk: reception. Server service: floor junction. Armory: sealed. Keep cylinders with the issuing officer.'],
     [0,'Property office','Lost authorization cylinders must be reported using an authorization cylinder. Equipment requests marked URGENT will be processed in the order received.'],
     [0,'Refreshments','Six cups of recycled caf were issued on night shift. Seven complaints were received. Stores requests the return of the extra cup.'],
     [0,'Droid port','Self-test complete. Maintenance staff may borrow the diagnostic lead. Organic personnel must stop using it as a belt.'],
     [3,'Patch ticket','Network connection failure. Disconnected cable beneath service panel in Server Room. Reconnect the cable.'],
     [5,'Security abstract','An escort reported a missing receipt. The incident office retained the envelope, filed the report and requested the receipt as supporting evidence.'],
     [5,'ISB credential requirement','ISB security authentication required. Registered duty location: ISB Officer’s Office. Recover the security cylinder and insert it at reception.'],
-    [8,'Scanner diagnostic','Bench offline. Replace keyed sensor assembly S-4 and regulator P-2. Matching packing class: instrument, regulated. Calibration requires local access in Analysis.'],
+    [8,'Scanner diagnostic','Bench offline. Replace keyed sensor assembly S-4 and regulator P-2. Matching packing class: instrument, regulated. Install components at the analysis bench. Dual-operator calibration is controlled at the authorized ISB terminal.'],
     [8,'Shipping manifest','TECHNICAL STORES • Crate B17: regulated instruments, S-4 + P-2. B71: general lighting, P-2 only. Two similar labels; compare contents before signing.'],
     [9,'Engineering work order','Relay 1 service crew retained the cage key. Parts docket B17. Branch pressure readings disagree by one division. Instrument service deferred.'],
     [11,'Laboratory inventory','Slide frames returned: all. Staff effects returned: none. A researcher has written a forwarding address inside the cover, then rubbed it away.'],
@@ -133,7 +133,7 @@ export function files(s){
       else rows.push([16,'Specimen Transfer Ledger','CLONE BATCH SIGMA. Dr. Penn Pershing, late Imperial register. James and Kai appear on separate specimen cards bearing the same project stamp. The purpose column has been removed from both cards.'],[16,'Transfer receipt','Two impressions on the transfer copy match the shelf slip. The archive contains no later disposition.']);
     }
   }
-  if(s.deck==='Lab'&&s.campaign==='MEN')for(const [name,body] of Object.entries(dossiers))if(s.matches?.[name])rows.push([12,'Individual specimen record — '+name,body]);
+  if(s.deck==='ISB'&&s.campaign==='MEN')for(const [name,body] of Object.entries(dossiers))if(s.matches?.[name])rows.push([12,'Individual specimen record — '+name,body]);
   const minimum={3:2,5:4,9:10,11:12,13:14,15:16};
   return Object.fromEntries(rows.filter(([n,name])=>s.step>=(name==='ISB credential requirement'?5:(minimum[n]??n))).map(([,a,b])=>[a,b]));
 }

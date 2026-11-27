@@ -17,7 +17,7 @@
          ".validate":"newData.hasChildren(['id','action','arg','revision'])",
          "id":{".validate":"newData.isString() && newData.val().length <= 50"},
          "revision":{".validate":"newData.isNumber()"},
-         "action":{".validate":"newData.isString() && newData.val().matches(/^(PLAY|FINISH|AUTH|CLOSE|DECK|INSERT|RETRIEVE|EQUIPMENT|BLUE|SCAN|SAVE SCAN)$/)"},
+         "action":{".validate":"newData.isString() && newData.val().matches(/^(PLAY|FINISH|STOP PLAYBACK|CALIBRATE|AUTH|CLOSE|DECK|INSERT|RETRIEVE|EQUIPMENT|BLUE|SCAN|SAVE SCAN)$/)"},
          "arg":{".validate":"newData.isString() && newData.val().length <= 90"},
          "$other":{".validate":false}
        },
