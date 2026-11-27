@@ -388,27 +388,27 @@ Area of influence: Drellis Minor
 
 Designation: Criminal organization leader
 
-Operational value: HIGH
+Operational value: DIMINISHING
 
-Security risk: HIGH
+Security risk: CRITICAL
 
 INTELLIGENCE ASSESSMENT
 
 Morgan possesses considerable resources, extensive criminal connections and substantial influence throughout Drellis Minor. Her reach extends well beyond the capabilities of the smaller criminal organizations operating within the region.
 
-Her resources and influence may prove invaluable to ongoing Imperial operations. However, her ambition, intelligence and considerable appetite for power make her a potentially dangerous liability.
+Recent intelligence indicates that Morgan has acquired considerably more information regarding our research activities than was authorized.
 
-OPERATIONAL RESTRICTIONS
+Her continued survival now represents an unacceptable security risk.
 
-Morgan is not to be informed of the true nature of our research or the scientific significance of the individuals being pursued.
+OPERATIONAL DIRECTIVE
 
-Any cooperation with her organization must be conducted through intermediaries whenever possible.
+Upon successful apprehension of the two surviving clone specimens, Commander Varrick and Rane are to be dispatched to eliminate Morgan.
 
-CONTINGENCY DIRECTIVE
+Until the specimens have been secured, Morgan is to remain unaware of this directive.
 
-Should Morgan acquire sufficient knowledge to compromise Imperial interests, she is to be eliminated.
+Her continued cooperation is desirable.
 
-Her usefulness does not supersede the security of this operation.
+Her continued survival is not.
 
 END OF RECORD
 

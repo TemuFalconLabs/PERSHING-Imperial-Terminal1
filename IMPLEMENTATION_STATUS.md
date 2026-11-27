@@ -107,3 +107,7 @@ Screenplay updated first. Completed replays and secondary workstations grouped; 
 ### Version 17 — hierarchy, focused M-count instrument and T0DD override
 Screenplay amended first. Routine records grouped; meaningful new records and available advancement choices receive distinct visual priority, with local acknowledgments. Dedicated instrument, focused subject selection, labelled reports and three-phase guarded scan animation; T0DD approved replacement assessment. 351 adapted assertions across 13 groups passed; station script parsed. Browser/phone visual and sound verification remains pending. No engine or Firebase rules changes.
  Focused mocked scan sequence and cancellation: 7 checks passed, including timing, fast skip, registry/error cues and stale revision guard. Combined offline script syntax parsed. Acknowledgment is browser-local; actual Firebase callback timing still requires rehearsal.
+
+
+### Version 18 — Morgan dossier revision
+Screenplay amended and read back first. Morgan already knows too much; Varrick and Rane are to eliminate her after successful apprehension of the two surviving clone specimens. Exact approved dossier synchronized with content and creative baseline; Drellis Minor Recovery Operation and all gates unchanged. 356 adapted source assertions in 14 groups passed; includes exact text, MEN-only and station/tape access checks. Browser/Pages serving and production remain unverified.
