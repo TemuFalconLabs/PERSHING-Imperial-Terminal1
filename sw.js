@@ -1,4 +1,4 @@
-const name='pershing-duty-v2.22';
+const name='pershing-duty-v2.23';
 const shell=['./','./index.html','./station.css','./station.mjs','./session.mjs','./engine.mjs','./content.mjs','./easter-eggs.mjs','./crisis-art.mjs','./voice-selection.mjs','./station-presentation.mjs'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(name).then(c=>c.addAll(shell)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));
