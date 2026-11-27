@@ -217,3 +217,21 @@ Approved DM-only objective reveal and phosphor response palette implemented. Exi
 Approved REC-003 placeholder, red locked next recording and yellow availability notifications implemented without gate changes. Physical blackboard clue remains necessary until final visual.
 
 Approved code validation acknowledgment and dedicated DM confirmation for authorization gate implemented. No change to code or other gates.
+
+
+## V18 future refinements — 26 November 2026
+
+Backlog only. User requested recording these ideas without implementing or amending approved creative canon. Both remain pending design review and explicit implementation approval.
+
+### IMP-026 — Distinct workstation visual identities
+- Status: Proposed / deferred; not implemented.
+- Give the Reception terminal, Imperial Security Bureau (ISB) officer's terminal and Research Director's terminal subtly different persistent visual identities, such as a prominent but restrained corner watermark, insignia or background treatment. The active workstation should be immediately recognizable without the decoration dominating the screen or competing with text, objectives, records, recordings, M-count analysis or crisis effects.
+- Candidate treatments for later review: general Imperial facility emblem for Reception; ISB insignia for the officer; specialized Imperial research division insignia for the Director. These are suggestions, not approved artwork. Determine treatment of other existing stations, including the lab workstation, during design review.
+- Acceptance proposal: identity follows the actual active workstation, remains legible on phone and laptop, and does not suggest access to a locked station or change any navigation, physical confirmation, security gate or recording behavior. Preserve existing status colors and full-screen crisis overlay. Review visuals with DM before implementation.
+
+### IMP-027 — Rival Imperial research director and facility identity
+- Status: Proposed narrative refinement / deferred; not implemented or canonized.
+- User wants this lab to be associated with a frightening female Imperial research director of comparable stature to Dr. Penn Pershing, rather than duplicating Pershing's own work directly. Explore her as a rival research leader competing with Pershing for Moff Gideon's favor, sponsorship or career advancement. Exact patronage, rank, relationship to Gideon and nature of the rivalry remain undecided; do not establish them as facts yet.
+- Proposed name for DM review: Dr. Veyra Kest (not approved; alternative names may be considered). She is intended to be the already-established deceased female Research Director found headless in her office, not an additional corpse or new character encounter.
+- Preserve the approved Director's office, readily recovered cylinder, closed-door REC-007 gate, existing clone research mysteries, Morgan record, and exact recording scripts until any affected creative amendments are explicitly approved. Review facility/project naming and the extent of Pershing references separately; no automatic rename of Project PERSHING, repository or campaign. Do not prematurely disclose Gideon's role to players.
+- If approved later, inspect affected canonical documents and source references, propose precise changes, update and verify the applicable Google Doc first, then make targeted implementation changes and test. No production release without separate approval.
