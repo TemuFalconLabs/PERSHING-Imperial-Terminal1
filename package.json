@@ -1,7 +1,7 @@
 {
   "name":"pershing-duty-station","version":"2.1.0","private":true,
   "scripts":{
-    "test":"node --test tests/engine.test.mjs tests/objective.test.mjs && node --test tests/voice.test.mjs && node --test tests/presentation.test.mjs",
+    "test":"node --test tests/engine.test.mjs tests/objective.test.mjs && node --test tests/voice.test.mjs && node --test tests/presentation.test.mjs tests/v22.test.mjs",
     "guides":"node build-guide.mjs && node build-offline.mjs",
     "test:rehearsal":"firebase emulators:exec --config firebase-emulators.json --only auth,database,hosting --project demo-pershing \"node tests/rules.mjs && node tests/rehearsal.mjs && node tests/rehearsal.mjs --optional && node tests/rehearsal.mjs --kids\""
   },

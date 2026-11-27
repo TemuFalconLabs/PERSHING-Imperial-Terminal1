@@ -1315,7 +1315,7 @@ eggEntries.push(...[
   },
   {
     "category": "Computer and programming",
-    "key": "INSERT INTO",
+    "key": "SQL INSERT INTO",
     "aliases": [],
     "responses": [
       "Please specify the correct authorization cylinder."
