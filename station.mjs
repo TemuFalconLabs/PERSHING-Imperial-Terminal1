@@ -74,7 +74,7 @@ function cueForState(before,after){
  if(/NETWORK CONNECTION RESTORED/.test(n))return 'link';
  if(/ENVIRONMENTAL RELAY/.test(n))return 'relay';
  if(/Carrier delivered|IMPERIAL RESEARCH ARCHIVE · Power supply/.test(n))return 'archive';
- if(/TAPE AUTHENTICATED|Cylinder mounted|Equipment Room released|Analysis bench calibrated/.test(n))return 'unlock';
+ if(/TAPE AUTHENTICATED|Cylinder mounted|Armory released|Scanning chamber repaired|BIOLOGICAL ANALYSIS SYSTEM ONLINE/.test(n))return 'unlock';
  if(after.lastScan&&n.startsWith(after.lastScan+' · '))return scanResultCue(after);
  if(/Current room closed| · CLOSED$| · OPEN$/.test(n))return 'door';
  if(after.step>before.step)return 'unlock';
@@ -271,7 +271,7 @@ function recordingPlayable(s,id){return s.step<17&&canPlay(s,id)&&(id!==7||s.doo
 function nextLockedRecording(s){
  if(s.step>=17)return 0;
  // Only the next sequential recording, and only after its predecessor is completed.
- // Earlier stations may display the numeric identifier but not the location or title.
+ // REC007 alone includes its red location restriction after REC006.
  for(let id=2;id<=7;id++){
    if(!s.seen[id-1]||s.seen[id])continue;
    if(['Primary','ISB','Archive','Director'].includes(s.deck)){
@@ -374,6 +374,8 @@ function draw(){
  $('top').textContent=(player()?s.deck.toUpperCase()+' STATION':'WATCH CONTROL · '+s.campaign)+'   /   '+net.code;
  $('board').hidden=player();$('monitor').hidden=!player();paintStationIdentity();syncAudio();
  if(!player()){$('notice').hidden=false;if(calibrationJob)calibrationJob.keys={};dashboard();return}
+ if(!s.playing&&chamberPages.includes(page)){if(!analysisFolderAvailable(s)||s.step>=17){page='Home';selected=''}else if(page!=='Analysis'&&(!scannerReadyHere(s)||page==='Sample'&&s.lastScan!==selected||page==='Scan dossier'&&!files(s)[selected])){page='Analysis';selected=''}}
+ if(['Archive discovery','Archive protocol'].includes(page)&&!archiveReferenceAvailable(s)){page='Home';selected='';archiveDiscoveryJob=null}
  const out=$('choices');out.replaceChildren();const inChamber=chamberPages.includes(page)&&!s.playing&&s.step<17;$('notice').hidden=inChamber&&!/Specimen scan complete|Sample filed|Scanning chamber repaired|BIOLOGICAL ANALYSIS SYSTEM ONLINE|Calibration/i.test(playerNotice(s));$('heading').dataset.finalRecording='false';paintObjective();$('authSuccess').hidden=!(s.step===7&&s.authVerified);$('dmReminder').hidden=inChamber||![1,3,5,7,9,10,11,13,16,17].includes(s.step)||!!s.playing;$('commandForm').hidden=inChamber||!!s.playing||(s.deck==='Archive'&&s.step<14);
  if(s.playing){if(calibrationJob)endCalibration(false);playback();return}
  if(calibrationJob){if(calibrationValid(calibrationJob)){drawCalibration();return}endCalibration(false)}
@@ -397,7 +399,7 @@ function draw(){
  else if(page==='Research Recordings'){textOut('Select a recording to play.');const {available,replays}=recordingGroups(s,recordings,recordingPlayable);const add=(node,i)=>{const b=button(node,'Play '+rid(i)+' · '+recordings[i][0],()=>act('PLAY',i),'PLAY '+rid(i));b.classList.add('availableRecording');markRecording(b,i)};available.forEach(i=>add(out,i));const locked=nextLockedRecording(s);if(locked)lockedRecordingRow(out,locked);if(replays.length){const replay=group('Completed recordings · replay ('+replays.length+')');replays.forEach(i=>add(replay,i))}if(['Archive','Director'].includes(s.deck)){if(archiveReferenceAvailable(s))go('Archive discovery','Review classified archive reference');btn(s.deck==='Archive'?'Return to retrieval station':'Return to Research Director’s terminal',()=>nav('Home'))}}
  else if(page==='Clone Batch Sigma'&&s.deck==='ISB'&&s.inserted['CLONE BATCH SIGMA']){textOut('CLONE BATCH SIGMA — AVAILABLE RECORDS\nIndividual specimen records available upon biological specimen scan.\n\nExecutive terminal: Research Director’s office beyond the cloning laboratory. Local access only.');const names=s.campaign==='MEN'?['Specimen Transfer Ledger','Drellis Minor Recovery Operation','Crime Lord Morgan','Research Oversight Authorization']:['Specimen Transfer Ledger','Transfer receipt'];for(const name of names)if(files(s)[name])recordChoice(out,name);}
  else if(page==='Records'||page==='Search'){const names=Object.keys(files(s)).filter(x=>page!=='Search'||(x+' '+files(s)[x]).toLowerCase().includes(query.toLowerCase()));textOut(names.length?'Available records':'No local records match.');const {important:relevant,routine}=partitionRecords(names);const lore=relevant.filter(n=>Object.hasOwn(localResearchRecords,n));relevant.filter(n=>!Object.hasOwn(localResearchRecords,n)).forEach(x=>recordChoice(out,x));if(lore.length){const archive=group('Research correspondence and incident files ('+lore.length+')');lore.forEach(x=>recordChoice(archive,x));if(page==='Search')archive.parentNode.open=true}if(routine.length){const admin=group('Administrative Archives ('+routine.length+')');routine.forEach(x=>recordChoice(admin,x))}}
- else if(page==='Read'){const body=files(s)[selected];$('heading').textContent=body?(selected==='Scanner diagnostic'?'M-count analysis diagnostic':selected):'Record unavailable';textOut(body||'Access unavailable.')}
+ else if(page==='Read'){const body=files(s)[selected];$('heading').textContent=body?(selected==='Scanner diagnostic'?'M-Count Scanning Chamber diagnostic':selected):'Record unavailable';textOut(body||'Access unavailable.')}
  else if(page==='Doors'&&s.deck==='ISB'&&s.step>=8){textOut('ARMORY · '+(s.equipment?'RELEASED':'SEALED'));if(!s.equipment)btn('Release Armory',()=>act('EQUIPMENT'),'UNLOCK ARMORY')}
  else if(page==='Analysis'&&analysisFolderAvailable(s)){
    $('heading').textContent='M-Count Scanning Chamber';
@@ -414,7 +416,7 @@ function draw(){
  else {textOut('DIR · OPEN <directory or file> · SEARCH <text> · PLAY <record> · STATUS'+(s.deck==='ISB'?' · UNLOCK ARMORY':'')+(s.step>=6?' · AUTH <code>':'')+(s.repaired?' · SCAN <subject> · SAVE SCAN · DISCARD SCAN':'')+(s.step>=8?' · ISB · RECEPTION':'')+(s.step>=13?' · ARCHIVE':'')+(s.step>=14?' · INSERT <tape>':''))}
  if(s.deck!=='Archive'&&s.deck!=='Director'){
    if(s.deck==='Primary'&&s.step===7&&!s.authVerified)btn('Enter authorization code',()=>prepareManual('AUTH '));
-   const links=[];if(s.step>=14)links.push(['Use archive station','Archive','ARCHIVE',s.deck==='ISB'&&s.step===14]);if(s.step>=8&&s.deck!=='Primary')links.push(['Return to reception terminal','Primary','RECEPTION',s.step===8]);if(s.step>=8&&s.deck!=='ISB')links.push(['Use ISB officer’s terminal','ISB','ISB',s.step>=9]);const primary=links.filter(x=>x[3]),secondary=links.filter(x=>!x[3]);for(const [label,deck,cmd] of primary)important(label,()=>act('DECK',deck),cmd,'station:'+deck,true);if(secondary.length){const other=group('Other workstations');for(const [label,deck,cmd] of secondary)button(other,label,()=>act('DECK',deck),cmd)}
+   const links=[];if(s.step>=14||s.step===13&&!archiveReferenceAvailable(s))links.push(['Use archive station','Archive','ARCHIVE',s.deck==='ISB'&&(s.step===13||s.step===14)]);if(s.step>=8&&s.deck!=='Primary')links.push(['Return to reception terminal','Primary','RECEPTION',s.step===8]);if(s.step>=8&&s.deck!=='ISB')links.push(['Use ISB officer’s terminal','ISB','ISB',s.step>=9]);const primary=links.filter(x=>x[3]),secondary=links.filter(x=>!x[3]);for(const [label,deck,cmd] of primary)important(label,()=>act('DECK',deck),cmd,'station:'+deck,true);if(secondary.length){const other=group('Other workstations');for(const [label,deck,cmd] of secondary)button(other,label,()=>act('DECK',deck),cmd)}
    if(s.deck==='ISB')Object.keys(s.retrieved).filter(x=>!s.inserted[x]).forEach(x=>important('Insert '+x,()=>insertTape(x),'INSERT '+x,'insert:'+x,x==='CLONE BATCH SIGMA'));
    if(archiveReferenceAvailable(s)){important('Review classified archive reference',()=>selectPage('Archive discovery'),'','archive-reference',s.step===13)}if(analysisFolderAvailable(s)&&!chamberPages.includes(page)){const analysis=markChoice(go('Analysis','M-Count Scanning Chamber'),scannerReadyHere(s)?'analysis:online':'analysis',!s.repaired&&reviewed.has('analysis'));out.prepend(analysis)}if(canPlay(s,6)&&!s.seen[6]&&page!=='Research Recordings'&&!chamberPages.includes(page))markRecording(btn('Play REC-006 · Experimental procedures',()=>act('PLAY',6),'PLAY REC-006'),6);if(page!=='Home'){btn('Go back',goBack);go('Home');}
  }
@@ -425,7 +427,7 @@ function drawArchiveReference(out,protocol){
  $('heading').textContent=protocol?'Secure media retrieval protocol':'Classified archive discovery';
  textOut('');const screen=$('screen'),ticket=renderTicket,rows=protocol?archiveProtocolRows:archiveDiscoveryRows;
  const add=([line,tone])=>{const n=el('p',line,screen);n.className='archiveDiscoveryLine';n.dataset.archiveTone=tone};
- const controls=()=>{busy=false;if(protocol){if(s.step===13||s.step===14)markChoice(button(out,'PROCEED TO ARCHIVE VAULT',()=>act('DECK','Archive'),'ARCHIVE'),'archive-vault',true);button(out,'Return to classified archive reference',()=>selectPage('Archive discovery'))}else markChoice(button(out,'VIEW ARCHIVE RETRIEVAL INSTRUCTIONS',()=>selectPage('Archive protocol')),'archive-protocol',true);button(out,'Return to main directory',()=>selectPage('Home'))};
+ const controls=()=>{busy=false;if(!protocol)acknowledge('archive-reference');if(protocol){if(s.step===13||s.step===14)markChoice(button(out,'PROCEED TO ARCHIVE VAULT',()=>s.deck==='Archive'?selectPage('Home'):act('DECK','Archive'),'ARCHIVE'),'archive-vault',true);button(out,'Return to classified archive reference',()=>selectPage('Archive discovery'))}else markChoice(button(out,'VIEW ARCHIVE RETRIEVAL INSTRUCTIONS',()=>selectPage('Archive protocol')),'archive-protocol',true);button(out,'Return to main directory',()=>selectPage('Home'))};
  const j=archiveDiscoveryJob;
  const valid=()=>j&&archiveDiscoveryJob===j&&ticket===renderTicket&&player()&&page==='Archive discovery'&&net.code===j.code&&s.campaign===j.campaign&&s.playbackSerial===j.serial&&archiveReferenceAvailable(s)&&!s.playing;
  if(protocol||!valid()||s.fast||reduced){archiveDiscoveryJob=null;rows.forEach(add);controls();return}
@@ -453,8 +455,8 @@ async function retrieve(x){
  finally{if(retrievalJob===j){retrievalJob=null;busy=false;draw()}}
 }
 async function scan(name){
- if(!scannerReadyHere(s)||!Object.hasOwn(scans(s),name)||scanJob||s.playing||s.step>=17)throw Error('M-count analysis unavailable.');
- const job={code:net.code,revision:s.revision,message:scanPhases[0]},valid=()=>player()&&net.code===job.code&&s.revision===job.revision&&scannerReadyHere(s)&&!s.playing&&s.step<17;scanJob=job;
+ if(!scannerReadyHere(s)||!Object.hasOwn(scans(s),name)||scanJob||s.playing||s.step>=17)throw Error('M-Count Scanning Chamber unavailable.');
+ page='Specimens';selected='';const job={code:net.code,revision:s.revision,message:scanPhases[0]},valid=()=>player()&&net.code===job.code&&s.revision===job.revision&&scannerReadyHere(s)&&!s.playing&&s.step<17;scanJob=job;
  try{if(!s.fast&&!reduced){for(const phase of scanPhases){if(!valid())return;job.message=phase;draw();busy=true;await new Promise(r=>setTimeout(r,1000))}}if(!valid())return;await act('SCAN',name);const received=()=>net.code===job.code&&s.revision>job.revision&&scannerReadyHere(s)&&s.lastScan===name&&s.notice===name+' · '+scans(s)[name]&&!s.playing&&s.step<17;for(let i=0;i<20&&!received()&&net.code===job.code&&s.revision===job.revision;i++)await new Promise(r=>setTimeout(r,100));if(received()){scanJob=null;playCue(scanResultCue(s));nav('Sample',name)}else if(net.code===job.code&&s.revision===job.revision)throw Error('Scan confirmation pending. Review station state before retrying.')}
  finally{if(scanJob===job){scanJob=null;busy=false;draw()}}
 }
@@ -552,7 +554,7 @@ function recordSearchMatches(raw){const q=raw.toLowerCase().trim();return !!q&&O
 async function command(value){
  if(bloodVisible())return;
  let raw=value.trim().replace(/\s+/g,' '),v=raw.toUpperCase();
- if(s.playing){if(v==='PAUSE')pausePlayback();if(v==='STOP'||v==='STOP RECORDING')stopPlayback();return}if(calibrationJob||retrievalJob)return;
+ if(s.playing){if(v==='PAUSE')pausePlayback();if(v==='STOP'||v==='STOP RECORDING')stopPlayback();return}if(calibrationJob||retrievalJob)return;if(chamberPages.includes(page)&&/^(?:PLAY|REPLAY)\s/.test(v))throw Error('Return to the main directory to play research recordings.');
  if(s.deck==='Archive'&&s.step<14){if(v==='ISB')return act('DECK','ISB');return}
  if(s.deck==='Archive'){
    if(v==='OPEN RESEARCH RECORDINGS')return selectPage('Research Recordings');const recording=v.match(/^(?:PLAY|REPLAY) (?:REC-)?0*([1-7])$/);if(recording)return act('PLAY',recording[1]);
