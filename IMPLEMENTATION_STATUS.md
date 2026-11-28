@@ -151,3 +151,7 @@ Approved MEN character engagement and escape narrative, Sam secret clone identit
 
 ## Final creative audit checkpoint — Reviews 8–12, 27 November 2026
 The two authoritative Google Docs have identical, read-back verified amendments covering Reviews 8–11 and the technical readiness decision in Review 12. Reviews 8 and 11 closed without software changes. Reviews 9 and 10 preserve the approved tabletop-only rules in those documents. The DM-GUIDE.md synchronization attempt was blocked; it remains outstanding. Browser rehearsal recovery-panel interaction updated in commit 9bb19600b25525ee23b4334fda807c23be27aed6; read-back confirmed five calls to open the panel and adapted JavaScript syntax parse passed. Native browser execution and Firebase synchronization remain unverified. No application source, offline build, main branch, or production changes in this checkpoint. Feature development frozen pending regression rehearsal and separate deployment approval.
+
+
+## Audit documentation synchronization — resolved
+DM-GUIDE.md synchronized with the exact approved Reviews 8–12 checkpoint from Master Adventure Design in commit 35eebd928c7db10f8367a9cb6e195668c6aeb05a; exact text read-back verified. The previous blocked guide write is resolved. Feature freeze, browser and Firebase rehearsal requirements, and separate production authorization remain unchanged.
