@@ -534,11 +534,21 @@ const dmNarrative=[
  'The final transmission has ended. Allow the silence and table reaction; activate the crisis manually when ready.',
  'Narrate the crisis and allow player choices; display the bloody handprint only on your separate manual cue.'
 ];
+const menSpotlights={
+ 0:'Arrival: Chris pilots the landing; Ryan recognizes freight controls and helps activate the cargo lift from the landing pad to the lower laboratory. T0DD recognizes Imperial protocol where relevant.',
+ 3:'T0DD may use Imperial maintenance protocol and strength to assist at the service panel.',
+ 5:'Erik recognizes the ISB safe security architecture; give him the opportunity to hack the trapped safe.',
+ 7:'Erik: bypass the safe and recover the damaged authorization card. Keep the existing trap and authorization requirements.',
+ 9:'Chris: traverse the elevated catwalk to reach and restore the relay. T0DD can assist physically where appropriate.',
+ 12:'Ryan: recognize the maintenance components, assist with scanner repair and cooperate with Glitch on calibration. Scanner remains optional.',
+ 16:'Erik: Morgan’s kill order is valuable intelligence. Let the group decide what to do with it.',
+ 18:'ESCAPE: Cargo lift is disabled by containment protocols. Sam recognizes his previous secret maintenance route; T0DD destroys the reinforced grate erected after Sam escaped; Chris leaps across to lower the maintenance ladder. Allow assistance and fail-forward alternatives. DM ONLY: Sam is secretly a surviving clone; do not reveal his identity through the scan or this narration.'
+};
 function dashboard(){
  const board=$('board');board.replaceChildren();
  const card=(title)=>{let n=el('section','',board);n.className='card';el('h3',title,n);return n};
  const fold=(title,promote=false)=>{const d=el('details','',board);d.className='card dmFold';el('summary',title,d);d.open=promote||dmExpanded.has(title);d.ontoggle=()=>{if(d.isConnected){if(d.open)dmExpanded.add(title);else dmExpanded.delete(title)}};return el('div','',d)};
- const main=card('Operator control · '+(stages[s.step]||'Watch'));main.classList.add('dmPrimary');if(net.local)button(main,'Return to Player View',toggleView).className='playerViewTop';else{const a=el('a','Open Player View',main);const url=new URL(location.href);url.searchParams.delete('dm');a.href=url.href;a.target='_blank';a.rel='noopener';a.className='playerViewTop'}el('p',s.step+'/18 · '+(route[s.step]||'Encounter underway'),main);el('strong','NEXT ACTION: '+(s.playing?'Wait for '+rid(s.playing):s.step===16?objective(s):s.step===13&&s.deck!=='Archive'?'Select Archive retrieval terminal when the party arrives':s.step===7&&s.authVerified?'Confirm successful entry & advance':route[s.step]||'Run the encounter'),main).className='dmNext';el('p',dmNarrative[s.step]||'',main).className='dmNarrative';
+ const main=card('Operator control · '+(stages[s.step]||'Watch'));main.classList.add('dmPrimary');if(net.local)button(main,'Return to Player View',toggleView).className='playerViewTop';else{const a=el('a','Open Player View',main);const url=new URL(location.href);url.searchParams.delete('dm');a.href=url.href;a.target='_blank';a.rel='noopener';a.className='playerViewTop'}el('p',s.step+'/18 · '+(route[s.step]||'Encounter underway'),main);el('strong','NEXT ACTION: '+(s.playing?'Wait for '+rid(s.playing):s.step===16?objective(s):s.step===13&&s.deck!=='Archive'?'Select Archive retrieval terminal when the party arrives':s.step===7&&s.authVerified?'Confirm successful entry & advance':route[s.step]||'Run the encounter'),main).className='dmNext';el('p',dmNarrative[s.step]||'',main).className='dmNarrative';if(s.campaign==='MEN'&&menSpotlights[s.step])el('p',menSpotlights[s.step],main).className='dmNarrative';
  el('p',s.playing?'Currently playing '+rid(s.playing):s.step===7&&s.authVerified?'Correct code validated · awaiting DM confirmation':'Awaiting '+(physical.includes(route[s.step])?'physical confirmation':'player interaction'),main);
  const op=(n,label,a,arg='')=>button(n,label,()=>act(a,arg));
  if(physical.includes(route[s.step])){const b=button(main,route[s.step]==='ACTIVATE CRISIS'?'Activate Crisis':route[s.step],()=>act(route[s.step]));b.disabled=!!s.playing||s.step===13&&s.deck!=='Archive';b.className='dmNextAction'}
