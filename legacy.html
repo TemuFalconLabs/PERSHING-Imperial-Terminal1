@@ -1,0 +1,87 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>Imperial Science Division • Duty station</title>
+<style>
+:root{--bg:#090e0d;--panel:#101915;--edge:#354b41;--ink:#d9e8de;--mint:#a8e9ae;--mute:#9aac9e;--warm:#f3cf87;--red:#ff9b87}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 ui-monospace,Consolas,"Liberation Mono",monospace}main{width:min(1050px,96%);margin:3vh auto}header,section,footer,.box{border:1px solid var(--edge)}header{display:flex;align-items:center;justify-content:space-between;padding:17px 22px;background:var(--panel)}h1{font-size:clamp(16px,3vw,24px);font-weight:550;letter-spacing:.05em;margin:0}header small,.sub{font-size:12px;color:var(--mute)}.lamp{border:1px solid var(--edge);padding:4px 9px;color:var(--mint);font-size:12px}section{padding:12px 20px;background:#0b120e;border-top:0}#log{height:clamp(215px,43vh,530px);overflow:auto;scrollbar-color:#475b4e transparent;overflow-wrap:anywhere}p,pre{margin:.4em 0 .85em;white-space:pre-wrap;font:inherit}.record{border-left:2px solid var(--mint);padding-left:13px}.cmd{color:var(--mute);font-size:13px}.warn{color:var(--warm)}.critical{color:var(--red)}.alert header{border-color:var(--red)}.alert .lamp{color:var(--red)}form,.buttons{display:flex;gap:8px;align-items:center;flex-wrap:wrap}footer{padding:12px 18px;background:var(--panel)}input,button,select{font:inherit;color:var(--ink);background:#14221a;border:1px solid #657c6a;border-radius:2px;padding:8px}button{cursor:pointer}button:hover{background:#25362b}input:focus,button:focus-visible,select:focus-visible{outline:2px solid var(--mint)}#command{flex:1;min-width:70px}label{color:var(--mint)}#quick{margin-top:10px}#quick button{padding:4px 8px;font-size:13px}.box{padding:1rem;margin-top:10px;background:var(--panel)}dialog{max-width:min(94vw,620px);color:var(--ink);background:#152219;border:1px solid var(--edge)}dialog::backdrop{background:#080e0cd9}audio,video{max-width:100%;max-height:28vh;display:block;margin:7px 0}button[hidden],[hidden]{display:none!important}article{margin-top:.4em}.rail{display:flex;gap:18px;justify-content:space-between;font-size:11px;letter-spacing:.13em;color:var(--mute);margin:8px 1px}#mount input{max-width:100%}h2{font-size:17px}#view .sub{margin:6px 0} @media(max-width:550px){main{width:100%;margin:0}header,section,footer{padding:12px}.rail{padding:0 6px}#log{height:42vh}.lamp{font-size:10px}}
+</style><main><header><div><small>ISD   /   FIELD SYSTEMS</small><h1>Imperial Science Division</h1></div><span class="lamp" id="lamp">● STANDBY</span></header>
+<div class="rail"><span>LOCAL DUTY STATION</span><span id="level">PORT 07</span></div>
+<div class="box" id="mount"><h2>Mount station cartridge</h2><label>Local file <input type="file" id="file" accept=".cart,application/json"></label><p id="loadmsg" role="status">Select the cartridge supplied by the duty officer.</p></div>
+<div id="console" hidden><section><div id="log" role="log" aria-live="polite" tabindex="0"></div><article id="view"></article></section><footer><form id="form"><label for="command">ISD&gt;</label><input id="command" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Station command"><button>Enter</button></form><div class="buttons" id="quick"></div></footer></div>
+<dialog id="service"><form method="dialog"><h2>Service console</h2><button>Close</button></form><div id="unlock"><label>Operator key <input type="password" id="opkey"></label><button id="signin">Unlock</button></div><div id="ops" hidden><label>Checkpoint <select id="jump"></select></label><button id="apply">Apply checkpoint</button><button id="repair">Confirm bench repair</button><button id="advance">Advance diagnostics</button><button id="reset">Reset run</button></div><p id="serviceMsg"></p></dialog>
+</main><script id="cartridge" type="application/json">null</script><script>
+"use strict";
+const el=id=>document.getElementById(id);
+let cfg,st,pending=null,history=[],cursor=0,medium=null,operator=false;
+const blank=()=>({cylinder:false,film:false,auth:false,relays:[],lab:false,bench:false,archive:false,seen:[],saved:[],final:"idle"});
+const stage=()=>st.final==="alarm"?4:st.archive?3:st.lab?2:st.auth?1:0;
+const canonical=x=>String(x??"").trim().toUpperCase().replace(/\s+/g," ");
+const unique=(xs,x)=>{if(!xs.includes(x))xs.push(x)};
+const ids=()=>st.seen;
+const levels=["Visitor","Duty access","Laboratory","Classified","Emergency"];
+function print(t,kind=""){let p=document.createElement("p");p.className=kind;p.textContent=t;el("log").append(p);el("log").scrollTop=el("log").scrollHeight}
+function available(r){return stage()>=r.tier && (!r.requires||st[r.requires]) && (r.kind!=="TRANSMISSION"||ids().includes("025"))}
+function write(){try{localStorage.setItem("isd.run."+cfg.id,JSON.stringify(st))}catch{el("level").title="Browser storage unavailable. Keep this window open."}refresh()}
+function btn(dst,name,fn){const b=document.createElement("button");b.type="button";b.textContent=name;b.onclick=fn;dst.append(b)}
+function openList(){return cfg.records.filter(available)}
+function next(){
+ if(st.final==="alarm")return "Move away from the console. The facility alarm is sounding.";
+ if(st.final==="playing")return "The carrier is open. Listen or read the transcript, then END PLAYBACK.";
+ if(!st.cylinder)return "READ 005 for the location of the duty cylinder. Enter CYLINDER followed by the tag found in the room.";
+ if(!st.auth)return st.film?"Enter AUTH and the six digits from the duty board.":"REPLAY 006 to inspect the orientation board.";
+ if(!st.lab)return st.relays.length===3?"UNLOCK LAB to release the door.":"POWER lists the three local starters. RESTORE <panel> <field tag> reports a physical activation.";
+ if(!st.archive)return !ids().includes("017")?"Read the batch register with RECORDS.":"ARCHIVE gives the instructions for rebuilding the key.";
+ if(!ids().includes("025"))return "READ 025 to inspect the authorization attached to the recovered recording.";
+ return "REPLAY FINAL to open the duty recording, or use LOGS to browse.";
+}
+function choices(){if(st.final==="alarm")return ["STATUS","CLEAR"];if(st.final==="playing")return ["END PLAYBACK","REPLAY FINAL"];if(pending)return ["Y","N"];let a=["HELP","STATUS","DIR","LOGS"];if(!st.cylinder)a.push("READ 005");else if(!st.auth)a.push("REPLAY 006");else if(!st.lab)a.push("POWER","DOORS");else if(!st.archive)a.push("RECORDS","ARCHIVE");else a.push(ids().includes("025")?"REPLAY FINAL":"READ 025");return a}
+function refresh(){el("lamp").textContent=st.final==="alarm"?"● ALERT":"● ONLINE";document.body.classList.toggle("alert",st.final==="alarm");el("level").textContent=levels[stage()].toUpperCase();el("quick").replaceChildren();choices().forEach(x=>btn(el("quick"),x,()=>run(x)))}
+function stopMedia(){if(medium){medium.onended=null;medium.pause();medium=null}el("view").replaceChildren()}
+function alarm(){if(st.final!=="playing")return;stopMedia();st.final="alarm";pending=null;print(cfg.emergency,"critical");write()}
+function play(r){stopMedia();if(!r.media)return;const m=document.createElement(r.kind==="FILM"?"video":"audio");medium=m;m.controls=true;m.playsInline=true;m.preload="auto";m.src=r.media;el("view").append(m);if(r.kind==="TRANSMISSION")m.onended=()=>setTimeout(()=>{if(medium===m)alarm()},2200);m.onerror=()=>{if(medium===m)print("Media unavailable. The text copy above is complete.","warn")};m.play().catch(()=>{})}
+function show(r){if(!r||!available(r))return unknown();unique(ids(),r.id);if(r.id==="006")st.film=true;if(r.kind==="TRANSMISSION"){st.final="playing";pending=null}print(r.id+"  /  "+r.title.toUpperCase()+(r.kind==="TRANSMISSION"?"":"\n"+r.body),"record");play(r);if(r.kind==="TRANSMISSION"){const d=document.createElement("details"),s=document.createElement("summary"),p=document.createElement("p");s.textContent="Read transmission transcript";p.textContent=r.body;d.append(s,p);el("view").append(d);print("Text playback: END PLAYBACK when finished.","warn")}}
+function unknown(){print("No entry available. Enter HELP for this station's commands.","warn")}
+function inspect(q){let r=cfg.records.find(r=>r.id===q);show(r)}
+function help(){let lines=["HELP • DIR • LOGS • STATUS • READ <ID> • REPLAY <ID> • SEARCH <text> • WHOAMI • CLEAR"];if(!st.cylinder)lines.push("CYLINDER <field tag>");if(st.cylinder&&!st.auth)lines.push("AUTH <six digits>");if(st.auth)lines.push("POWER • DOORS • RESTORE <panel> <tag> • UNLOCK LAB");if(st.lab)lines.push("RECORDS • SURVIVORS • RECOVERY • OPTICS • ARCHIVE • DECRYPT <key> • REPAIR ANALYZER <tag>");if(st.bench)lines.push("SCAN <subject> • SAVED");print(lines.join("\n")+"\n\n"+next())}
+function confirmReply(yes){if(pending.type==="report")print(yes?cfg.report:"Supplement returned unread.","record");else if(yes){unique(st.saved,pending.subject);print("Sample saved to local record.")}else print("Sample discarded.");pending=null}
+function dispatch(c){
+ if(c==="CLEAR"){el("log").replaceChildren();if(st.final!=="playing")stopMedia();return}
+ if(st.final==="alarm"){if(["STATUS","HELP","DIR"].includes(c))return print(cfg.emergency,"critical");return unknown()}
+ if(st.final==="playing"){if(c==="END PLAYBACK")return alarm();if(["READ FINAL","REPLAY FINAL","REPLAY 028","READ 028"].includes(c))return inspect("028");return print(next())}
+ if(pending){if(["Y","YES","N","NO"].includes(c))return confirmReply(c.startsWith("Y"));print("Enter Y or N to close the current request.");return}
+ if(c==="HELP"||c==="?")return help();
+ if(c==="STATUS")return print(levels[stage()].toUpperCase()+" / "+(st.auth?st.relays.length+" of 3 starters online. ":"")+"\n"+next());
+ if(c==="WHOAMI")return print("Duty classification: "+levels[stage()]+".");
+ if(c==="PLEASE"||c==="ADMIN"||c==="OVERRIDE")return print("Courtesy recorded. Duty classification unchanged.");
+ if(c==="REBOOT")return print("Engineering requests that you leave the switch alone.");
+ if(c==="DIR"||c==="LOGS"||c.startsWith("SEARCH ")){const query=c.startsWith("SEARCH ")?c.slice(7):"";const rows=openList().filter(r=>!query||canonical(r.title+" "+r.body+" "+r.id).includes(query));return print(rows.length?rows.map(r=>r.id+"  "+r.title+"  ["+r.kind+"]").join("\n"):"No entry available.")}
+ let parts=c.split(" "),[op,a,b]=parts;
+ if(op==="READ"||op==="REPLAY"){if(a==="FINAL"&&parts.length===2)return show(cfg.records.find(r=>r.kind==="TRANSMISSION"));if(parts.length===2)return inspect(a);return unknown()}
+ if(op==="CYLINDER"&&!st.auth){if(parts.length!==2||a!==cfg.field)return print("Field tag not accepted.","warn");st.cylinder=true;return print("Damaged code cylinder: 7?4??9. REPLAY 006 for the board.")}
+ if(op==="AUTH"&&st.cylinder){if(!st.film||parts.length!==2||a!==cfg.auth)return print("Credential not accepted. Consult the duty board.","warn");st.auth=true;return print("Duty access granted. POWER and DOORS available.")}
+ if(st.auth&&(c==="POWER"||c==="DOORS"))return print(cfg.relays.map(([id,room])=>id+"  "+room+"  "+(st.relays.includes(id)?"ONLINE":"OFFLINE")).join("\n")+"\nMain laboratory: "+(st.lab?"OPEN":"LOCKED")+". Air circulation required for occupancy.");
+ if(op==="RESTORE"&&st.auth){const r=cfg.relays.find(x=>x[0]===a);if(!r||r[2]!==b||parts.length!==3)return print("Panel return not accepted.","warn");unique(st.relays,a);return print(a+" reports ONLINE.")}
+ if(c==="UNLOCK LAB"&&st.auth){if(st.relays.length!==3)return print("Local starters incomplete. Use POWER.","warn");st.lab=true;return print("Laboratory access granted. Your safety is our priority. RECORDS opens the batch ledger.")}
+ if(st.lab&&c==="RECOVERY"){pending={type:"report"};return print("Two field supplements indexed. Retrieve report? [Y/N]")}
+ if(st.lab&&c==="ARCHIVE")return print(st.archive?"Archive open. "+next():"Reconstruct the three seals in facility-day order. Consult 012, 003 and 007. The batch register must be acknowledged before release. DECRYPT <six digits>.");
+ if(st.lab&&op==="DECRYPT"){if(!["003","007","012","017"].every(x=>ids().includes(x))||a!==cfg.key||parts.length!==2)return print("Reconciliation incomplete. Check the register and the dated seals.","warn");st.archive=true;return print("Classified access granted. READ 025 for the authorization abstract.")}
+ if(st.lab&&c.startsWith("REPAIR ANALYZER")){if(c!=="REPAIR ANALYZER "+cfg.repair)return print("Return the bench service tag from the analysis room.","warn");st.bench=true;return print("Reader online. SCAN plus a subject's name.")}
+ if(st.bench&&op==="SCAN"){let subject=cfg.subjects.find(([n,als])=>n===a||als.includes(a));if(!subject||parts.length!==2)return print("No sample selected.");let [n,,sp,m,res]=subject;print(n+"  /  SPECIES: "+sp+"\nM-COUNT: "+m+"\n"+res,m==="UNKNOWN"?"critical":m.includes("HIGH")||m==="ELEVATED"?"warn":"record");if(m!=="N/A"){pending={type:"sample",subject:n};print("SAVE SPECIMEN TO RESEARCH DATABASE? [Y/N]")}return}
+ if(c==="SAVED"&&st.bench)return print(st.saved.join("\n")||"Local sample register empty.");
+ let r=cfg.records.find(r=>r.aliases?.includes(c));if(r)return show(r);unknown()
+}
+function run(raw){const c=canonical(raw);if(!c)return;history.push(raw);cursor=history.length;print("› "+c,"cmd");dispatch(c);write();el("command").focus()}
+function boot(c){if(c?.version!==1||!Array.isArray(c.records)||!Array.isArray(c.relays)||!c.subjects||!c.id)throw Error("Unsupported cartridge");cfg=c;st=blank();try{const old=JSON.parse(localStorage.getItem("isd.run."+cfg.id));if(old&&["relays","seen","saved"].every(k=>Array.isArray(old[k])))st={...st,...old}}catch{}el("mount").hidden=true;el("console").hidden=false;print("Duty station ready. "+next());write();if(st.final==="playing")print("Recording paused after reload. REPLAY FINAL or END PLAYBACK.");if(st.final==="alarm")print(cfg.emergency,"critical");el("command").focus()}
+const db=()=>new Promise((ok,no)=>{let r=indexedDB.open("isd.station.v1",1);r.onupgradeneeded=()=>r.result.createObjectStore("station");r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});
+async function cache(action,v){const d=await db();return new Promise((ok,no)=>{const tx=d.transaction("station",action==="get"?"readonly":"readwrite");let s=tx.objectStore("station");const r=action==="get"?s.get("cart"):s.put(v,"cart");tx.oncomplete=()=>{d.close();ok(r.result)};tx.onerror=()=>{d.close();no(tx.error)}})}
+el("file").onchange=async e=>{try{const c=JSON.parse(await e.target.files[0].text());boot(c);try{await cache("put",c)}catch{print("Remount cartridge on reload. Progress uses local storage.","warn")}}catch{el("loadmsg").textContent="Cartridge could not be read."}};
+el("form").onsubmit=e=>{e.preventDefault();let v=el("command").value;el("command").value="";run(v)};
+el("command").onkeydown=e=>{if(e.key==="ArrowUp"||e.key==="ArrowDown"){e.preventDefault();cursor=Math.max(0,Math.min(history.length,cursor+(e.key==="ArrowUp"?-1:1)));el("command").value=history[cursor]||""}};
+document.addEventListener("keydown",e=>{if(cfg&&e.ctrlKey&&e.shiftKey&&e.code==="KeyK"){e.preventDefault();el("service").showModal();el("opkey").focus()}});
+el("signin").onclick=()=>{operator=el("opkey").value===cfg.pin;el("opkey").value="";el("serviceMsg").textContent=operator?"Select a service action.":"Operator key not accepted.";el("ops").hidden=!operator;el("unlock").hidden=operator};
+el("service").onclose=()=>{operator=false;el("ops").hidden=true;el("unlock").hidden=false;el("opkey").value="";el("serviceMsg").textContent=""};
+["Visitor","Authenticated","Laboratory","Classified"].forEach((x,i)=>el("jump").add(new Option(x,String(i))));
+function checkpoint(n){stopMedia();st=blank();if(n>0){st.cylinder=st.film=st.auth=true;st.seen=["006"]}if(n>=2){st.relays=cfg.relays.map(r=>r[0]);st.lab=true}if(n>=3){st.seen.push("003","007","012","017");st.archive=true}pending=null;history=[];cursor=0;el("log").replaceChildren();print(next());write()}
+el("apply").onclick=()=>{if(operator&&confirm("Replace current progress with this checkpoint?")){checkpoint(Number(el("jump").value));el("service").close()}};
+el("reset").onclick=()=>{if(operator&&confirm("Erase this run and return to visitor access?")){checkpoint(0);el("service").close()}};
+el("advance").onclick=()=>{if(operator&&st.final==="playing"){alarm();el("service").close()}else el("serviceMsg").textContent="Active duty recording required."};
+el("repair").onclick=()=>{if(operator&&st.lab&&st.final==="idle"){st.bench=true;write();el("service").close();print("Reader online.")}else el("serviceMsg").textContent="Available during laboratory access."};
+(async()=>{try{let c=JSON.parse(el("cartridge").textContent)||await cache("get");if(c)boot(c)}catch{}})();
+</script></html>

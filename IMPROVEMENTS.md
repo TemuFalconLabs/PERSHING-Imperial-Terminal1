@@ -1,0 +1,406 @@
+# PERSHING improvement backlog
+
+## IMP-001 — Cylinder insertion guidance
+- Priority: High (gameplay progression)
+- Status: Approved / open
+- Problem: REC-001 identifies the MEDIA drawer but does not tell players to insert the cylinder into the terminal.
+- Solution: Preserve existing recording dialogue. After REC-001 completes, display a player-facing terminal notification:
+
+  AUTHORIZATION CYLINDER: NOT DETECTED
+
+  Insert physical media into the terminal reader to recover additional recordings.
+
+  AWAITING MEDIA INSERTION...
+
+- Acceptance: Players can infer what to retrieve and where to insert it without a DM hint; REC-002 remains gated by DM confirmation of physical insertion.
+- Implementation: Pending; verify in mobile preview and live/offline gameplay.
+
+## IMP-002 — Rewrite REC-002 and network diagnostic
+- Priority: High
+- Status: Approved / open
+- Replace opaque reel/splice dialogue with: “Engineering log. The connection between the reception terminal and the facility's main server has been interrupted. Several research recordings are currently inaccessible. I've traced the problem to a disconnected cable beneath the service panel in the server room. Maintenance has been notified, but nobody has responded. Reconnecting the cable should restore access to the research archives.”
+- After playback: NETWORK CONNECTION FAILURE / Research archive: OFFLINE / Fault location: Server Room / Awaiting physical reconnection...
+- Acceptance: Players understand destination, physical action and expected result without DM hints.
+
+## IMP-003 — Campaign-wide messaging clarity review
+- Priority: High
+- Status: Approved / open
+- User feedback: Writing so far is poor and messaging needs to be much clearer.
+- Review every recording, terminal notification, record and progression instruction. Use natural, coherent dialogue and clear actionable objectives. Preserve intentional mysteries and avoid premature spoilers; do not obscure routine maintenance tasks with unnecessary jargon or contrived riddles.
+- Acceptance: At every required progression gate, a first-time player can identify the next objective from available clues without DM intervention. Preserve established story and actual puzzles. Review revised dialogue with DM before implementation.
+
+## IMP-004 — Clarify locker release and second cylinder retrieval
+- Priority: High
+- Status: Approved / open
+- Replace ambiguous locker release record with: SECURITY SYSTEM — POWER RESTORED / Location: Research Director's Office / Personal locker: UNLOCKED / Registered contents: Omega authorization cylinder / Retrieve cylinder and insert into reception terminal to access additional research recordings.
+- Remove unnecessary brass plate references, including REC-003; retain physical identification only if multiple lockers genuinely require differentiation.
+- Acceptance: Players understand that server restoration unlocked the locker, where to find the second cylinder and where to insert it. Reading the notification is not itself a physical action. Keep REC-004 gated by DM confirmation.
+
+## IMP-004 — Clarify locker release and second cylinder retrieval
+- Priority: High
+- Status: Approved / open
+- Replace the ambiguous Locker Release record with: SECURITY SYSTEM — POWER RESTORED / Location: Research Director's Office / Personal locker: UNLOCKED / Registered contents: Omega authorization cylinder. / Retrieve cylinder and insert into reception terminal to access additional research recordings.
+- Remove unnecessary brass plate references, including in REC-003 and hints, unless multiple lockers require identification.
+- Acceptance: Players understand that restoring server power releases the locker, where to find the cylinder, and what to do with it. Viewing the record is informational, not a separate unlocking action. Preserve DM confirmation of physical retrieval/insertion.
+
+## IMP-005 — Accept bare six-digit authorization code
+- Priority: High
+- Status: Approved / open
+- Accept a six-digit code entered alone in the command field at the authorization gate, without requiring AUTH. Retain existing AUTH syntax and authorization button.
+- Provide clear visible success or rejection feedback. Do not bypass progression gates or reveal the correct code on failure.
+- Acceptance: Entering 471938 alone at the correct stage unlocks REC-005; incorrect codes receive clear feedback. Verify on mobile.
+
+## IMP-005 — Accept bare six-digit authorization code
+- Priority: High
+- Status: Approved / open
+- Accept six digits alone in the terminal command field as authorization input; retain AUTH <code> compatibility and existing progression gates.
+- Show unmistakable success or rejection feedback and identify newly unlocked content on success.
+- Acceptance: At the authorization stage, entering 471938 alone unlocks REC-005 exactly as AUTH 471938 does. Incorrect codes receive clear feedback; premature entry does not bypass progression.
+
+## IMP-007 — Rename Scanner diagnostic
+- Status: Approved / open
+- Rename player-facing “Scanner diagnostic” to “M-count scanner diagnostic”; ensure directory and search references remain consistent.
+- Implementation pending. IMP-006 is reserved for the proposed browser popup replacement, not yet approved.
+
+## IMP-008 — Restore approved M-count analysis presentation
+- Priority: High
+- Status: Open / user-reported defect
+- Current output is unlabeled, inconsistent and does not match prior design discussions.
+- Recover the exact approved scanner format and character-specific results from authoritative campaign sources and prior design discussions before rewriting. Do not invent replacement values or classifications. Present clearly labeled subject, species, M-count classification and specimen registry match fields, subject to exact approved format. Preserve campaign separation and special cases.
+- Acceptance: DM verifies the presentation and results against the original design before release.
+
+### IMP-003 expanded audit scope — design fidelity
+- User reports Facility section is unclear and writing diverges from prior discussions. Audit every screen, record, recording, status, scanner result and control against the authoritative master adventure design and prior approved decisions. Identify unsupported inventions and deviations; remove or seek DM approval. Do not substitute another creative rewrite for source verification. Treat exact format and content fidelity as release acceptance requirements.
+
+## IMP-009 — Final recording playback and door closure
+- Priority: High / progression blocker
+- Status: Open / user-reported defect
+- User cannot trigger final recording; suspects inability to close current room doors. Root cause not yet confirmed.
+- Verify REC-007 prerequisites, door closure controls, obstruction handling and feedback against approved adventure design. Make any required action clear and achievable; do not silently block playback. Confirm whether the door prerequisite itself is approved before retaining it.
+- Acceptance: Complete mobile player progression through final recording and crisis cue; verify clear feedback for unmet prerequisites and no unintended deadlock.
+
+## IMP-010 — Simplify navigation and consolidate M-count controls
+- Priority: High
+- Status: Open / user-requested
+- Preserve generally good underlying mechanics. Focus on writing, progression clarity and interface organization rather than unnecessary mechanical redesign.
+- Organize selectable options into meaningful folders/subfolders; reduce screen clutter and redundant controls. Consolidate M-count scanner activation and analysis into one logical workflow/location, retaining necessary DM physical-action controls separately.
+- Proposed navigation for DM review: Research Recordings, Facility Systems, Research Archives, M-count Analysis. Use progressive disclosure and mobile-friendly navigation.
+- Acceptance: No redundant player-facing scanner entry points; clear navigation and manageable option counts on mobile; all required functions remain accessible.
+
+### IMP-003 expanded progression clarity requirement
+- At every required transition, terminal provides an actionable, in-universe clue identifying the next objective and relevant location/action without spoiling genuine puzzles. Clearly distinguish physical DM-confirmed actions from terminal interactions. Explain unmet prerequisites and confirm successful actions. Review all seven recordings and intervening gates against approved design; preserve mechanics unless a specific defect or design deviation warrants change.
+
+### IMP-010 — Folder hierarchy approved
+- User approves Research Recordings, Facility Systems (network, doors, ventilation), Research Archives (personnel, project, engineering), M-count Analysis (diagnostic, analyze sample, saved results). Progressive disclosure; consolidate scanner entry points.
+
+## IMP-011 — Persistent current objective and explicit unlock feedback
+- Priority: High
+- Status: Proposed implementation approach / user-requested clarity
+- Home screen shows current objective, completed action, newly available content, and outstanding prerequisite in in-universe language. Update automatically on DM-confirmed physical actions and player actions. Do not reveal future objectives or genuine puzzle solutions.
+- Cover REC-001 through REC-007 and all intervening physical actions, authorization, relays, lab entry, archive power, tape retrieval/insertion. Verify exact transitions against approved design, especially final recording security conditions. Review final wording with DM.
+
+## IMP-012 — Remove inserted tapes from archive selection
+- Priority: High
+- Status: Approved / open
+- Once a tape is inserted into the primary terminal, remove its selectable retrieval option from the archive room. Preserve unlocked contents in primary Research Archives. Track available, retrieved and inserted states consistently, including save/recovery/undo/reset. Do not allow duplicate retrieval of an inserted tape.
+
+## Comprehensive source audit — 25 November 2026
+Status: findings recorded; implementation pending. Reviewed against the [Master Adventure Design](https://docs.google.com/document/d/1KbwM-9KeqQCPJ4bx4os9UZB3govfSJyqMgB9w7SJRbs/edit), particularly §§3–8 and 12–16, and content.mjs, engine.mjs, station.mjs, session.mjs, guides, tests and the main-branch standalone preview. No fresh browser or production test was performed. Preserve the core two-cylinder, two-relay, physical tape and deliberately selected recording progression; no architectural redesign. Proposed wording and new findings below are not automatically approved for implementation.
+
+### Clarifications to existing improvements
+- IMP-001: preserve initial discovery of REC-001 via Media Archive > Research Recordings; no autoplay. After playback clearly identify the cylinder and primary reader. The master initially leaves location discovery to physical clues; reconcile with the later proposed explicit objective wording before finalizing.
+- IMP-002: use approved engineering-log replacement; align title, patch ticket, hints, notices and media/prop guides with the disconnected server cable, not reels/splices.
+- IMP-003: audit every recording, file, transition and optional discovery for natural writing, purpose and canonical fidelity. Preserve approved jokes and intentional mysteries; avoid invented plot facts. Review ordinary records (staff directory, security abstract, laboratory inventory, traffic receipt, approach docket, archive directions, optical comparison, recovery dispatch, research authority). Verify campaign callbacks and new optical-identification detail against authoritative sources. Preserve Merg's opportunity to narrate, four unresolved survivors, separate MEN/KIDS timelines, no premature Force powers or hazard disclosure.
+- IMP-004: server restoration releases Director's office locker; remove brass-front references from source, hints, media directions and physical prop checklist. Use approved locker release notification.
+- IMP-005: retain current implemented 471938 and AUTH alias unless DM changes prop digits. Accept bare six digits only at correct gate; no partial correctness hints.
+- IMP-006: native browser popup replacement remains proposed, not approved.
+- IMP-007/008: master §6 confirms qualitative result matrix. Glitch and Crosseye ELEVATED, confirmed matches; Glitch species unconfirmed in source. Erik Trandoshan NORMAL, no match proposed; T0DD inorganic N/A; Ryan human AVERAGE, no match proposed; Chris Duros ELEVATED explicitly no match; Merg human and Ben Rodian VERY HIGH, registry determination unresolved; Ben fictional BAC 0.67%; Sam all UNKNOWN, red instability warning. Existing MG-1842/MG-6931 are fictional placeholders, not final approved IDs. Preserve kids unknown results. Use labeled fields, green/amber/red classification as appropriate, explicit save/decline, no external transmission. Confirm exact specimen IDs and unresolved matches rather than inventing.
+- IMP-009: current-room closure IS an approved prerequisite (master §§3, 8, 15, 16). Keep deliberate PLAY after privacy check. Identify specific local OPEN/OBSTRUCTED doors, confirm closure without locking escape, provide PRIVACY CHECK COMPLETE and confidential playback available feedback, keep unrelated doors irrelevant; verify room mapping and manual fallback. Recheck at playback start. Preserve REC-007 script, no premature biohazard.
+- IMP-010: approved folder hierarchy and consolidated scanner controls; preserve the opening Media Archive discovery path, progressive disclosure, Back/Home controls and existing command aliases.
+- IMP-011: derive persistent objective from authoritative progression state, not mutable last notice. Display completed action, current objective, prerequisite and newly unlocked content; update after player/DM actions. Replays, optional activities, failures and DM settings cannot erase the objective. No future puzzle answers, locked content or outbreak clues. Opening objective remains general; code fragments remain separate. Final objective points to classified records and current-room privacy without revealing warning contents. Final exact wording requires DM review.
+- IMP-012: track tape availability, retrieval/in possession, insertion and durable archived contents. Reject duplicate retrieval and insertion in engine and UI. Save/recovery/undo/reset must preserve lifecycle, including older checkpoints; see IMP-015.
+
+### Proposed new improvements (all open, pending review)
+| ID | Priority | Finding / acceptance |
+|---|---|---|
+| IMP-013 | High | Restore substantive failed-batch researcher recording from master §7. Suggested placement REC-003 with visible last-four blackboard clue; exact placement and wording require DM approval. Keep digits out of normal terminal text. |
+| IMP-014 | High | Rewrite REC-004/005/006 transitions: clear prefix/suffix relationship; routine ventilation interlock and two locations; explain physical archive, tape designation at proper stage, return to primary reader. Move irrelevant personal details to optional environmental discoveries if approved. Preserve REC-007 warning. |
+| IMP-015 | High | Persist authenticated optional tape contents in Research Archives; no transient-notice-only records. Check all tapes and checkpoint migration. |
+| IMP-016 | High | Explicit recording availability/completion and actionable unlock feedback at every gate; replay must not advance progression or replace current objective. |
+| IMP-017 | High | Saved M-count results directory and explicit decline-save option; structured classification and registry fields; retain optional Ryan repair and Glitch calibration path. |
+| IMP-018 | Medium | Simplify DM dashboard: human-readable physical actions, location, expected unlock and contextual hints. Keep existing recovery and override controls. |
+| IMP-019 | Medium | DM-only fast/mute/hold and other settings must not overwrite meaningful player notices/objectives. |
+| IMP-020 | Medium | Restore wake/boot sequence and consistent bounded processing/typewriter output; ensure long text legibility, no interruption during playback/crisis. |
+| IMP-021 | Medium | Visible HELP and progressively actionable invalid-command guidance without spoilers. |
+| IMP-022 | High | Regenerate and synchronize live modules, offline.html and main preview/index.html; preserve preview publication and reconcile divergent branches without overwriting unrelated work. |
+| IMP-023 | High | First-time player comprehension rehearsal, not just scripted known-route mechanical success. Check every gate, rejection, mobile/desktop flow, optional paths and spoilers. |
+| IMP-024 | Medium | Review digital terminal switching versus physical room movement; preserve DM supervision unless a change is explicitly approved. |
+| IMP-025 | High | Synchronize DM guide, prop checklist, MEDIA.md and build-guide.mjs with approved writing and mechanics; no stale reel/splice/brass locker instructions. |
+
+### Implementation and release order
+1. Review and approve revised narrative/recordings and objective wording in sequence, grounded in master design.
+2. Implement player navigation, objective/feedback, authorization and writing fixes.
+3. Repair tape lifecycle, M-count workflow and confidential playback; preserve recovery and campaign separation.
+4. Regenerate offline, scripts and mobile preview for DM review; do not mark approved items complete until verified.
+5. Run engine regressions, independent player walkthrough, mobile/desktop and two-browser synchronization, checkpoint/undo/reset/recovery; verify actual production Firebase/Pages separately before release. Test ordinary player navigation for spoilers; public client source is not intended to be cheat-proof. Actual audio/video, hardware, room acoustics and prop rehearsal remain outstanding.
+
+Audit limitations: source inspection, not fresh runtime verification; exact room geometry, specimen IDs, unresolved matches and some dialogue are undecided. Existing test scripts prove a known sequence can be executed, not that a new player can discover it. The preview still contains old writing and lacks persistent objectives at time of audit. No application code or deployed preview changed by saving this register.
+
+
+## 25 November approved walkthrough implementation checkpoint
+
+Core approved recordings, six tape records, distinct stations, per-subject dossier unlocks, Omega card gate and Director's own cylinder/office-door gate implemented on the feature branch. The original proposals above are historical and superseded where inconsistent. Remaining: actual media and portraits, exact map/trap and prop labels, final player comprehension review, browser/emulator and production smoke tests, preview and Pages release. Some interface polish items remain unverified; do not mark all IMP entries complete.
+
+
+## Creative baseline reconciliation — 25 November 2026
+
+This section supersedes historical proposals only where the approved walkthrough does so. Preserve the original entries for history. See [CREATIVE_BASELINE.md](CREATIVE_BASELINE.md) and [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md). Status is source/harness evidence, not production acceptance.
+
+| ID | Current disposition |
+|---|---|
+| IMP-001 | Implemented approved handover and security desk insertion objective. |
+| IMP-002 | Implemented engineering report and cable restoration; review exact transition display during rehearsal. |
+| IMP-003 | Major creative writing matched to walkthrough; first-time player clarity and ordinary-record audit remain open. |
+| IMP-004 | Earlier Director locker design superseded by deceased ISB officer's cylinder and trapped safe; separate final Director's office. |
+| IMP-005 | Bare six-digit code and AUTH alias implemented; physical card prerequisite. |
+| IMP-006 | Popup replacement remains proposed/unapproved; no change. |
+| IMP-007 | Scanner naming and diagnostic review remains open pending presentation rehearsal. |
+| IMP-008 | Qualitative adult results present; full structured presentation and provisional fields need DM review; KIDS unknown. |
+| IMP-009 | Director-only cylinder/door gate implemented; full final alert and DM reminder restored; browser verification pending. |
+| IMP-010 | Folder navigation and scanner controls present; review first-time player use. |
+| IMP-011 | Persistent objectives implemented; exact transition wording and UX rehearsal pending. |
+| IMP-012 | Tape lifecycle implemented and duplicate rejection tested in JS harness. |
+| IMP-013 | REC-003 approved writing and visual-only clue present; actual media/board legibility pending. |
+| IMP-014 | REC-004–006 and revised physical route implemented; full relay notices restored. |
+| IMP-015 | ISB-only durable tape records implemented; live recovery test pending; v1 migration superseded by fresh v2 session requirement. |
+| IMP-016 | Recording gates and notices present; browser clarity/replay review pending. |
+| IMP-017 | Scan/save and independently matched dossiers present; decline persistence decision and full UI review pending. |
+| IMP-018 | DM controls present; practical rehearsal pending. |
+| IMP-019 | Settings can still overwrite the mutable last notice; persistent objective and final alert remain; review as separate UX issue. |
+| IMP-020 | Wake/processing present; real browser and visual review pending. |
+| IMP-021 | Help/command feedback present; first-time player spoiler and comprehension review pending. |
+| IMP-022 | Offline rebuilt; main/mobile preview and Pages intentionally unchanged until release gate. |
+| IMP-023 | First-time player and actual two-browser rehearsal outstanding. |
+| IMP-024 | Physical station supervision vs player digital switching remains review item; no architecture change authorized. |
+| IMP-025 | Media guide and generator synchronized; actual map, props, media and final DM kit pending. |
+
+## Approved alert wording amendment — 25 November 2026
+
+IMP-009/025: supersede the old final-alert wording with the approved containment directive in CREATIVE_BASELINE.md. Preserve all recording dialogue, three-second silence, DM cue and escape choices. Engine/offline and media/DM guide synchronized; automated voice and actual browser rehearsal remain pending.
+
+## Final development usability pass — 25 November 2026
+
+IMP-020: redraw six-spoke Imperial cog with segmented geometry, 60-second non-destructive idle overlay, suppress overlay on playback and crisis, count pointer movement while awake. IMP-010/021/023/024: visible HELP from ordinary home, return from dark archive and early Director station, return to reception for replay. No new puzzle or changes to approved writing, prerequisites or final alarm. Source-based first-time walkthrough completed; actual first-time human/browser and live two-laptop rehearsal remain pending. Added browser test coverage for idle/wake and early-room navigation; unexecuted. Offline regenerated; cache namespace advanced. No production changes.
+
+## Phone rehearsal audio amendment
+
+Original synthesized terminal feedback added at DM request; distinct non-looping sounds, volume envelopes and mute controls, including final containment klaxon after approved silence. No narrative, progression, rules or recording dialogue changes. Actual phone audio audition pending.
+
+## Browser narration trial
+
+Free Web Speech device voices for all seven recordings, text fallback, individual delivery profiles and separate alert narration; no modifications to exact scripts or gate engine. Preview only; phone audition pending.
+
+## Phone sound repair
+
+Raised terminal cue audibility, added awake-only hum and explicit sound check, moved activation to mobile click, added generated WAV fallback and visible diagnostics. Actual phone sound output remains user test; no narrative or progression changes.
+
+Phone sound test passed per DM. Softened input keystroke only. Proposed DOS command echo on player buttons remains pending design approval; no implementation yet.
+
+Approved hybrid command UX supersedes pending proposal: automatic command echo and soft keystroke feedback on ordinary player shortcuts; manual code/query entry remains deliberate. Existing gate engine and narrative unchanged. Phone rehearsal pending.
+
+Approved freestyle library implemented; see TERMINAL-COMMANDS.md. No gate engine or creative baseline edits.
+
+Expanded approved standalone lore across Skywalker saga, sequel-era database jokes, syndicates, Clone Wars, Rogue One/Andor and galactic culture. Google Doc updated first; no gate changes.
+
+Approved DM-only objective reveal and phosphor response palette implemented. Existing objective wording and progression gates retained; no automatic next objective. Preview verification pending.
+
+Approved REC-003 placeholder, red locked next recording and yellow availability notifications implemented without gate changes. Physical blackboard clue remains necessary until final visual.
+
+Approved code validation acknowledgment and dedicated DM confirmation for authorization gate implemented. No change to code or other gates.
+
+
+## V18 future refinements — 26 November 2026
+
+Backlog only. User requested recording these ideas without implementing or amending approved creative canon. Both remain pending design review and explicit implementation approval.
+
+### IMP-026 — Distinct workstation visual identities
+- Status: Proposed / deferred; not implemented.
+- Give the Reception terminal, Imperial Security Bureau (ISB) officer's terminal and Research Director's terminal subtly different persistent visual identities, such as a prominent but restrained corner watermark, insignia or background treatment. The active workstation should be immediately recognizable without the decoration dominating the screen or competing with text, objectives, records, recordings, M-count analysis or crisis effects.
+- Candidate treatments for later review: general Imperial facility emblem for Reception; ISB insignia for the officer; specialized Imperial research division insignia for the Director. These are suggestions, not approved artwork. Determine treatment of other existing stations, including the lab workstation, during design review.
+- Acceptance proposal: identity follows the actual active workstation, remains legible on phone and laptop, and does not suggest access to a locked station or change any navigation, physical confirmation, security gate or recording behavior. Preserve existing status colors and full-screen crisis overlay. Review visuals with DM before implementation.
+
+### IMP-027 — Rival Imperial research director and facility identity
+- Status: Proposed narrative refinement / deferred; not implemented or canonized.
+- User wants this lab to be associated with a frightening female Imperial research director of comparable stature to Dr. Penn Pershing, rather than duplicating Pershing's own work directly. Explore her as a rival research leader competing with Pershing for Moff Gideon's favor, sponsorship or career advancement. Exact patronage, rank, relationship to Gideon and nature of the rivalry remain undecided; do not establish them as facts yet.
+- Proposed name for DM review: Dr. Veyra Kest (not approved; alternative names may be considered). She is intended to be the already-established deceased female Research Director found headless in her office, not an additional corpse or new character encounter.
+- Preserve the approved Director's office, readily recovered cylinder, closed-door REC-007 gate, existing clone research mysteries, Morgan record, and exact recording scripts until any affected creative amendments are explicitly approved. Review facility/project naming and the extent of Pershing references separately; no automatic rename of Project PERSHING, repository or campaign. Do not prematurely disclose Gideon's role to players.
+- If approved later, inspect affected canonical documents and source references, propose precise changes, update and verify the applicable Google Doc first, then make targeted implementation changes and test. No production release without separate approval.
+
+
+## V18 phone-rehearsal refinement requests — 26 November 2026
+
+Backlog only, no implementation or canon amendment. Source inspection: current master adventure, screenplay, engine.mjs, station.mjs, station-presentation.mjs and content.mjs. Actual phone symptom not reproduced. Existing V18 requirements remain authoritative until explicitly amended.
+
+### IMP-028 — Contextual doors and equipment-room release
+- Proposed: remove early player-facing Doors clutter; move optional Security Equipment Room release to authorized ISB officer's terminal (not Research Director). Preserve DM door controls and final Director office physical-closure confirmation. Review typed DOORS/UNLOCK/HELP accessibility alongside buttons; current engine permits equipment release from step 8 without a station check. Current Home shows Doors unconditionally. Exact early ISB access and supply placement pending review.
+- Existing optional reward: security equipment room, separate from scanner components in technical stores; suggested masks, power cells/ammunition, vibroknife, medkit, lamp and shield, quantities/stats undecided. No main-route gate.
+
+### IMP-029 — Stop previously completed media and return to parent folder
+- User requests Stop recording once a media file has been completed at least once, so accidental replay can end immediately. Preserve first-time full-play gate; stopping a replay must not issue FINISH, advance, overwrite important notices, or retrigger alarm. Cancel audio/video/TTS and pending callbacks; return to correct originating folder. Current playback has Pause, Replay from start and Text only, no Stop.
+- Add contextual Go back to record detail, recording and folder navigation, preserving prior directory/search where applicable; not merely Home. Confirm replay behavior after station changes, reconnect, and local Operator/Player toggling.
+
+### IMP-030 — Richer archive lore
+- User wants more substantive archival records and backstory, not more filler. Review existing optional tapes and records, propose stronger in-universe content that rewards investigation. Preserve exact approved Sigma/Morgan/individual dossier material unless separately amended; do not invent resolution of mysteries or expose Gideon early. Avoid adding clutter or required gates. Draft for approval later.
+
+### IMP-031 — Resolve four-terminal physical layout and optional calibration
+- User recalls Reception, ISB, Archive and Research Director only; proposes merging laboratory workstation with ISB terminal. Current approved master/screenplay explicitly include a fifth distinct Lab workstation, REC-006 there after physical lab entry, scanner available at Lab, ISB decryption after retrieval. Current code returns to Lab from Archive and other stations and gates ISB selection until step 14; Director room can be DM-selected from step 12 even though REC-007 requires step 16/Sigma/cylinder/door. Not a nonexistent software station; physical map mismatch/new proposed design.
+- Proposed four-station model: Reception, ISB, Archive, Research Director; keep physical cloning lab and analysis bench but remove separate Lab computer if approved. Decide REC-006 destination (recommend ISB after confirmed lab entry), when ISB terminal first becomes usable, how scanner control relates to physical bench, and whether any earlier Director physical exploration is permitted (user requests terminal only at end; recommend step 16 and confirmed physical arrival). Preserve archive retrieval-only, ISB decryption, Sigma and final cylinder/door gating. Review physical map and both documents before any change.
+- Current repair path: after authorization diagnostic S-4 keyed sensor + P-2 regulator; manifest B17 regulated instruments contains both, B71 general lighting contains P-2 only; Engineering relay 1 crew retained technical-stores cage key, work order points to B17; recommended stores cage beside Engineering, fallback engineering spare; DM PARTS registers recovery, physical bench beyond main lab; Ryan fits keyed module, Glitch may calibrate, other PCs can help. DM REPAIR currently only checks step >=12 and parts, not actual local room. No approved exact calibration prop, DC or finalized map geometry; design a short practical physical/skill interaction later. No mandatory gate.
+
+### IMP-032 — Manual crisis activation
+- User requests no automatic red biohazard alert after REC-007; DM clicks Activate crisis to cue red screen, Empire alarm and exact existing warning announcement. Current FINISH 7 advances to step 17, auto renders alert, cue/announcement; BEGIN CRISIS is separate reanimation/escape cue at step 18 and requires hold off. Hold button does not prevent initial alert. Proposed: default waiting state after final playback/silence, no automatic alert, explicit DM activation, remove routine Hold/Release controls if no longer useful. Preserve manual handprint reveal after alert and decide whether reanimation stays separate (recommended) or is part of activation. No premature warning; persist state/recovery, exactly-once cues, player cannot trigger. Preserve exact approved alarm wording and three-second silence. No implementation yet.
+
+### IMP-033 — Archive retrieval animation
+- User requests approximately five-second retrieval and simple 8-bit animation of mechanical claw picking up a round disc. Current retrieve() waits 900ms (0 fast/reduced) then sends RETRIEVE. Proposed pixel-art terminal green animation: move claw over carrier, descend, grip round disc, lift and deliver, then show physical retrieval confirmation. Guard duplicate clicks, stale state/session and interrupted retrieval; fast/reduced-motion bypass or accessible static progress. Preserve existing tape lifecycle, physical carrier and Sigma gate. Visual concept only; no asset created.
+
+### IMP-034 — Ryan scan assessment and completion highlighting
+- User wants Ryan's assessment to mention recent high-voltage exposure and subject emitting sparks during scan. Proposed wording for later review: "Evidence of recent high-voltage exposure detected. Subject emitting sparks during scan." Preserve HUMAN / AVERAGE / NONE and no new mechanical effect.
+- Once all biological specimens intended for the session have been scanned, Analyze biological specimen should stop being bright yellow, remain available for rescans. Current station renders action priority unconditionally, and engine tracks only lastScan, saved, matches, not all completed scans. Need distinguish completion from save/decline, persistent session state, undo/reset, campaign separation. Clarify eligible roster (present PCs vs full list; T0DD inorganic, Sam unknown, Tom unfinalized); propose DM-defined present/eligible subjects or agreed roster, do not invent.
+ 
+### IMP-035 — REC-006 premature reviewed state
+- User reports REC-006 appeared reviewed before viewing. Source: recordingGroups groups by s.seen[id]; UI marks seen recordings reviewed, and engine FINISH sets seen. Local reviewed-key data does not itself move an unseen recording into completed-replay group. Fast mode, previous checkpoint, completion callback or a display distinction require investigation; no confirmed cause from source alone. Obtain exact observed screen/session and reproduce with fresh disposable run, first-time playback, replay/stop, refresh and undo; inspect state/log and ensure no reviewed status until actual first completion. Preserve approved progression. Do not reset the user's current rehearsal to investigate.
+
+
+## V18 follow-up decisions — 26 November 2026
+
+Backlog/design decisions only; no authorization to implement application or canon changes inferred. Supersedes the earlier open questions only where the DM has answered them.
+
+- IMP-028: DM explicitly requests renaming Security Equipment Room to **Armory**. Use contextual authorized ISB release, remove early Doors clutter as proposed; preserve final Director privacy requirement and DM controls.
+- IMP-031: DM likes the proposed four-terminal consolidation and expressly confirms ISB terminal access immediately after successful six-digit authorization (including existing DM confirmation). REC-006 remains locked until confirmed physical lab entry; retain physical analysis bench and optional repair. Reception, ISB, Archive, Director only; Director terminal end-only. Exact implementation deferred.
+- IMP-029/030/033 and relevant presentation refinements: DM expressed approval of sections 3, 4 and 5 of the preceding proposal (four-terminal model, replay Stop and contextual Back, richer archive concepts, Director access, completed-scan highlighting, approx. five-second pixel-art mechanical claw retrieval). Exact new archive writing and visual asset still require review; no implementation yet.
+- IMP-034: DM explicitly says everyone must be scanned, not just present attendees. Interpret for proposed acceptance as full currently selectable campaign roster, including T0DD and Sam (subject to DM correction; despite the button's biological wording); no invented Tom result or phantom subject. Successful scan counts independently of save/decline; retain rescans and campaign separation. Yellow Analyze action only until all required scans complete.
+- IMP-036 (new) — Simplify optional repair: DM requests condensing manifest/B17/B71 and preserving Ryan's repair role. Proposed for approval: one maintenance kit represents all replacement components; diagnostic directs party to Armory; eliminate competing crates, shipping manifest puzzle, separate technical-stores search and individual component tracking. Ryan performs physical repair and Glitch may assist with calibration. Keep simple DM-confirmed recovery and repair, optional/fail-forward, and no new required story gate. Kit placement in Armory, exact repair/calibration interaction and removal of existing clues are proposals, not yet approved.
+- IMP-032: DM asks what Begin Reanimation does. Existing BEGIN CRISIS advances step 17 to 18 and displays specimen activity / fall back to exit junction / surface and cave route guidance; it does not control monsters, initiative or Roll20 combat. New recommendation for approval: remove separate mandatory Begin Reanimation progression button and routine Hold Crisis controls, let manual Activate Crisis trigger alarm/warning, retain manual handprint, let DM narrate actual reanimation without terminal instruction. Review end-state/recovery/escape guidance if approved; do not silently remove existing functionality.
+
+
+## V18 crisis approval and cooperative calibration concept — 26 November 2026
+
+- IMP-032: DM expressly approves the crisis recommendations: manual **Activate Crisis** triggers the red biohazard display, Imperial alarm and existing exact warning announcement; no automatic activation following REC-007. Remove routine Hold Crisis and separate Begin Reanimation progression control; DM handles actual reanimation via narration/Roll20. Retain independent manual Show/Hide Bloody Handprint control, recovery and meaningful escape choices. Design approval only; no implementation or production release authorized in this backlog turn.
+- IMP-037 — Two-person 8-bit calibration minigame (new proposal; user requests ideas, no particular design selected). Preserve Ryan's physical repair contribution and Glitch's calibration contribution; optional scanner repair, not main progression. Proposed shared player laptop, separate key sets, approximately 30–60 seconds, retry/DM override if absent players or accessibility issues. Candidate A: dual-axis drifting crosshair alignment, Ryan A/D horizontal, Glitch up/down vertical, maintain central target five seconds. Candidate B: coupled voltage/frequency regulation, Ryan voltage, Glitch frequency, maintain stable balance; simulated electrical zap/sparks can connect to Ryan's scan joke, no real-world electrical activity. Candidate C: cooperative rotating circuit tiles, one half each. A favored for simplicity and B for character callback; no selected game, exact rules, or approved artwork. Consider merging A's simple control scheme with B's voltage/sensor theme; no additional mandatory gate or penalty. IMP-036 maintenance kit placement and detailed physical repair remain pending approval.
+
+
+## IMP-037 — Dual-Operator Sensor Calibration: selected concept and approval-ready specification
+
+Status: DM selected Option 1 (dual-axis) and requested two successful locks, occasional unreliable inputs and increasing escape/drift speed as the players approach success. Detailed design below is proposed for final approval; no implementation or canon amendment authorized yet. Supersedes competing calibration minigame concepts, not the existing repair prerequisites until approved.
+
+### Gameplay and presentation
+- Optional M-count repair only; preserve Ryan's physical repair contribution and Glitch's calibration role. Shared player laptop, Ryan A/D horizontal axis and Glitch Up/Down vertical axis. No new mandatory story gate. Proposed consolidated maintenance kit/Armory placement (IMP-036) remains separately pending.
+- Title: IMPERIAL ADVANCED SCIENCE DIVISION / DUAL-OPERATOR CALIBRATION. Retro green phosphor 8-bit grid, fixed central target, drifting reticle, two colored axis indicators, LOCK 1 OF 2 / LOCK 2 OF 2, SYSTEM UNSTABLE, stability meter, operator assignments and key legends. Yellow horizontal, cyan vertical, green progress, red interference/error. Exact visual artwork remains a proposal.
+- Both operators keep the reticle inside the target. Lock 1 requires two continuous seconds of alignment; Lock 2 requires three continuous seconds. Reticle drift increases as the stability meter fills and starts faster on Lock 2. Difficulty bounded and tuned through actual laptop playtesting; no fabricated validated speed/difficulty values.
+- Occasional intentional simulated interference pulses, approximately 0.4–0.7 seconds; reduce or disable input on an affected axis temporarily and visibly identify that axis. Lock 2 has more frequent interference. Avoid overlapping/continuous lockout or unavoidable failure; no real device malfunction. Control feedback and optional sound distinguish interference from a software bug.
+- Leaving the target resets only current lock's stability, not a completed lock. Re-enter to retry immediately; retain Lock 1 when attempting Lock 2. No hard time limit, damage, resource loss or story failure. Target total duration approximately 30–60 seconds, subject to actual rehearsal. Provide clear pause/cancel/retry and DM-assisted completion if players are absent, accessibility requires it or the game becomes frustrating.
+- Proposed exact player text: initial "DUAL-OPERATOR CALIBRATION REQUIRED" / "MAINTAIN RETICLE WITHIN TARGET ZONE"; interference "SIGNAL INTERFERENCE DETECTED" / "HORIZONTAL INPUT LAG" or "VERTICAL INPUT LAG"; failed alignment "CALIBRATION LOST" / "REINITIALIZING TARGET FRAME"; first lock "CALIBRATION LOCK 1 ACHIEVED" / "SECONDARY CALIBRATION REQUIRED"; second lock "CALIBRATION LOCK 2 ACHIEVED" / "BIOLOGICAL ANALYSIS SYSTEM ONLINE". Optional fictional spark/zap effect may support Ryan's scan callback; avoid forced new character injury or mechanical consequence.
+- Proposed integration: DM confirms actual required parts and physical repair first; then player can start calibration at the authorized ISB terminal under the proposed four-station design. Successful second lock, or explicit DM override, completes optional scanner calibration exactly once; do not require redundant DM clicks after success. Preserve existing scanner eligibility, individual dossier unlocks, saved results, MEN/KIDS isolation, main route, and all other gates.
+- Input/recovery acceptance: simultaneous held keys independently affect axes; arrows do not scroll page during game; release all held keys on blur/pause/exit; prevent repeat/multiple completion, stale session/room/revision callbacks, accidental command entry or loss of existing session. Completed lock retained on ordinary retry; refresh/reconnect behavior should preserve completed lock or provide explicit safe restart without falsely marking scanner repaired. DM override remains authoritative; fast/reduced-motion or accessible alternative available. No live shared-state architecture expansion unless required and approved. Actual browser/laptop testing needed.
+- Approval scope: timing, text, visual layout, exact difficulty tuning, integration and recovery behavior above are recommendations awaiting approval; selected concept and two locks/unreliable input/increasing escape speed are user-directed. No application, screenplay, Firebase or deployment changes made by recording this specification.
+
+
+### IMP-037 follow-up — calibration entry prompt and DM interference control
+
+- User requests a bright-yellow terminal prompt after the replacement parts are installed, explicitly identifying that two technicians are required, and a DM button to stop interference.
+- Proposed exact presentation in M-count Analysis after DM-confirmed physical repair: IMPERIAL ADVANCED SCIENCE DIVISION / M-COUNT ANALYSIS / REPLACEMENT COMPONENTS INSTALLED / HARDWARE DIAGNOSTICS: PASSED / SENSOR CALIBRATION: REQUIRED / TWO TECHNICIANS REQUIRED (bright yellow) / BEGIN M-COUNT SCANNER CALIBRATION (bright-yellow selectable action) / Awaiting dual-operator input... (muted). No calibration access before repair confirmation. Starting opens the dual-axis minigame and its controls; no duplicate start action while active; successful calibration removes the outstanding prompt.
+- DM-only Calibration controls: Signal interference ENABLED by default; Disable interference / Enable interference toggle. Disabling immediately cancels any current interference and prevents new pulses; restores both operators' normal input without resetting current stability or completed locks. Ordinary increasing drift and two-lock success conditions remain unchanged. Re-enabling allows future pulses; do not intentionally trigger an immediate pulse. No player-facing operator control or disclosure that DM intervened. Keep separate explicit manual completion override. Proposed DM state synchronization in live mode must be tested on both laptops; do not interrupt playback or game on ordinary control updates.
+- Proposed sound cues from the preceding specification: startup, target-entry tone, rising stability pitch, electrical crackle for interference, descending alignment-loss tone, first-lock confirmation chime, final mechanical startup/success chime. Honor mute and stop sounds on exit. Exact cues and difficulty require playtesting.
+- These refinements are backlog/design only. User-directed entry prompt and interference-stop capability are recorded; exact wording, toggle details and complete design still pending final approval. No application, screenplay or deployment changes.
+
+
+## Approved V18 follow-up — 26 November 2026
+
+Approved 26 November 2026 — V18 follow-up refinements (implementation pending)
+This amendment supersedes earlier conflicting descriptions only for the approved requirements below. Retain earlier text as historical design. Four terminal stations: Reception (REC-001–005); ISB officer’s terminal (available immediately after successful six-digit authorization and existing DM confirmation; REC-006 only after confirmed physical laboratory entry, M-count analysis controls, Armory release and archive decryption); Archive (retrieval only); Research Director (end-only access after Sigma authentication and actual arrival, her cylinder and closed office door required for REC-007). Retain physical cloning lab and analysis bench; no distinct Lab computer. No early player Doors clutter. Rename Security Equipment Room to Armory; release at authorized ISB terminal. Retain DM door controls and Director privacy confirmation. No new mandatory story gates.
+After the final recording and existing three seconds of silence, wait for DM. No automatic red alert. DM selects Activate Crisis to display the existing exact biohazard warning and initiate the Imperial alarm and warning narration. Remove routine Hold Crisis and separate Begin Reanimation controls; DM narrates and manages reanimation and combat independently. Keep independent Show/Hide Bloody Handprint; preserve escape choices, recovery and player/DM separation.
+Optional analysis remains optional; Ryan physically installs replacement parts, Glitch participates in calibration. DM confirms physical repair before the calibration prompt appears. No automatic calibration before the two-lock game or explicit DM override. Existing component sourcing remains the approved baseline until the single maintenance kit/Armory placement proposal is separately approved. The kit simplification, rival director name and exact insignia art are not finalized.
+Approved IMP-037 — Dual-Operator Sensor Calibration
+After DM-confirmed physical repairs show:
+IMPERIAL ADVANCED SCIENCE DIVISION
+M-COUNT ANALYSIS
+REPLACEMENT COMPONENTS INSTALLED
+HARDWARE DIAGNOSTICS: PASSED
+SENSOR CALIBRATION: REQUIRED
+TWO TECHNICIANS REQUIRED
+BEGIN M-COUNT SCANNER CALIBRATION
+Awaiting dual-operator input...
+The two-technician text and selectable Begin action are bright yellow; ordinary status is green, calibration required amber, waiting muted. No prompt before physical repair or after completion. Start opens shared-laptop retro 8-bit dual-axis game: Ryan uses A/D for horizontal (yellow), Glitch up/down for vertical (cyan). Fixed central target, drifting reticle, green stability meter, LOCK 1 OF 2 / LOCK 2 OF 2. Two continuous seconds inside target for first lock, three for second; drift increases as stability fills, faster base on second. Occasional visible simulated input interference of about 0.4–0.7 seconds on an axis, more frequent on second lock; bounded, fair, no unavoidable failure. Exact speed and interference frequency subject to playtesting. Losing alignment resets current lock progress only, never a completed lock. Unlimited retries, no hard time limit, resource cost, injury or mandatory progression penalty. Aim for 30–60 seconds, subject to playtesting.
+Exact messages: DUAL-OPERATOR CALIBRATION REQUIRED / MAINTAIN RETICLE WITHIN TARGET ZONE. SIGNAL INTERFERENCE DETECTED / HORIZONTAL INPUT LAG or VERTICAL INPUT LAG. CALIBRATION LOST / REINITIALIZING TARGET FRAME... CALIBRATION LOCK 1 ACHIEVED / SECONDARY CALIBRATION REQUIRED. CALIBRATION LOCK 2 ACHIEVED / BIOLOGICAL ANALYSIS SYSTEM ONLINE.
+DM-only interference enabled by default; Disable interference / Enable interference immediately cancels active pulses and prevents new ones while disabled, restores normal input without restarting or losing stability/locks; drift and two-lock conditions remain active. Re-enable permits future pulses, not an immediate one. No player-facing intervention disclosure. Separate explicit manual completion override for absence, accessibility or frustration. Successful second lock or override completes calibration exactly once, no redundant DM confirmation. Analyze biological specimen then becomes yellow.
+Sound intent: mechanical startup, soft target-entry tone, rising stability pitch, electrical crackle, descending error tone, first-lock chime, final mechanical startup/success chime; honor mute, cleanup on exit. Fictional sparks/zap only. Simultaneous held-key operation, prevent arrow scrolling, release keys on blur/pause/exit. Safe cancel/retry, completed-lock retention or explicit safe restart on refresh/reconnect, no stale callbacks or duplicate completion. Actual two-laptop and keyboard testing required. Preserve main route, recovery, independent dossiers, save/decline and campaign separation.
+Additional approved terminal refinements: Stop recording during a replay only after first full completion; cancel media/TTS/callbacks without FINISH, progression or alert, return to originating folder. Contextual Back returns to parent folder or prior search; preserve Home. Archive mechanical retrieval approximately five seconds with simple 8-bit claw retrieving a round physical disc; no decryption at archive; retain tape lifecycle, duplicate protection and fast/reduced-motion alternative. Analyze biological specimen remains available but loses yellow action highlighting only after all selectable campaign subjects have been scanned, irrespective of attendance (including T0DD and Sam in current MEN roster; no invented Tom findings). Count successful scans independently of save/decline; preserve reset/undo/recovery. Ryan remains HUMAN / AVERAGE / NONE; requested assessment mentions recent high-voltage exposure and subject emitting sparks during scan; proposed wording “Evidence of recent high-voltage exposure detected. Subject emitting sparks during scan.” No new mechanical effect. Richer archive backstory concept approved; exact new record text still requires review; preserve approved scripts, Morgan, Sigma and mysteries. REC-006 prematurely reviewed user report requires reproduction and repair; cause not established. Distinct workstation insignia and rival research director name remain proposals awaiting final design selection.
+
+Status: approved design, implementation pending. Exact approved source amendment copied from the Imperial Terminal Experience Screenplay; Master Adventure has matching amendment. No deployment authorization.
+
+
+## V19 implementation checkpoint — 26 November 2026
+Approved design from both Google Docs is implemented in the development candidate: IMP-028 contextual Armory, IMP-029 replay Stop/Back, IMP-031 four-station consolidation, IMP-032 manual crisis and independent handprint, IMP-033 approximately five-second pixel-art retrieval, IMP-034 Ryan report and all-subject scan tracking, IMP-037 two-lock calibration including yellow two-technician prompt and private DM interference toggle/override. Source and adapted tests updated; actual browser/live rehearsal pending. IMP-035 user-reported premature REC-006 reviewed status has not been reproduced; tests verify unseen state before first playback and normal completion, not a proven fix. IMP-026/027 visual and name proposals, IMP-030 exact new archive lore and IMP-036 consolidated kit placement remain pending final creative decisions. No production Firebase rule publication, main-branch release or preview change in this checkpoint.
+
+
+## V20 approved refinement amendment
+
+Approved 26 November 2026 — V20 final five refinements
+This amendment supersedes the outstanding design proposals in the V18/V19 amendment. Preserve all other approved text, the existing REC-001–007 scripts, Sigma, Morgan and individual dossiers. No production release authorized.
+Terminal identity: four persistent, restrained upper-right emblems plus explicit workstation designation: Reception (Imperial cog, green); ISB (security shield/eye, muted red); Archive (data stack, muted cyan); Research Director (hexagonal scientific atom, muted violet). Approximate desktop width 15–20%; responsive on phones; keep gameplay text green and yellow/red meanings intact. Original stylized emblems, not a claim of official ISB or science insignia. Never overlay or compete with the crisis visual.
+Research Director: Dr. Veyra Kest, Director of Imperial Advanced Science Division, is the existing deceased female director. She is a competing research lead, not Pershing's subordinate. Pershing investigates biological transfer of Force sensitivity; Kest investigates clone survivability and seeks to outperform him for Moff Gideon's patronage. Gideon and ultimate objectives remain DM-only; no premature player disclosure. Preserve the existing recordings referring to Pershing as a collaborating/requesting researcher and exact approved dossier wording. Do not rename repository/project.
+Armory maintenance kit: replace the B17/B71 crate and shipping-manifest puzzle, technical-stores cage/key and Engineering spare requirement with one Imperial Instrument Maintenance Kit in the Armory. It contains all necessary replacement components and tools; no individual inventory tracking. After authorization, unlock Armory from ISB; DM confirms physical recovery of kit. Ryan performs physical analyzer repair and DM confirms installed parts; Ryan and Glitch then perform the already-approved two-lock calibration. Optional, fail-forward, no new main gate. Armory combat supplies remain as approved.
+Adult campaign optional archive lore: six records replace weaker local filler, accessible at authorized ISB as the relevant existing milestones are reached, no required reading. Keep select administrative humor, existing tapes, exact Sigma/Morgan/individual dossier content and KIDS-specific story intact. New text follows.
+Research Division Correspondence
+INTERNAL RESEARCH CORRESPONDENCE — RESTRICTED
+From: Dr. Veyra Kest, Research Director
+To: Research Coordination Office
+Dr. Pershing has requested the experimental histories of specimens demonstrating exceptional resilience. His work concerns the transfer of elevated M-count characteristics; this facility has been tasked with establishing why particular specimens survive procedures that destroy otherwise viable clones.
+I have authorized the transfer of the requested materials. This cooperation should not be mistaken for an acknowledgment that his approach is superior. His laboratory has the luxury of caution. We are expected to deliver results.
+Future progress reports shall distinguish discoveries made at this installation from conclusions reached elsewhere. I will not have the achievements of my personnel attributed to a researcher who merely receives our findings.
+— V. Kest
+Specimen Termination Report
+BIOLOGICAL QUALITY ASSURANCE — RESTRICTED
+A routine reconciliation identified inconsistencies between several termination certificates and subsequent instrument readings. The attending technicians confirmed that the specimens were nonresponsive at the time of certification. Later readings nevertheless displayed irregular biological activity.
+Engineering attributes the discrepancy to residual interference from the experimental apparatus. Research personnel have requested that future readings be preserved separately from clinical determinations until the source of the interference can be established.
+Director Kest has rejected a proposal to repeat the entire certification procedure. She considers the additional delay unjustified and has instructed staff to retain the original entries alongside the supplemental data.
+The affected records remain provisionally closed. No further interpretation has been authorized.
+Confidential Personnel Grievance
+PERSONNEL OFFICE — CONFIDENTIAL
+I have worked at three Imperial research installations. I understand the necessity of classified work and have never questioned the authority of the Research Division.
+However, Director Kest has repeatedly shortened the observation period between experimental procedures. Several of us have requested an independent review of the revised schedule. We are told that delays would compromise this installation's standing with research oversight.
+The Director has assured us that the results justify the accelerated schedule. I would be considerably more reassured if the results were available to the personnel conducting the procedures.
+I request reassignment to an ordinary laboratory.
+Disposition: Reassignment denied. Employee advised to address future concerns through the established chain of command.
+Memory Suppression Incident
+NEUROLOGICAL RESEARCH — RESTRICTED
+During routine assessment, an experimental specimen recognized a maintenance sequence that was not part of the current training materials. A second observer noted an apparent familiarity with equipment arranged in an earlier test environment.
+These responses may represent retained procedural knowledge rather than conscious recollection. The modified inhibitor system was designed to impede the formation of long-term memories without destroying useful acquired skills; the distinction remains difficult to establish under controlled conditions.
+Director Kest has requested that all unexpected responses be recorded, but that personnel avoid prompting specimens with questions concerning previous sessions.
+No determination regarding the recovery of autobiographical memory has been made. Further assessment is pending.
+Research Funding Review
+RESEARCH ALLOCATION COMMITTEE — RESTRICTED
+Competing installations have submitted progress estimates for the next review period. The committee notes that the survivability initiative has produced observations of potential value, although its expenditure per viable specimen remains substantial.
+Director Kest has requested additional equipment and personnel, citing the limitations of the current experimental schedule. Her request includes a comparative assessment of the scientific methods employed by Dr. Pershing.
+The committee declines to comment on disagreements between research directors. Continued allocation will depend upon measurable progress rather than professional assertions.
+The next review will be conducted by authorized representatives. Their identities and the terms of executive sponsorship are not included in this record.
+Unauthorized Biological Activity
+ENVIRONMENTAL MONITORING — RESTRICTED
+The overnight duty technician reported intermittent instrument activation in an unoccupied observation area. Inspection revealed no authorized personnel present. The automatic monitoring system registered activity on multiple occasions, but the readings were insufficient to establish a source.
+Engineering inspected the local equipment and found no obvious mechanical fault. The incident was referred to Research for comparison with recent experimental data.
+Director Kest has instructed the duty staff to retain the monitoring logs and continue normal operations. Additional investigation will be conducted when the relevant personnel are available.
+Until then, staff are reminded that unauthorized changes to observation schedules and environmental controls must be reported through the appropriate channels.
+Recording status: one authoritative state derived from successful first FINISH (never folder review, unlock, navigation, refresh or a stale playback callback). ACCESS DENIED, AVAILABLE — NEW, PLAYBACK IN PROGRESS, REVIEWED — REPLAY AVAILABLE. Keep completed replays collapsed. REC-006 locked before confirmed lab entry and available/new afterward until completion. User-reported premature status remains a reproduction requirement; do not claim original cause established solely from source. Preserve all previous gates and recovery controls.
+
+Status: approved design; development implementation candidate. Original REC-006 incident not yet reproduced. No production or preview deployment authorized.
+
+
+V20 implementation checkpoint: IMP-026, 027, 030 and 036 implemented in development; IMP-035 status hardening implemented, original symptom still needs browser reproduction. Both authoritative Docs updated first and verified. 416 adapted assertions across 15 groups passed; existing canonical recordings/tapes/dossiers/scans unchanged; offline regenerated. No live or preview deployment.
+
+
+## V21 acceptance review — 27 November 2026
+01 Kest REC003 exact approved revision. 02/05 chamber naming and main cloning room. 03 existing REC005/relay gate confirmed by DM; unchanged. 04 one repair confirmation replaces kit registration. 06 universal recordings except REC007. 07 dedicated scan workflow. 08 classified on-site archive discovery, no early power clue, persistent reference, adult-only DM hook. Docs approved/read back first. Native/browser testing and preview pending.
+
+
+## V22 rehearsal refinements — 27 November 2026
+V22-001 CINDER red supplemental directive; V22-002 all six tapes visible with status; V22-003 18 MEN administrative records; V22-004 previously viewed subfolder; V22-005 six unread per page; V22-006 hidden clean bathroom/computer commands, shortcut variants and conduct screening with masked echo and repeat warnings. Both authoritative Docs amended and read back before code. Staged source regression: 862 adapted assertions across 27 groups, zero failures. Browser/live acceptance outstanding.
