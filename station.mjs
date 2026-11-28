@@ -260,7 +260,7 @@ $('insignia').innerHTML='<svg viewBox="0 0 100 100" aria-hidden="true" fill="cur
 function bounce(t){if(!$('saver').hidden){const pos=(size,rate)=>{let m=Math.max(1,size-76),d=(t*rate)%(2*m);return reduced?m/2:Math.min(d,2*m-d)};$('insignia').style.transform='translate('+pos(innerWidth,.049)+'px,'+pos(innerHeight,.037)+'px)'}requestAnimationFrame(bounce)}requestAnimationFrame(bounce);
 const SAVER_IDLE_MS=60000;
 function shouldShowSaver(state,isPlayer,isBusy,idleMs){return !!state&&isPlayer&&!isBusy&&!state.playing&&state.step<17&&idleMs>=SAVER_IDLE_MS}
-setInterval(()=>{if($('saver').hidden&&shouldShowSaver(s,player(),busy||commandPending||!!calibrationJob||!!retrievalJob,Date.now()-lastActivity)){$('saver').hidden=false;syncAudio()}},250);
+setInterval(()=>{if($('saver').hidden&&shouldShowSaver(s,player(),busy||commandPending||!!scanJob||!!calibrationJob||!!retrievalJob,Date.now()-lastActivity)){$('saver').hidden=false;syncAudio()}},250);
 async function act(a,arg=''){if(!host)throw Error('Connecting…');$('error').textContent='';await host.send(a,String(arg),player()?'PLAYER':'DM')}
 function nav(p,sel='',track=true){if(mediaKey)cancelAnnouncement();if(track&&(page!==p||selected!==sel)){pageTrail.push({page,selected,query});if(pageTrail.length>20)pageTrail.shift()}page=p;selected=sel;mediaKey='';draw()}
 function goBack(){const prior=pageTrail.pop();if(prior){query=prior.query;nav(prior.page,prior.selected,false)}else nav(page==='Read'?'Records':page==='Research Recordings'&&s.deck==='Primary'?'Media Archive':'Home','',false)}
@@ -463,12 +463,13 @@ async function retrieve(x){
  finally{if(retrievalJob===j){retrievalJob=null;busy=false;draw()}}
 }
 function drawSpecimenScan(j){
- $('heading').textContent='M-Count Scanning Chamber';$('commandForm').hidden=true;textOut('');const out=$('screen');instrumentHeader(out);
+ $('heading').textContent='M-Count Scanning Chamber';$('commandForm').hidden=true;textOut('');const screen=$('screen');const overlay=el('section','',screen);overlay.className='scanOverlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','Specimen scan in progress');const out=el('div','',overlay);out.className='scanOverlayPanel';instrumentHeader(out);
  el('p','SPECIMEN: '+j.name.toUpperCase(),out).className='instrumentStatus';
  const c=el('canvas','',out);c.width=160;c.height=92;c.className='pixelCanvas';c.setAttribute('role','img');c.setAttribute('aria-label','Retro full-body scanner; analysis pending');j.canvas=c;
  j.meter=el('progress','',out);j.meter.max=100;j.meter.setAttribute('aria-label','Specimen scan progress');j.status=el('p','',out);j.status.className='instrumentStatus';j.status.setAttribute('aria-live','polite');busy=true;paintSpecimenScan(j,j.frame||scanAnimationFrame(0,reduced));
 }
 function paintSpecimenScan(j,m){
+ j.meter.value=Math.round(m.progress*100);if(j.status.textContent!==m.label)j.status.textContent=m.label;
  const g=j.canvas?.getContext('2d');if(!g)return;const rect=(x,y,w,h,color)=>{g.fillStyle=color;g.fillRect(x,y,w,h)};
  rect(0,0,160,92,'#09180f');for(let x=4;x<160;x+=8)rect(x,4,1,84,'#153423');for(let y=4;y<92;y+=8)rect(4,y,152,1,'#153423');
  rect(50,8,60,76,'#0b2116');rect(48,8,64,3,'#499c62');rect(48,81,64,3,'#499c62');rect(48,11,2,70,'#326447');rect(110,11,2,70,'#326447');
@@ -479,12 +480,11 @@ function paintSpecimenScan(j,m){
  if(m.phase===1||m.phase===2){rect(51,m.beam-2,58,5,'#245b34');rect(51,m.beam,58,1,'#8cffab')}else if(m.phase===3){rect(51,12,58,1,'#8cffab');rect(51,79,58,1,'#8cffab')}
  g.font='5px monospace';g.fillStyle='#73d990';g.fillText('BIO SCAN',5,15);g.fillText('SIGNAL',5,30);g.fillText(m.phase===0?'WAIT':'LOCK',5,37);g.fillText('M-COUNT',5,53);g.fillText('PENDING',5,60);g.fillText('SYS',120,15);
  for(let i=0;i<8;i++)rect(120,24+i*6,Math.round(5+((i*7+(reduced?0:m.band)*3+40)%22)),2,'#499c62');
- j.meter.value=Math.round(m.progress*100);if(j.status.textContent!==m.label)j.status.textContent=m.label;
-}
+ }
 async function scan(name){
  if(!scannerReadyHere(s)||!Object.hasOwn(scans(s),name)||scanJob||s.playing||s.step>=17)throw Error('M-Count Scanning Chamber unavailable.');
  page='Specimens';selected='';const job={code:net.code,revision:s.revision,name,campaign:s.campaign,frame:null,lastBand:-1},valid=()=>scanJob===job&&player()&&net.code===job.code&&s.revision===job.revision&&scannerReadyHere(s)&&!s.playing&&s.step<17;scanJob=job;
- try{if(!s.fast){draw();const start=performance.now();await new Promise(resolve=>{function frame(now){if(!valid()){resolve();return}const m=scanAnimationFrame(now-start,reduced);job.frame=m;paintSpecimenScan(job,m);if(m.cue&&m.band!==job.lastBand){job.lastBand=m.band;playCue(m.cue)}if(m.progress>=1)resolve();else requestAnimationFrame(frame)}requestAnimationFrame(frame)})}if(!valid())return;await act('SCAN',name);const received=()=>net.code===job.code&&s.revision>job.revision&&scannerReadyHere(s)&&s.lastScan===name&&s.notice===name+' · '+scans(s)[name]&&!s.playing&&s.step<17;for(let i=0;i<20&&!received()&&net.code===job.code&&s.revision===job.revision;i++)await new Promise(r=>setTimeout(r,100));if(received()){scanJob=null;playCue(scanResultCue(s));nav('Sample',name)}else if(net.code===job.code&&s.revision===job.revision)throw Error('Scan confirmation pending. Review station state before retrying.')}
+ try{draw();$('saver').hidden=true;activity();let elapsed=0,last=null;await new Promise((resolve,reject)=>{function frame(now){try{if(!valid()){resolve();return}const dt=last===null?0:Math.max(0,Math.min(100,now-last));last=now;if(!document.hidden){elapsed+=dt;const m=scanAnimationFrame(elapsed,reduced);job.frame=m;paintSpecimenScan(job,m);if(m.cue&&m.band!==job.lastBand){job.lastBand=m.band;playCue(m.cue)}if(m.progress>=1){resolve();return}}requestAnimationFrame(frame)}catch(e){reject(e)}}requestAnimationFrame(frame)});if(!valid())return;await act('SCAN',name);const received=()=>net.code===job.code&&s.revision>job.revision&&scannerReadyHere(s)&&s.lastScan===name&&s.notice===name+' · '+scans(s)[name]&&!s.playing&&s.step<17;for(let i=0;i<20&&!received()&&net.code===job.code&&s.revision===job.revision;i++)await new Promise(r=>setTimeout(r,100));if(received()){scanJob=null;playCue(scanResultCue(s));nav('Sample',name);$('screen').scrollIntoView({block:'start',behavior:'instant'})}else if(net.code===job.code&&s.revision===job.revision)throw Error('Scan confirmation pending. Review station state before retrying.')}
  finally{if(scanJob===job){scanJob=null;busy=false;draw()}}
 }
 async function saveCurrentScan(){if(s.deck!=='ISB'||!s.repaired||page!=='Sample'||s.lastScan!==selected)throw Error('Select a specimen sample first.');await act('SAVE SCAN',selected);nav('Specimens')}

@@ -163,3 +163,7 @@ DM reported that opening the M-Count chamber first appeared to mark REC-005 as r
 
 ## Approved mobile rehearsal enhancement — five-second specimen scan
 Both authoritative Docs amended and read back. Embedded 160×92 pixel-art scanner with rising/falling green beam, progress, known-appearance silhouettes, and synchronized synthesized scan sweep cues. Normal speed five seconds; existing Fast mode skips, reduced motion static beam. No scan result, progression, registry or save/discard logic changed. 107 targeted adapted timing, silhouette and mocked canvas assertions passed; combined standalone script parsed. Offline updated, cache v2.27. Phone audiovisual and live testing pending; production/Firebase untouched.
+
+
+## V28 mobile scan visibility correction
+Phone reported absent animation in both playback modes. Root cause not independently reproduced; published Git blob contained V27 animation, but website fetch unavailable. V28 renders a fixed viewport overlay, always runs scan in both Fast and normal mode, counts foreground frame time, suppresses screensaver during scan, brings results into view, and visibly identifies build V28. Both Docs updated first and verified. 29 simulated scan-flow checks passed using actual scan function, including both speed modes, hidden tab, sound cue dispatch, error cleanup and single scan submission. Standalone parsed; native browser assertion added, not executed. Production/Firebase unchanged.
