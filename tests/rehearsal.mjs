@@ -14,6 +14,7 @@ async function client(width=1200){
 const click=(p,label)=>p.getByRole('button',{name:label,exact:true}).click();
 async function cmd(p,t){await p.locator('#command').fill(t);await p.locator('#command').press('Enter')}
 const terminal=async(p,deck)=>p.locator('#board button[data-terminal="'+deck+'"]').click();
+const openRecovery=async p=>{const section=p.locator('details.dmFold').filter({has:p.locator('summary').getByText('Checkpoint and recovery controls',{exact:true})});if(!(await section.evaluate(el=>el.open)))await section.locator('summary').click();};
 const waitStep=(p,i)=>p.locator('#board .card').first().getByText(new RegExp('^'+i+'/18')).waitFor();
 const visible=(p,sel)=>p.locator(sel).waitFor();
 const optional=process.argv.includes('--optional')||process.env.OPTIONAL_PATH==='1';
@@ -48,11 +49,11 @@ let dm,player;try{
  await player.getByRole('heading',{name:'Biohazard alert'}).waitFor();await dm.reload();await waitStep(dm,18);
  await click(dm,'Continue on this laptop offline');await waitStep(dm,18);await click(dm,'Return to Player View');await dm.getByRole('heading',{name:'Biohazard alert'}).waitFor();
  if(optional){
-   await click(dm,'Operator view');await click(dm,'Restore: Before final playback');await waitStep(dm,16);
-   await click(dm,'Reset session');await waitStep(dm,0);await click(dm,'Undo last action');await waitStep(dm,16);
-   const download=dm.waitForEvent('download');await click(dm,'Export checkpoint');const checkpoint=await (await download).path();
+   await click(dm,'Operator view');await openRecovery(dm);await click(dm,'Restore: Before final playback');await waitStep(dm,16);
+   await openRecovery(dm);await click(dm,'Reset session');await waitStep(dm,0);await openRecovery(dm);await click(dm,'Undo last action');await waitStep(dm,16);
+   await openRecovery(dm);const download=dm.waitForEvent('download');await click(dm,'Export checkpoint');const checkpoint=await (await download).path();
    const offline=await b.newPage();await offline.clock.install();offline.on('dialog',d=>d.accept());await offline.goto(new URL('../offline.html',import.meta.url).href);
-   await click(offline,'Open offline station');await waitStep(offline,0);await offline.getByLabel('Import checkpoint').setInputFiles(checkpoint);await waitStep(offline,16);
+   await click(offline,'Open offline station');await waitStep(offline,0);await openRecovery(offline);await offline.getByLabel('Import checkpoint').setInputFiles(checkpoint);await waitStep(offline,16);
    await click(offline,'Return to Player View');await offline.locator('#saver').click();const priorObjective=await offline.locator('#objective').textContent();const priorScreen=await offline.locator('#screen').textContent();await offline.clock.fastForward(58000);assert(!(await offline.locator('#saver').isVisible()));await offline.clock.fastForward(3000);await visible(offline,'#saver');await offline.locator('#saver').click();assert.equal(await offline.locator('#objective').textContent(),priorObjective);assert.equal(await offline.locator('#screen').textContent(),priorScreen);await cmd(offline,'PLAY 7');await offline.getByRole('heading',{name:'Transmission ended'}).waitFor({timeout:45000});await click(offline,'Operator view');await click(offline,'Activate Crisis');await waitStep(offline,18);
  }
  console.log('PASS independent identities; optional path='+optional+'; full main route, clue, code errors, privacy, refresh, manual crisis, local continuation, single crisis, narrow screen.');
