@@ -42,6 +42,14 @@ export function administrativePage(names,reviewed,requested=0){const unread=name
 export function partitionRecords(names){return {important:names.filter(n=>!isAdministrativeRecord(n)),routine:names.filter(isAdministrativeRecord)}}
 export const discoveryTone=(key,reviewed,action=false)=>action?'advance':reviewed.has(key)?'reviewed':'new';
 export const scanPhases=['Acquiring biological sample...','Analyzing M-count...','Querying Imperial specimen registry...'];
+export const scanDuration=5000;
+export function scanAnimationFrame(ms,reduced=false){
+ const t=Math.max(0,Math.min(scanDuration,ms)),phase=t<500?0:t<2500?1:t<4500?2:3;
+ const beam=phase===1?78-66*(t-500)/2000:phase===2?12+66*(t-2500)/2000:78;
+ return {progress:t/scanDuration,phase,beam:reduced?45:Math.round(beam),cue:phase===1?'scanSweepUp':phase===2?'scanSweepDown':null,band:Math.floor((t-500)/500),label:phase===0?'ACQUIRING SPECIMEN...':phase===1?'SCANNING · ASCENDING':phase===2?'SCANNING · DESCENDING':'ANALYSIS COMPLETE'};
+}
+export function scanSilhouette(campaign,name){return campaign==='MEN'?({T0DD:'droid',Chris:'duros',Erik:'trandoshan',Ben:'rodian'}[name]||'generic'):'generic';}
+
 export function scanResultCue(state){return state.campaign==='MEN'&&state.lastScan==='Sam'?'denied':state.matches?.[state.lastScan]?'match':'scan'}
 
 // Local minigame model. No per-frame network writes; only final successful lock is submitted.

@@ -159,3 +159,7 @@ DM-GUIDE.md synchronized with the exact approved Reviews 8–12 checkpoint from 
 
 ## Mobile rehearsal defect — 27 November 2026
 DM reported that opening the M-Count chamber first appeared to mark REC-005 as reviewed. Source inspection confirmed premature chamber navigation at step 8 (Omega authorization); no direct recording completion mutation in chamber navigation was identified. Restrict chamber navigation to steps 12–16, after confirmed laboratory entry; existing repair/scan gates and early diagnostic records retained. Added MEN/KIDS regression coverage for early chamber access and recording flag/stage independence during scanner operations. 1034 adapted assertions in 35 groups passed; standalone JavaScript parsed and offline build regenerated, cache v2.26. Original phone symptom not independently reproduced; phone retest required. No production or Firebase changes authorized.
+
+
+## Approved mobile rehearsal enhancement — five-second specimen scan
+Both authoritative Docs amended and read back. Embedded 160×92 pixel-art scanner with rising/falling green beam, progress, known-appearance silhouettes, and synchronized synthesized scan sweep cues. Normal speed five seconds; existing Fast mode skips, reduced motion static beam. No scan result, progression, registry or save/discard logic changed. 107 targeted adapted timing, silhouette and mocked canvas assertions passed; combined standalone script parsed. Offline updated, cache v2.27. Phone audiovisual and live testing pending; production/Firebase untouched.

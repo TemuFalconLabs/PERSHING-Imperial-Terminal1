@@ -1,6 +1,6 @@
 import {findEgg,eggReply,newEggHistory,containsProfanity} from './easter-eggs.mjs';
 import {crisisArtwork} from './crisis-art.mjs';
-import {analysisFolderAvailable,scannerReadyHere,directorReadiness,recordingGroups,analysisPageAfterRepair,structuredScan,isAdministrativeRecord,partitionRecords,administrativePage,discoveryTone,scanPhases,scanResultCue,newCalibration,tickCalibration,recordingStatus,workstationNames,chamberPages,archiveDiscoveryRows,archiveProtocolRows,archiveReferenceAvailable} from './station-presentation.mjs';
+import {analysisFolderAvailable,scannerReadyHere,directorReadiness,recordingGroups,analysisPageAfterRepair,structuredScan,isAdministrativeRecord,partitionRecords,administrativePage,discoveryTone,scanPhases,scanResultCue,scanDuration,scanAnimationFrame,scanSilhouette,newCalibration,tickCalibration,recordingStatus,workstationNames,chamberPages,archiveDiscoveryRows,archiveProtocolRows,archiveReferenceAvailable} from './station-presentation.mjs';
 import {voicePreferenceKey,voiceIdentity,isBritishVoice,orderedVoices,resolveNarrationVoice,voiceControlsLocked} from './voice-selection.mjs';
 import {files,tapes,code,media,recordings,localResearchRecords,researchDirectorName} from './content.mjs';
 import {route,rooms,stages,recordingAt,physical,scans,validSave,canPlay,objective,visibleObjective,currentObjectiveId,objectiveGroup,biohazardAlert,terminalAvailable} from './engine.mjs';
@@ -52,6 +52,8 @@ const cuePatterns={
  relay:[[0,.15,95,58,'triangle',.05],[.08,.13,260,190,'sawtooth',.018],[.24,.12,450,660,'triangle',.035]],
  archive:[[0,.23,145,65,'triangle',.04],[.21,.08,250,180,'square',.015],[.33,.09,660,810,'triangle',.035]],
  scan:[[0,.19,360,930,'sine',.035],[.21,.16,930,460,'sine',.027]],
+ scanSweepUp:[[0,.43,290,760,'triangle',.025],[0,.43,580,1520,'sine',.013]],
+ scanSweepDown:[[0,.43,760,290,'triangle',.025],[0,.43,1520,580,'sine',.013]],
  match:[[0,.11,440,550,'triangle',.035],[.13,.11,660,800,'triangle',.035],[.27,.19,960,1120,'sine',.04]],
  playback:[[0,.07,350,480,'triangle',.03],[.08,.09,680,820,'sine',.025]],
  complete:[[0,.08,720,540,'sine',.03],[.10,.11,460,330,'triangle',.03]],
@@ -382,7 +384,7 @@ function draw(){
  if(s.playing){if(calibrationJob)endCalibration(false);playback();return}
  if(calibrationJob){if(calibrationValid(calibrationJob)){drawCalibration();return}endCalibration(false)}
  if(retrievalJob&&retrievalValid(retrievalJob)){drawRetrieval(retrievalJob);return}
- if(scanJob&&scanJob.code===net.code&&scannerReadyHere(s)&&s.step<17){instrumentScreen(scanJob.message,'new');$('heading').textContent='M-Count Scanning Chamber';$('commandForm').hidden=true;return}
+ if(scanJob&&scanJob.code===net.code&&scannerReadyHere(s)&&s.step<17){drawSpecimenScan(scanJob);return}
  mediaKey='';$('crumb').textContent=s.deck+' / '+page;$('heading').textContent=page;
  const btn=(label,fn,shortcut='')=>button(out,label,fn,shortcut), go=(p,label=p)=>btn(label,()=>selectPage(p),p==='Home'?'DIR':['Help','Status','Doors'].includes(p)?p.toUpperCase():'OPEN '+p.toUpperCase());
  const important=(label,fn,shortcut,key,action=false)=>markChoice(btn(label,fn,shortcut),key,action);
@@ -460,10 +462,29 @@ async function retrieve(x){
  try{if(!s.fast&&!reduced){draw();const start=performance.now();await new Promise(resolve=>{function frame(now){if(retrievalJob!==j||!player()||!retrievalValid(j)){resolve();return}const t=Math.min(5,(now-start)/1000);paintRetrieval(j,t);if(t>=5)resolve();else requestAnimationFrame(frame)}requestAnimationFrame(frame)})}if(retrievalJob===j&&player()&&retrievalValid(j))await act('RETRIEVE',x)}
  finally{if(retrievalJob===j){retrievalJob=null;busy=false;draw()}}
 }
+function drawSpecimenScan(j){
+ $('heading').textContent='M-Count Scanning Chamber';$('commandForm').hidden=true;textOut('');const out=$('screen');instrumentHeader(out);
+ el('p','SPECIMEN: '+j.name.toUpperCase(),out).className='instrumentStatus';
+ const c=el('canvas','',out);c.width=160;c.height=92;c.className='pixelCanvas';c.setAttribute('role','img');c.setAttribute('aria-label','Retro full-body scanner; analysis pending');j.canvas=c;
+ j.meter=el('progress','',out);j.meter.max=100;j.meter.setAttribute('aria-label','Specimen scan progress');j.status=el('p','',out);j.status.className='instrumentStatus';j.status.setAttribute('aria-live','polite');busy=true;paintSpecimenScan(j,j.frame||scanAnimationFrame(0,reduced));
+}
+function paintSpecimenScan(j,m){
+ const g=j.canvas?.getContext('2d');if(!g)return;const rect=(x,y,w,h,color)=>{g.fillStyle=color;g.fillRect(x,y,w,h)};
+ rect(0,0,160,92,'#09180f');for(let x=4;x<160;x+=8)rect(x,4,1,84,'#153423');for(let y=4;y<92;y+=8)rect(4,y,152,1,'#153423');
+ rect(50,8,60,76,'#0b2116');rect(48,8,64,3,'#499c62');rect(48,81,64,3,'#499c62');rect(48,11,2,70,'#326447');rect(110,11,2,70,'#326447');
+ for(let y=17;y<80;y+=7){rect(43,y,3,1,'#499c62');rect(114,y,3,1,'#499c62')}
+ const edge='#73d990',body='#276942',dark='#102d1c',kind=scanSilhouette(j.campaign,j.name);
+ if(kind==='droid'){rect(73,15,14,11,edge);rect(75,17,10,7,body);rect(72,18,3,4,edge);rect(86,18,3,4,edge);rect(78,26,4,5,edge);rect(68,31,24,22,edge);rect(71,34,18,16,body);rect(62,33,5,24,body);rect(93,33,5,24,body);rect(84,54,6,23,edge);rect(82,75,10,4,edge);rect(72,54,6,10,body);rect(76,38,8,4,dark)}
+ else {rect(73,14,14,15,edge);rect(71,17,18,9,edge);rect(74,16,12,11,body);if(kind==='duros'){rect(70,14,20,8,edge);rect(72,16,16,6,body);rect(74,20,4,3,dark);rect(82,20,4,3,dark)}if(kind==='trandoshan'){rect(70,16,5,11,edge);rect(86,18,5,10,edge);rect(73,26,14,4,body)}if(kind==='rodian'){rect(74,10,3,6,edge);rect(83,10,3,6,edge);rect(70,19,5,6,edge);rect(85,19,5,6,edge);rect(77,25,6,6,body)}rect(77,28,6,5,edge);rect(68,33,24,19,edge);rect(71,35,18,16,body);rect(64,35,5,21,edge);rect(91,35,5,21,edge);rect(64,56,5,5,body);rect(91,56,5,5,body);rect(72,52,16,6,body);rect(72,58,7,19,edge);rect(81,58,7,19,edge);rect(70,75,10,4,body);rect(80,75,10,4,body)}
+ if(m.phase===1||m.phase===2){rect(51,m.beam-2,58,5,'#245b34');rect(51,m.beam,58,1,'#8cffab')}else if(m.phase===3){rect(51,12,58,1,'#8cffab');rect(51,79,58,1,'#8cffab')}
+ g.font='5px monospace';g.fillStyle='#73d990';g.fillText('BIO SCAN',5,15);g.fillText('SIGNAL',5,30);g.fillText(m.phase===0?'WAIT':'LOCK',5,37);g.fillText('M-COUNT',5,53);g.fillText('PENDING',5,60);g.fillText('SYS',120,15);
+ for(let i=0;i<8;i++)rect(120,24+i*6,Math.round(5+((i*7+(reduced?0:m.band)*3+40)%22)),2,'#499c62');
+ j.meter.value=Math.round(m.progress*100);if(j.status.textContent!==m.label)j.status.textContent=m.label;
+}
 async function scan(name){
  if(!scannerReadyHere(s)||!Object.hasOwn(scans(s),name)||scanJob||s.playing||s.step>=17)throw Error('M-Count Scanning Chamber unavailable.');
- page='Specimens';selected='';const job={code:net.code,revision:s.revision,message:scanPhases[0]},valid=()=>player()&&net.code===job.code&&s.revision===job.revision&&scannerReadyHere(s)&&!s.playing&&s.step<17;scanJob=job;
- try{if(!s.fast&&!reduced){for(const phase of scanPhases){if(!valid())return;job.message=phase;draw();busy=true;await new Promise(r=>setTimeout(r,1000))}}if(!valid())return;await act('SCAN',name);const received=()=>net.code===job.code&&s.revision>job.revision&&scannerReadyHere(s)&&s.lastScan===name&&s.notice===name+' · '+scans(s)[name]&&!s.playing&&s.step<17;for(let i=0;i<20&&!received()&&net.code===job.code&&s.revision===job.revision;i++)await new Promise(r=>setTimeout(r,100));if(received()){scanJob=null;playCue(scanResultCue(s));nav('Sample',name)}else if(net.code===job.code&&s.revision===job.revision)throw Error('Scan confirmation pending. Review station state before retrying.')}
+ page='Specimens';selected='';const job={code:net.code,revision:s.revision,name,campaign:s.campaign,frame:null,lastBand:-1},valid=()=>scanJob===job&&player()&&net.code===job.code&&s.revision===job.revision&&scannerReadyHere(s)&&!s.playing&&s.step<17;scanJob=job;
+ try{if(!s.fast){draw();const start=performance.now();await new Promise(resolve=>{function frame(now){if(!valid()){resolve();return}const m=scanAnimationFrame(now-start,reduced);job.frame=m;paintSpecimenScan(job,m);if(m.cue&&m.band!==job.lastBand){job.lastBand=m.band;playCue(m.cue)}if(m.progress>=1)resolve();else requestAnimationFrame(frame)}requestAnimationFrame(frame)})}if(!valid())return;await act('SCAN',name);const received=()=>net.code===job.code&&s.revision>job.revision&&scannerReadyHere(s)&&s.lastScan===name&&s.notice===name+' · '+scans(s)[name]&&!s.playing&&s.step<17;for(let i=0;i<20&&!received()&&net.code===job.code&&s.revision===job.revision;i++)await new Promise(r=>setTimeout(r,100));if(received()){scanJob=null;playCue(scanResultCue(s));nav('Sample',name)}else if(net.code===job.code&&s.revision===job.revision)throw Error('Scan confirmation pending. Review station state before retrying.')}
  finally{if(scanJob===job){scanJob=null;busy=false;draw()}}
 }
 async function saveCurrentScan(){if(s.deck!=='ISB'||!s.repaired||page!=='Sample'||s.lastScan!==selected)throw Error('Select a specimen sample first.');await act('SAVE SCAN',selected);nav('Specimens')}
