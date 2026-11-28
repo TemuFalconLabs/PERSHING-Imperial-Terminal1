@@ -1,5 +1,5 @@
 // Presentation only. Existing engine gates and stored scan outcomes remain authoritative.
-export const analysisFolderAvailable=s=>s.step>=8&&['Primary','ISB'].includes(s.deck);
+export const analysisFolderAvailable=s=>s.step>=12&&s.step<17&&['Primary','ISB'].includes(s.deck);
 export const scannerReadyHere=s=>s.step>=12&&s.deck==='ISB'&&s.repaired===true;
 export function directorReadiness(s){
  return {sigma:s.step>=16&&!!s.inserted?.['CLONE BATCH SIGMA'],arrived:s.deck==='Director'&&s.room==='Director',cylinder:!!s.directorCylinder,closed:s.doors?.['Director office door']==='CLOSED'};

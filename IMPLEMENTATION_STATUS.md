@@ -155,3 +155,7 @@ The two authoritative Google Docs have identical, read-back verified amendments 
 
 ## Audit documentation synchronization — resolved
 DM-GUIDE.md synchronized with the exact approved Reviews 8–12 checkpoint from Master Adventure Design in commit 35eebd928c7db10f8367a9cb6e195668c6aeb05a; exact text read-back verified. The previous blocked guide write is resolved. Feature freeze, browser and Firebase rehearsal requirements, and separate production authorization remain unchanged.
+
+
+## Mobile rehearsal defect — 27 November 2026
+DM reported that opening the M-Count chamber first appeared to mark REC-005 as reviewed. Source inspection confirmed premature chamber navigation at step 8 (Omega authorization); no direct recording completion mutation in chamber navigation was identified. Restrict chamber navigation to steps 12–16, after confirmed laboratory entry; existing repair/scan gates and early diagnostic records retained. Added MEN/KIDS regression coverage for early chamber access and recording flag/stage independence during scanner operations. 1034 adapted assertions in 35 groups passed; standalone JavaScript parsed and offline build regenerated, cache v2.26. Original phone symptom not independently reproduced; phone retest required. No production or Firebase changes authorized.

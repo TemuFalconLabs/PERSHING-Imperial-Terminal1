@@ -2090,7 +2090,7 @@ function voiceControlsLocked(state,muted,silent,pending,job,hidden=false){
 }
 
 // Presentation only. Existing engine gates and stored scan outcomes remain authoritative.
-const analysisFolderAvailable=s=>s.step>=8&&['Primary','ISB'].includes(s.deck);
+const analysisFolderAvailable=s=>s.step>=12&&s.step<17&&['Primary','ISB'].includes(s.deck);
 const scannerReadyHere=s=>s.step>=12&&s.deck==='ISB'&&s.repaired===true;
 function directorReadiness(s){
  return {sigma:s.step>=16&&!!s.inserted?.['CLONE BATCH SIGMA'],arrived:s.deck==='Director'&&s.room==='Director',cylinder:!!s.directorCylinder,closed:s.doors?.['Director office door']==='CLOSED'};
